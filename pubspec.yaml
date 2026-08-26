@@ -1,0 +1,74 @@
+name: tradesman_manager
+description: "WorkProof — offline-first work, pay, and evidence companion."
+publish_to: 'none'
+version: 0.0.1+1
+
+environment:
+  sdk: '>=3.11.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  cupertino_icons: 1.0.8
+
+  # State management
+  flutter_riverpod: 2.6.1
+
+  # Navigation
+  go_router: 14.2.0
+
+  # Local offline database
+  sqflite: 2.4.2+1
+  path: 1.9.1
+
+  # Preferences (theme, onboarding flags, smart defaults)
+  shared_preferences: 2.2.3
+
+  # Module 07/08: encrypted backup, device-bound secrets and app lock
+  cryptography: ^2.9.0
+  flutter_secure_storage: ^10.0.0
+  local_auth: ^3.0.2
+
+  # IDs / dates / formatting
+  uuid: 4.4.0
+  intl: 0.20.2
+
+  # Offline OS scheduling (Module 04)
+  flutter_local_notifications: 22.3.0
+  flutter_timezone: 5.1.0
+  timezone: 0.11.1
+
+  # Guided, on-screen product tour (Module 05)
+  showcaseview: ^5.1.0
+  flutter_svg: ^2.0.10+1
+
+  # Offline evidence ingestion, hashing, privacy copies and WorkProof packs
+  archive: 4.0.9
+  crypto: 3.0.7
+  file_picker: ^11.0.3
+  image: 4.5.4
+  path_provider: 2.1.6
+  pdf: 3.12.0
+  cross_file: 0.3.5+2
+  share_plus: 11.1.0
+
+  # On-device QR/barcode scanning and offline code generation (Module 12)
+  mobile_scanner: ^7.4.0
+  barcode_widget: ^2.0.4
+
+  # Module 11: Google UMP consent and consent-aware banner ads only.
+  # No subscription or entitlement SDK is linked.
+  google_mobile_ads: 6.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: 4.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true
+  assets:
+    - assets/onboarding/
