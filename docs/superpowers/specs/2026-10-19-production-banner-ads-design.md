@@ -1,7 +1,7 @@
 # Production Banner Ads Design
 
 **Date:** 2026-10-19
-**Status:** Approved conversational direction; awaiting written-spec review
+**Status:** Approved for implementation
 **Scope:** Production-ready AdMob banners only. Interstitial, native, rewarded,
 rewarded-interstitial, and app-open ads are explicitly out of scope.
 
@@ -120,9 +120,9 @@ keeps the banner inactive during sharing.
 - Banner ad-unit ID: `ca-app-pub-2681549212751095/2645338964`
 
 `android/app/build.gradle.kts` keeps Gradle-property and environment overrides
-for `ADMOB_APP_ID`, with the supplied real app ID as the release fallback.
-Debug and profile explicitly override the manifest placeholder with Google's
-sample Android app ID.
+for release `ADMOB_APP_ID`, with the supplied real app ID as the release
+fallback. Debug and profile resolve the manifest placeholder to Google's sample
+Android app ID regardless of release overrides.
 
 `AdUnitConfig` reads `ADMOB_ANDROID_BANNER_ID` with the supplied real banner ID
 as its release default. It selects Google's Android anchored-adaptive test unit
