@@ -33,10 +33,14 @@ notification icon, and text-controller lifecycle fixes.
 - Google UMP runs before Mobile Ads initialization or any request, Privacy
   Choices remains available in Settings, and denied consent/no-fill/missing
   release IDs collapse the banner slot;
-- only anchored adaptive top banners are enabled on eligible Dashboard, Work
-  browse and Reports surfaces. There are no interstitial/rewarded ads and no ads
-  on Money/Pay Protection, Proof, editors, evidence, backup/restore, App Lock or
-  export/share flows;
+- one non-overlay anchored-adaptive banner owner covers the eligible Home,
+  Work, Money, Proof, People, Calendar, and Reports surfaces; it is suppressed
+  for More/Settings, editors, details, timers, dialogs, keyboard input, App
+  Lock, tutorials, backgrounding, and report export/share;
+- Android debug/profile use Google's test App/banner IDs, while release defaults
+  to the WorkProof App ID and banner unit. iOS release ads stay disabled until
+  distinct iOS production IDs are configured. There are no interstitial,
+  app-open, native, or rewarded ads;
 - **no subscription, Pro entitlement, purchase, or remove-ads feature is linked.**
 
 Module 07 backup/recovery and Module 08 security remain included:
@@ -82,7 +86,9 @@ fallback so no screen renders a missing localization key.
 
 The current Module 10–11 handoff and release configuration are summarized
 above. Release IDs use `ADMOB_APP_ID`, `ADMOB_ANDROID_BANNER_ID`, and
-`ADMOB_IOS_BANNER_ID` build settings.
+`ADMOB_IOS_BANNER_ID` build settings. See [ADMOB_SETUP.md](ADMOB_SETUP.md) for
+the exact build matrix, diagnostics, policy-safe placement rules, and the live
+`app-ads.txt` seller declaration.
 
 ## Run locally
 
@@ -111,4 +117,3 @@ after changing an ARB file.
   integrity failure.
 - A possible pay difference is a review prompt, not a legal conclusion.
 - No cloud-backup claim is made until encrypted bytes are acknowledged remotely.
-# TradesmanApp

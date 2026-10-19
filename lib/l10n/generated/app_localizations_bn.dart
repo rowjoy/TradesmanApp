@@ -144,7 +144,7 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get privacySetupNote =>
-      'এই সেটআপ শুধু আপনার ডিভাইসে সংরক্ষিত হবে। ক্লাউড ব্যাকআপ ঐচ্ছিক এবং পরে চালু করা যাবে।';
+      'আপনার সেটআপ শুধু এই ডিভাইসেই সংরক্ষিত থাকে। সেটিংস থেকে একটি এনক্রিপ্ট করা ব্যাকআপ ফাইল তৈরি করতে পারবেন।';
 
   @override
   String get setupSaveFailed =>
@@ -157,16 +157,16 @@ class AppLocalizationsBn extends AppLocalizations {
   String get navWork => 'কাজ';
 
   @override
-  String get navMoney => 'টাকা';
+  String get navMoney => 'বেতন';
 
   @override
-  String get navProof => 'প্রমাণ';
+  String get navProof => 'রেকর্ড';
 
   @override
-  String get navMore => 'আরও';
+  String get navMore => 'সেটিংস';
 
   @override
-  String get moneyTitle => 'টাকা';
+  String get moneyTitle => 'বেতন ও আয়';
 
   @override
   String get moneyExpected => 'প্রত্যাশিত আয়';
@@ -182,10 +182,10 @@ class AppLocalizationsBn extends AppLocalizations {
       'রেকর্ড করা একটি কাজ শেষ করলে এখানে হিসাব করা আয় দেখাবে।';
 
   @override
-  String get proofTitle => 'প্রমাণ';
+  String get proofTitle => 'কাজের রেকর্ড';
 
   @override
-  String get proofSubtitle => 'লোকাল কার্যক্রমের রেকর্ড';
+  String get proofSubtitle => 'এই ডিভাইসে সংরক্ষিত কার্যক্রম';
 
   @override
   String get proofEmpty =>
@@ -195,7 +195,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get savedOnDevice => 'এই ডিভাইসে সংরক্ষিত';
 
   @override
-  String get localOnlyStatus => 'শুধু লোকাল';
+  String get localOnlyStatus => 'এই ডিভাইসে সংরক্ষিত';
 
   @override
   String get auditOnboardingCompleted => 'WorkProof সেটআপ সম্পন্ন হয়েছে';
@@ -243,10 +243,10 @@ class AppLocalizationsBn extends AppLocalizations {
   String get tradesmanFlow => 'কাস্টমারের কাজ';
 
   @override
-  String get peopleTitle => 'ব্যক্তি ও সার্ভিস';
+  String get peopleTitle => 'যোগাযোগ ও সেবাসমূহ';
 
   @override
-  String get calendarTitle => 'ক্যালেন্ডার';
+  String get calendarTitle => 'কাজের ক্যালেন্ডার';
 
   @override
   String get newShift => 'নতুন শিফট';
@@ -393,7 +393,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get notesLabel => 'নোট';
 
   @override
-  String get timeZoneLabel => 'IANA টাইম জোন';
+  String get timeZoneLabel => 'সময় অঞ্চল';
 
   @override
   String get newCustomer => 'নতুন কাস্টমার';
@@ -726,6 +726,22 @@ class AppLocalizationsBn extends AppLocalizations {
   String get helpAndGuidance => 'সহায়তা ও নির্দেশনা';
 
   @override
+  String get sendFeedbackOnWhatsApp => 'WhatsApp-এ মতামত পাঠান';
+
+  @override
+  String whatsAppFeedbackSubtitle(String phoneNumber) {
+    return '$phoneNumber নম্বরে সম্পাদনাযোগ্য খসড়া খুলবে';
+  }
+
+  @override
+  String get whatsAppFeedbackMessage =>
+      'হ্যালো WorkProof টিম, আমি কিছু মতামত জানাতে চাই:';
+
+  @override
+  String get whatsAppFeedbackFailed =>
+      'WhatsApp খোলা যায়নি। আবার চেষ্টা করুন।';
+
+  @override
   String get replayShowcase => 'সময় রেকর্ডের গাইড আবার দেখুন';
 
   @override
@@ -776,7 +792,7 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get showcaseProofBody =>
-      'সংশোধনে কারণ আবশ্যক। চূড়ান্ত সময় ও আয়ের হিসাব প্রমাণ হিসেবে সংরক্ষিত হয়।';
+      'সংশোধনের জন্য কারণ দিতে হয়। চূড়ান্ত সময় ও বেতনের হিসাব কাজের রেকর্ডে সংরক্ষিত থাকে।';
 
   @override
   String get skipShowcase => 'গাইড এড়িয়ে যান';
@@ -806,7 +822,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get notificationsTitle => 'নোটিফিকেশন';
 
   @override
-  String get offlineNotificationsTitle => 'অফলাইন নোটিফিকেশন ও জব অ্যালার্ট';
+  String get offlineNotificationsTitle => 'কাজের রিমাইন্ডার ও সতর্কতা';
 
   @override
   String get offlineNotificationsDescription =>
@@ -820,17 +836,17 @@ class AppLocalizationsBn extends AppLocalizations {
       'কোনো অ্যাকাউন্ট বা ইন্টারনেট প্রয়োজন নেই।';
 
   @override
-  String get payProtectionGuide => 'পে প্রোটেকশন গাইড';
+  String get payProtectionGuide => 'বেতন পর্যালোচনার নির্দেশিকা';
 
   @override
   String get payProtectionGuideDescription =>
-      'প্রত্যাশিত পে, পেস্লিপ, প্রমাণ ও এক্সপোর্ট দেখুন';
+      'প্রত্যাশিত বেতন, পেস্লিপ, সহায়ক নথি ও এক্সপোর্ট পর্যালোচনা করুন।';
 
   @override
   String get regionLanguageTitle => 'অঞ্চল ও ভাষা';
 
   @override
-  String get localWorkspaceTitle => 'আপনার লোকাল ওয়ার্কস্পেস';
+  String get localWorkspaceTitle => 'এই ডিভাইসের তথ্য';
 
   @override
   String get localWorkspaceDescription =>
@@ -840,10 +856,10 @@ class AppLocalizationsBn extends AppLocalizations {
   String get appLanguageLabel => 'অ্যাপের ভাষা';
 
   @override
-  String get countryMarketLabel => 'দেশ / বাজার';
+  String get countryMarketLabel => 'দেশ বা অঞ্চল';
 
   @override
-  String get defaultCurrencyLabel => 'ওয়ার্কস্পেসের ডিফল্ট মুদ্রা';
+  String get defaultCurrencyLabel => 'ডিফল্ট মুদ্রা';
 
   @override
   String get currencyHistoryNote =>
@@ -859,19 +875,19 @@ class AppLocalizationsBn extends AppLocalizations {
   String get preferencesSaveFailed => 'পছন্দ সংরক্ষণ করা যায়নি।';
 
   @override
-  String get m05PayProtection => 'পে প্রোটেকশন';
+  String get m05PayProtection => 'বেতন পর্যালোচনা';
 
   @override
-  String get m05WorkerPay => 'ওয়ার্কার পে';
+  String get m05WorkerPay => 'আমার বেতন';
 
   @override
-  String get m05BusinessMoney => 'ব্যবসার অর্থ';
+  String get m05BusinessMoney => 'ব্যবসার আয়';
 
   @override
-  String get m05PayAtAGlance => 'এক নজরে পে';
+  String get m05PayAtAGlance => 'বেতনের সারাংশ';
 
   @override
-  String get m05StartAPayPeriod => 'পে পিরিয়ড শুরু করুন';
+  String get m05StartAPayPeriod => 'বেতনকাল যোগ করুন';
 
   @override
   String get m05PayPeriods => 'পে পিরিয়ড';
@@ -922,7 +938,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get m05EditPayslip => 'Payslip edit';
 
   @override
-  String get m05AddEvidence => 'Evidence যোগ';
+  String get m05AddEvidence => 'নথি যোগ করুন';
 
   @override
   String get m05RecordedHours => 'Recorded hours';
@@ -1050,10 +1066,10 @@ class AppLocalizationsBn extends AppLocalizations {
       'এই স্ক্রিনেই employer, schedule ও currency বাছুন। কোনো popup dropdown নেই।';
 
   @override
-  String get m05CreatePayProtectionPeriod => 'পে পিরিয়ড তৈরি করুন';
+  String get m05CreatePayProtectionPeriod => 'বেতনকাল যোগ করুন';
 
   @override
-  String get m05ReviewEvidenceExport => 'Review, evidence, export';
+  String get m05ReviewEvidenceExport => 'বেতন ও নথি পর্যালোচনা';
 
   @override
   String get m05OpenAPeriodToAddAPayslip =>
@@ -1082,7 +1098,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get m05ExportCouldNotBeCreated => 'Export তৈরি করা যায়নি।';
 
   @override
-  String get m05EvidenceTimeline => 'Evidence timeline';
+  String get m05EvidenceTimeline => 'নথি ও নোট';
 
   @override
   String get m05ExportsUseSelectedEvidenceAndPrivacyShare =>
@@ -1418,11 +1434,11 @@ class AppLocalizationsBn extends AppLocalizations {
   String get recordDeleted => 'রেকর্ড মুছে ফেলা হয়েছে।';
 
   @override
-  String get payEvidencePacksTitle => 'পে প্রমাণ প্যাক';
+  String get payEvidencePacksTitle => 'বেতনের রেকর্ড ও এক্সপোর্ট';
 
   @override
   String get payEvidencePacksDescription =>
-      'Money থেকে পেস্লিপ, প্রমাণ এবং PDF + ZIP এক্সপোর্ট খুলুন';
+      'বেতন ও আয় থেকে পেস্লিপ, সহায়ক নথি এবং PDF + ZIP এক্সপোর্ট খুলুন।';
 
   @override
   String get auditPreferencesUpdated => 'ওয়ার্কস্পেস পছন্দ আপডেট হয়েছে';
@@ -1548,7 +1564,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get lockNow => 'এখনই লক করুন';
 
   @override
-  String get evidenceEncryptionTitle => 'এনক্রিপ্টেড প্রমাণ';
+  String get evidenceEncryptionTitle => 'সুরক্ষিত নথি';
 
   @override
   String get evidenceEncryptionDescription =>
@@ -1811,7 +1827,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get reportAllParties => 'সব employer ও customer';
 
   @override
-  String get reportWorkerSummary => 'Worker pay summary';
+  String get reportWorkerSummary => 'বেতনের সারাংশ';
 
   @override
   String get reportIncomeSummary => 'Business income summary';
@@ -1914,66 +1930,72 @@ class AppLocalizationsBn extends AppLocalizations {
       'কিছু completed entry-তে saved rate নেই। Share করার আগে total review করুন।';
 
   @override
-  String get marketingStudioTitle => 'মার্কেটিং স্টুডিও';
+  String get marketingStudioTitle => 'প্রচারসামগ্রী তৈরি করুন';
 
   @override
   String get marketingStudioSubtitle =>
-      'Offline-এ premium promotion image বা PDF তৈরি করে Facebook, WhatsApp, Email অথবা device-এর অন্য app দিয়ে share করুন।';
+      'অফলাইনে আকর্ষণীয় প্রচারণার ছবি বা PDF তৈরি করে Facebook, WhatsApp, ইমেইল অথবা ডিভাইসের অন্য কোনো অ্যাপ দিয়ে শেয়ার করুন।';
 
   @override
-  String get marketingProfileTitle => 'ব্যবসা বা ব্যক্তিগত প্রচারণা';
+  String get marketingProfileTitle => 'প্রচারের বিবরণ';
 
   @override
   String get marketingNameLabel => 'কোম্পানি বা পেশাজীবীর নাম';
 
   @override
-  String get marketingHeadlineLabel => 'Headline বা সংক্ষিপ্ত বার্তা';
+  String get marketingHeadlineLabel => 'শিরোনাম বা সংক্ষিপ্ত বার্তা';
 
   @override
-  String get marketingOfferLabel => 'Offer বা promotion (ঐচ্ছিক)';
+  String get marketingOfferLabel => 'অফার বা প্রচারণা (ঐচ্ছিক)';
 
   @override
   String get marketingServicesLabel => 'সেবাসমূহ';
 
   @override
-  String get marketingServicesHint => 'প্রতি লাইনে একটি service লিখুন';
+  String get marketingServicesHint => 'প্রতি লাইনে একটি সেবা লিখুন';
 
   @override
   String get marketingServicesTitle => 'আমাদের সেবা';
 
   @override
-  String get marketingWebsiteLabel => 'Website বা social page';
+  String get marketingWebsiteLabel => 'ওয়েবসাইট বা সামাজিক যোগাযোগের পেজ';
 
   @override
-  String get marketingTemplateLabel => 'Premium design';
+  String get marketingTemplateLabel => 'নকশার ধরন';
 
   @override
-  String get marketingTemplateProfessional => 'Professional';
+  String get marketingTemplateProfessional => 'পেশাদার';
 
   @override
-  String get marketingTemplateBold => 'Bold';
+  String get marketingTemplateBold => 'দৃষ্টিনন্দন';
 
   @override
-  String get marketingTemplateElegant => 'Elegant';
+  String get marketingTemplateElegant => 'মার্জিত';
 
   @override
-  String get marketingChooseLogo => 'Logo বা photo যোগ করুন';
+  String get marketingChooseLogo => 'কোম্পানির লোগো যোগ করুন';
 
   @override
-  String get marketingRemoveLogo => 'Logo সরান';
+  String get marketingRemoveLogo => 'লোগো সরান';
 
   @override
-  String get marketingPreview => 'Live promotion preview';
+  String get marketingChooseCoverPhoto => 'ব্যবসা বা কাজের ছবি যোগ করুন';
 
   @override
-  String get marketingSaveProfile => 'Promotion profile save করুন';
+  String get marketingRemoveCoverPhoto => 'ব্যবসার ছবি সরান';
+
+  @override
+  String get marketingPreview => 'প্রচারণার সরাসরি প্রিভিউ';
+
+  @override
+  String get marketingSaveProfile => 'প্রচারের বিবরণ সংরক্ষণ করুন';
 
   @override
   String get marketingProfileSaved =>
-      'Promotion profile এই device-এ save হয়েছে।';
+      'প্রচারের বিবরণ এই ডিভাইসে সংরক্ষিত হয়েছে।';
 
   @override
-  String get marketingCreateImage => 'Image';
+  String get marketingCreateImage => 'ছবি';
 
   @override
   String get marketingCreatePdf => 'PDF';
@@ -1983,20 +2005,222 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get marketingExportSaved =>
-      'Promotion save হয়েছে। Share করার app নির্বাচন করুন।';
+      'প্রচারসামগ্রী সংরক্ষিত হয়েছে। শেয়ার করার জন্য একটি অ্যাপ বেছে নিন।';
 
   @override
-  String get marketingExportFailed => 'Promotion তৈরি করা যায়নি।';
+  String get marketingExportFailed => 'প্রচারসামগ্রী তৈরি করা যায়নি।';
 
   @override
   String get marketingLogoFailed =>
-      '১২ MB পর্যন্ত PNG, JPG অথবা WebP logo নির্বাচন করুন।';
+      '১২ MB পর্যন্ত PNG, JPG অথবা WebP লোগো বেছে নিন।';
+
+  @override
+  String get marketingCoverPhotoFailed =>
+      '১২ MB পর্যন্ত PNG, JPG অথবা WebP ব্যবসার ছবি বেছে নিন।';
 
   @override
   String get marketingRequiredInfo =>
-      'প্রয়োজনীয় promotion information যোগ করুন।';
+      'প্রচারের জন্য প্রয়োজনীয় তথ্য যোগ করুন।';
 
   @override
   String get marketingContactRequired =>
-      'Phone number অথবা email address যোগ করুন।';
+      'ফোন নম্বর অথবা ইমেইল ঠিকানা যোগ করুন।';
+
+  @override
+  String get aboutWorkProof => 'WorkProof সম্পর্কে';
+
+  @override
+  String get appInformationTitle => 'অ্যাপের তথ্য';
+
+  @override
+  String get aboutAppDescription =>
+      'চাকরি ও শিফট পরিকল্পনা, সময় ট্র্যাকিং, বেতন পর্যালোচনা এবং নির্ভরযোগ্য রেকর্ড রাখার জন্য অফলাইন-প্রথম কাজের সহায়ক।';
+
+  @override
+  String get rateWorkProof => 'WorkProof-কে রেট দিন';
+
+  @override
+  String get storeListingFailed => 'অ্যাপ স্টোর খোলা যায়নি। আবার চেষ্টা করুন।';
+
+  @override
+  String get appFeaturesTitle => 'আপনি যা করতে পারবেন';
+
+  @override
+  String versionLabel(String version) {
+    return 'সংস্করণ $version';
+  }
+
+  @override
+  String get versionUnavailable => 'সংস্করণের তথ্য পাওয়া যাচ্ছে না';
+
+  @override
+  String get featureDetails => 'ফিচারের বিস্তারিত';
+
+  @override
+  String get openFeature => 'ফিচার খুলুন';
+
+  @override
+  String get featureWorkShortDescription =>
+      'গ্রাহকের কাজ বা নিয়োগকর্তার শিফট তৈরি, সময়সূচি নির্ধারণ ও পরিচালনা করুন।';
+
+  @override
+  String get featureWorkDescription =>
+      'প্রতিটি কাজ বা শিফটের সময়সূচি, মূল্য, রিমাইন্ডার ও বর্তমান অবস্থা এক জায়গায় গুছিয়ে রাখুন।';
+
+  @override
+  String get featureTimeTrackingTitle => 'সময় ট্র্যাকিং';
+
+  @override
+  String get featureTimeTrackingShortDescription =>
+      'ক্লক ইন ও আউট করুন, বিরতি লিখে রাখুন এবং পরিকল্পিত সময়ের সঙ্গে প্রকৃত সময় তুলনা করুন।';
+
+  @override
+  String get featureTimeTrackingDescription =>
+      'একটি নির্ভরযোগ্য টাইমার দিয়ে অফলাইনে কাজের সময়, সবেতন বা অবৈতনিক বিরতি, কারণসহ সংশোধন এবং সংরক্ষিত আয়ের হিসাব রাখুন।';
+
+  @override
+  String get featureContactsShortDescription =>
+      'নিয়োগকর্তা, কর্মস্থল, গ্রাহক ও সেবাগুলো গুছিয়ে রাখুন।';
+
+  @override
+  String get featureContactsDescription =>
+      'কাজের সঙ্গে যুক্ত ব্যক্তি, স্থান ও সেবা সংরক্ষণ করুন, যাতে নতুন কাজ ও শিফট দ্রুত তৈরি করা যায়।';
+
+  @override
+  String get featureCalendarShortDescription =>
+      'তারিখ অনুযায়ী কাজ ও শিফট দেখুন এবং পরবর্তী কাজের পরিকল্পনা করুন।';
+
+  @override
+  String get featureCalendarDescription =>
+      'মাসিক ক্যালেন্ডার ও দৈনিক তালিকা দেখুন, তারপর প্রয়োজনীয় কাজ খুলুন বা যোগ করুন।';
+
+  @override
+  String get featurePayShortDescription =>
+      'প্রত্যাশিত ও পাওয়া বেতন, ব্যবসার আয় এবং বকেয়া পরিমাণ পর্যালোচনা করুন।';
+
+  @override
+  String get featurePayDescription =>
+      'বেতনকাল ও পেস্লিপ তুলনা করুন, অথবা সংরক্ষিত কাজের ইনভয়েস, পেমেন্ট, খরচ ও আয় দেখুন।';
+
+  @override
+  String get featureRecordsShortDescription =>
+      'গুরুত্বপূর্ণ কাজ ও বেতনসংক্রান্ত কার্যক্রমের পরিষ্কার ইতিহাস এই ডিভাইসে রাখুন।';
+
+  @override
+  String get featureRecordsDescription =>
+      'কী ঘটেছে তা বোঝাতে সংরক্ষিত কার্যক্রম, সহায়ক নথি, সংশোধন ও এক্সপোর্ট পর্যালোচনা করুন।';
+
+  @override
+  String get featureReportsShortDescription =>
+      'সংরক্ষিত রেকর্ড থেকে সাপ্তাহিক, মাসিক বা কাস্টম রিপোর্ট তৈরি করুন।';
+
+  @override
+  String get featureReportsDescription =>
+      'কাজ, সময়, বেতন ও ব্যবসার মোট হিসাব দেখুন, তারপর অফলাইনে PDF বা CSV স্টেটমেন্ট এক্সপোর্ট করুন।';
+
+  @override
+  String get featureRemindersShortDescription =>
+      'আসন্ন কাজ, বিরতি ও পরিকল্পিত শেষ সময়ের সতর্কতা ডিভাইসেই পান।';
+
+  @override
+  String get featureRemindersDescription =>
+      'ইন্টারনেট ছাড়াই রিমাইন্ডারের সময়, নীরব সময়, গোপনীয়তা ও দৈনিক সারাংশ বেছে নিন।';
+
+  @override
+  String get featureBackupShortDescription =>
+      'এনক্রিপ্ট করা ব্যাকআপ ফাইল তৈরি করুন এবং নিরাপদে আপনার তথ্য ফিরিয়ে আনুন।';
+
+  @override
+  String get featureBackupDescription =>
+      'পাসওয়ার্ডে এনক্রিপ্ট করা ব্যাকআপ দিয়ে স্থানীয় রেকর্ড ও নথি সুরক্ষিত রাখুন; ফিরিয়ে আনার আগে ফাইলটি যাচাই করা হয়।';
+
+  @override
+  String get featureSecurityShortDescription =>
+      'PIN, বায়োমেট্রিক ও এনক্রিপ্ট করা নথি দিয়ে ব্যক্তিগত রেকর্ড সুরক্ষিত রাখুন।';
+
+  @override
+  String get featureSecurityDescription =>
+      'আপনি দূরে থাকলে WorkProof লক করুন এবং নতুন সহায়ক ফাইলগুলো এই ডিভাইসে এনক্রিপ্ট করে রাখুন।';
+
+  @override
+  String get featurePromotionsShortDescription =>
+      'পেশাদার প্রচারণার ছবি বা PDF তৈরি করে আপনার ডিভাইস থেকে শেয়ার করুন।';
+
+  @override
+  String get featurePromotionsDescription =>
+      'অফলাইনে বারবার ব্যবহারযোগ্য প্রচারসামগ্রী তৈরির জন্য সেবা, যোগাযোগের তথ্য, লোগো, অফার ও নকশার ধরন সংরক্ষণ করুন।';
+
+  @override
+  String get codeToolsTitle => 'কোড স্ক্যান ও তৈরি করুন';
+
+  @override
+  String get codeToolsShortDescription =>
+      'QR কোড ও বারকোড স্ক্যান করুন অথবা নিজের কোড তৈরি ও শেয়ার করুন।';
+
+  @override
+  String get codeToolsDescription =>
+      'ক্যামেরা দিয়ে সমর্থিত কোড পড়ুন, অথবা সম্পূর্ণভাবে আপনার ডিভাইসেই লেখা থেকে QR কোড ও বারকোড তৈরি করুন।';
+
+  @override
+  String get manageJobTitle => 'কাজ পরিচালনা করুন';
+
+  @override
+  String get manageJobDescription => 'অবস্থা · খরচ · পেমেন্ট · কাজের নথি';
+
+  @override
+  String get jobStatusTitle => 'কাজের অবস্থা';
+
+  @override
+  String get costsAndPaymentsTitle => 'খরচ ও পেমেন্ট';
+
+  @override
+  String get jobDocumentsTitle => 'কাজের নথি';
+
+  @override
+  String get updateAvailableTitle => 'নতুন সংস্করণ পাওয়া গেছে';
+
+  @override
+  String get updateAvailableMessage =>
+      'উন্নতি, ত্রুটি সংশোধন ও নতুন ফিচারসহ WorkProof-এর একটি নতুন সংস্করণ পাওয়া গেছে।';
+
+  @override
+  String get updateRequiredMessage =>
+      'নিরাপদে চালিয়ে যেতে এই গুরুত্বপূর্ণ আপডেটটি প্রয়োজন।';
+
+  @override
+  String get updateNow => 'এখনই আপডেট করুন';
+
+  @override
+  String get later => 'পরে';
+
+  @override
+  String get checkingForUpdates => 'আপডেট খোঁজা হচ্ছে…';
+
+  @override
+  String get installingUpdate => 'আপডেট প্রস্তুত করা হচ্ছে…';
+
+  @override
+  String get updateDownloadReadyTitle => 'আপডেট প্রস্তুত';
+
+  @override
+  String get updateDownloadReadyMessage =>
+      'আপডেট ডাউনলোড হয়েছে। ইনস্টল শেষ করতে WorkProof পুনরায় চালু করুন।';
+
+  @override
+  String get restartToUpdate => 'আপডেট করতে পুনরায় চালু করুন';
+
+  @override
+  String get updateFailed =>
+      'আপডেট সম্পন্ন করা যায়নি। আপনি WorkProof ব্যবহার চালিয়ে যেতে পারবেন।';
+
+  @override
+  String get updateCheckFailed =>
+      'এই মুহূর্তে আপডেট পরীক্ষা করা যায়নি। আপনি স্বাভাবিকভাবে ব্যবহার চালিয়ে যেতে পারবেন।';
+
+  @override
+  String get latestVersionInstalled =>
+      'আপনার কাছে ইতিমধ্যেই সর্বশেষ সংস্করণ রয়েছে।';
+
+  @override
+  String get checkForUpdates => 'আপডেট পরীক্ষা করুন';
 }

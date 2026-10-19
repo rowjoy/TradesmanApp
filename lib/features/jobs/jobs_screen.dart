@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/theme/app_theme.dart';
 import '../../core/router/app_router.dart';
-import '../../core/widgets/banner_ad_widget.dart';
 import '../../core/widgets/status_chip.dart';
 import '../../l10n/l10n.dart';
 import 'job_provider.dart';
@@ -27,21 +26,13 @@ class JobsScreen extends ConsumerWidget {
       body: jobsAsync.when(
         data: (jobs) {
           if (jobs.isEmpty) {
-            return Center(
-              child: Text(context.l10n.noJobs),
-            );
+            return Center(child: Text(context.l10n.noJobs));
           }
           return ListView.builder(
             padding: const EdgeInsets.all(16),
-            itemCount: jobs.length + 1,
+            itemCount: jobs.length,
             itemBuilder: (context, index) {
-              if (index == 0) {
-                return const Padding(
-                  padding: EdgeInsets.only(bottom: 12),
-                  child: BannerAdWidget(),
-                );
-              }
-              final job = jobs[index - 1];
+              final job = jobs[index];
               return Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: Card(
@@ -75,9 +66,7 @@ class JobsScreen extends ConsumerWidget {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (_, __) => Center(
-          child: Text(context.l10n.workLoadFailed),
-        ),
+        error: (_, __) => Center(child: Text(context.l10n.workLoadFailed)),
       ),
     );
   }

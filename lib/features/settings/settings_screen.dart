@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -9,11 +7,14 @@ import '../../core/router/app_router.dart';
 import '../../core/widgets/app_feedback.dart';
 import '../../l10n/app_language.dart';
 import '../../l10n/l10n.dart';
+import '../about/domain/app_feature.dart';
+import '../about/presentation/app_feature_catalog.dart';
 import '../onboarding/domain/entities/local_profile.dart';
 import '../onboarding/presentation/controllers/onboarding_controller.dart';
 import '../showcase/data/showcase_repository.dart';
 import '../time_tracking/time_tracking_provider.dart';
 import '../ads/application/ads_consent_controller.dart';
+import 'whatsapp_feedback.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -23,6 +24,11 @@ class SettingsScreen extends ConsumerWidget {
     final themeMode = ref.watch(themeModeProvider);
     final profile = ref.watch(currentProfileProvider);
     final adsConsent = ref.watch(adsConsentControllerProvider);
+    final promotions = AppFeatureCatalog.forId(AppFeatureId.promotions);
+    final codeTools = AppFeatureCatalog.forId(AppFeatureId.codeTools);
+    final reminders = AppFeatureCatalog.forId(AppFeatureId.reminders);
+    final backup = AppFeatureCatalog.forId(AppFeatureId.backup);
+    final reports = AppFeatureCatalog.forId(AppFeatureId.reports);
 
     Future<void> openPreferences() async {
       final saved = await context.push<bool>(AppRoutes.preferences);
@@ -45,33 +51,32 @@ class SettingsScreen extends ConsumerWidget {
           Card(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              child: Column(
-                children: [
-                  RadioListTile<ThemeMode>(
-                    title: Text(context.l10n.themeLight),
-                    secondary: const Icon(Icons.light_mode_outlined),
-                    value: ThemeMode.light,
-                    groupValue: themeMode,
-                    onChanged: (m) =>
-                        ref.read(themeModeProvider.notifier).setThemeMode(m!),
-                  ),
-                  RadioListTile<ThemeMode>(
-                    title: Text(context.l10n.themeDark),
-                    secondary: const Icon(Icons.dark_mode_outlined),
-                    value: ThemeMode.dark,
-                    groupValue: themeMode,
-                    onChanged: (m) =>
-                        ref.read(themeModeProvider.notifier).setThemeMode(m!),
-                  ),
-                  RadioListTile<ThemeMode>(
-                    title: Text(context.l10n.themeSystem),
-                    secondary: const Icon(Icons.brightness_auto_outlined),
-                    value: ThemeMode.system,
-                    groupValue: themeMode,
-                    onChanged: (m) =>
-                        ref.read(themeModeProvider.notifier).setThemeMode(m!),
-                  ),
-                ],
+              child: RadioGroup<ThemeMode>(
+                groupValue: themeMode,
+                onChanged: (mode) {
+                  if (mode != null) {
+                    ref.read(themeModeProvider.notifier).setThemeMode(mode);
+                  }
+                },
+                child: Column(
+                  children: [
+                    RadioListTile<ThemeMode>(
+                      title: Text(context.l10n.themeLight),
+                      secondary: const Icon(Icons.light_mode_outlined),
+                      value: ThemeMode.light,
+                    ),
+                    RadioListTile<ThemeMode>(
+                      title: Text(context.l10n.themeDark),
+                      secondary: const Icon(Icons.dark_mode_outlined),
+                      value: ThemeMode.dark,
+                    ),
+                    RadioListTile<ThemeMode>(
+                      title: Text(context.l10n.themeSystem),
+                      secondary: const Icon(Icons.brightness_auto_outlined),
+                      value: ThemeMode.system,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -106,7 +111,9 @@ class SettingsScreen extends ConsumerWidget {
                   leading: const Icon(Icons.language_outlined),
                   title: Text(context.l10n.languageLabel),
                   subtitle: Text(
-                    AppLanguage.fromCode(profile?.languageCode ?? 'en').nativeName,
+                    AppLanguage.fromCode(
+                      profile?.languageCode ?? 'en',
+                    ).nativeName,
                   ),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: openPreferences,
@@ -117,11 +124,9 @@ class SettingsScreen extends ConsumerWidget {
           const SizedBox(height: 24),
           Card(
             child: ListTile(
-              leading: const CircleAvatar(
-                child: Icon(Icons.campaign_outlined),
-              ),
-              title: Text(context.l10n.marketingStudioTitle),
-              subtitle: Text(context.l10n.marketingStudioSubtitle),
+              leading: const CircleAvatar(child: Icon(Icons.campaign_outlined)),
+              title: Text(promotions.title(context.l10n)),
+              subtitle: Text(promotions.shortDescription(context.l10n)),
               trailing: const Icon(Icons.chevron_right),
               onTap: () => context.push(AppRoutes.marketingStudio),
             ),
@@ -132,16 +137,8 @@ class SettingsScreen extends ConsumerWidget {
               leading: const CircleAvatar(
                 child: Icon(Icons.qr_code_scanner_rounded),
               ),
-              title: Text(
-                Localizations.localeOf(context).languageCode == 'bn'
-                    ? 'QR ও বারকোড স্টুডিও'
-                    : 'QR & Barcode Studio',
-              ),
-              subtitle: Text(
-                Localizations.localeOf(context).languageCode == 'bn'
-                    ? 'QR ও বারকোড স্ক্যান, তৈরি ও শেয়ার করুন'
-                    : 'Scan, create, and share QR codes and barcodes',
-              ),
+              title: Text(codeTools.title(context.l10n)),
+              subtitle: Text(codeTools.shortDescription(context.l10n)),
               trailing: const Icon(Icons.chevron_right),
               onTap: () => context.push(AppRoutes.codeStudio),
             ),
@@ -155,8 +152,8 @@ class SettingsScreen extends ConsumerWidget {
           Card(
             child: ListTile(
               leading: const Icon(Icons.notifications_active_outlined),
-              title: Text(context.l10n.offlineNotificationsTitle),
-              subtitle: Text(context.l10n.offlineNotificationsDescription),
+              title: Text(reminders.title(context.l10n)),
+              subtitle: Text(reminders.shortDescription(context.l10n)),
               trailing: const Icon(Icons.chevron_right),
               onTap: () => context.push(AppRoutes.notifications),
             ),
@@ -179,16 +176,16 @@ class SettingsScreen extends ConsumerWidget {
                 const Divider(height: 1),
                 ListTile(
                   leading: const Icon(Icons.settings_backup_restore_rounded),
-                  title: Text(context.l10n.backupRestoreTitle),
-                  subtitle: Text(context.l10n.backupRestoreSubtitle),
+                  title: Text(backup.title(context.l10n)),
+                  subtitle: Text(backup.shortDescription(context.l10n)),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () => context.push(AppRoutes.backupRestore),
                 ),
                 const Divider(height: 1),
                 ListTile(
                   leading: const Icon(Icons.assessment_outlined),
-                  title: Text(context.l10n.reportsTitle),
-                  subtitle: Text(context.l10n.reportsOfflineDescription),
+                  title: Text(reports.title(context.l10n)),
+                  subtitle: Text(reports.shortDescription(context.l10n)),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () => context.push(AppRoutes.reports),
                 ),
@@ -211,50 +208,48 @@ class SettingsScreen extends ConsumerWidget {
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () => context.push(AppRoutes.security),
                 ),
-                const Divider(height: 1),
-                ListTile(
-                  leading: const Icon(Icons.privacy_tip_outlined),
-                  title: Text(context.l10n.privacyChoicesTitle),
-                  subtitle: Text(
-                    adsConsent.privacyOptionsRequired
-                        ? context.l10n.privacyChoicesAvailable
-                        : context.l10n.privacyChoicesDescription,
+                if (adsConsent.privacyOptionsRequired) ...[
+                  const Divider(height: 1),
+                  ListTile(
+                    leading: const Icon(Icons.privacy_tip_outlined),
+                    title: Text(context.l10n.privacyChoicesTitle),
+                    subtitle: Text(context.l10n.privacyChoicesAvailable),
+                    trailing: adsConsent.status == AdsConsentStatus.gathering
+                        ? const SizedBox.square(
+                            dimension: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Icon(Icons.chevron_right),
+                    onTap: adsConsent.status == AdsConsentStatus.gathering
+                        ? null
+                        : () async {
+                            final result = await ref
+                                .read(adsConsentControllerProvider.notifier)
+                                .showPrivacyChoices();
+                            if (!context.mounted) return;
+                            switch (result) {
+                              case PrivacyChoiceResult.shown:
+                                AppFeedback.success(
+                                  context,
+                                  context.l10n.privacyChoicesUpdated,
+                                );
+                                break;
+                              case PrivacyChoiceResult.notRequired:
+                                AppFeedback.info(
+                                  context,
+                                  context.l10n.privacyChoicesNotRequired,
+                                );
+                                break;
+                              case PrivacyChoiceResult.failed:
+                                AppFeedback.error(
+                                  context,
+                                  context.l10n.privacyChoicesFailed,
+                                );
+                                break;
+                            }
+                          },
                   ),
-                  trailing: adsConsent.status == AdsConsentStatus.gathering
-                      ? const SizedBox.square(
-                          dimension: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : const Icon(Icons.chevron_right),
-                  onTap: adsConsent.status == AdsConsentStatus.gathering
-                      ? null
-                      : () async {
-                          final result = await ref
-                              .read(adsConsentControllerProvider.notifier)
-                              .showPrivacyChoices();
-                          if (!context.mounted) return;
-                          switch (result) {
-                            case PrivacyChoiceResult.shown:
-                              AppFeedback.success(
-                                context,
-                                context.l10n.privacyChoicesUpdated,
-                              );
-                              break;
-                            case PrivacyChoiceResult.notRequired:
-                              AppFeedback.info(
-                                context,
-                                context.l10n.privacyChoicesNotRequired,
-                              );
-                              break;
-                            case PrivacyChoiceResult.failed:
-                              AppFeedback.error(
-                                context,
-                                context.l10n.privacyChoicesFailed,
-                              );
-                              break;
-                          }
-                        },
-                ),
+                ],
               ],
             ),
           ),
@@ -267,6 +262,36 @@ class SettingsScreen extends ConsumerWidget {
           Card(
             child: Column(
               children: [
+                ListTile(
+                  leading: const Icon(Icons.info_outline_rounded),
+                  title: Text(context.l10n.aboutWorkProof),
+                  subtitle: Text(context.l10n.aboutAppDescription),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => context.push(AppRoutes.about),
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  leading: const Icon(Icons.chat_outlined),
+                  title: Text(context.l10n.sendFeedbackOnWhatsApp),
+                  subtitle: Text(
+                    context.l10n.whatsAppFeedbackSubtitle(
+                      WhatsAppFeedback.contactNumber,
+                    ),
+                  ),
+                  trailing: const Icon(Icons.open_in_new),
+                  onTap: () async {
+                    final opened = await WhatsAppFeedback.open(
+                      ref.read(whatsAppFeedbackLauncherProvider),
+                      message: context.l10n.whatsAppFeedbackMessage,
+                    );
+                    if (!context.mounted || opened) return;
+                    AppFeedback.error(
+                      context,
+                      context.l10n.whatsAppFeedbackFailed,
+                    );
+                  },
+                ),
+                const Divider(height: 1),
                 ListTile(
                   leading: const Icon(Icons.tour_outlined),
                   title: Text(context.l10n.replayShowcase),
@@ -294,9 +319,7 @@ class SettingsScreen extends ConsumerWidget {
                     context.go(AppRoutes.home);
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       ref
-                          .read(
-                            module03ShowcaseReplayRequestProvider.notifier,
-                          )
+                          .read(module03ShowcaseReplayRequestProvider.notifier)
                           .state++;
                     });
                   },
@@ -306,9 +329,7 @@ class SettingsScreen extends ConsumerWidget {
                   ListTile(
                     leading: const Icon(Icons.shield_outlined),
                     title: Text(context.l10n.payProtectionGuide),
-                    subtitle: Text(
-                      context.l10n.payProtectionGuideDescription,
-                    ),
+                    subtitle: Text(context.l10n.payProtectionGuideDescription),
                     trailing: const Icon(Icons.chevron_right),
                     onTap: () async {
                       await ref

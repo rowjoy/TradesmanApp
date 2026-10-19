@@ -145,7 +145,8 @@ class AppLocalizationsYo extends AppLocalizations {
       'Woye ilana iṣẹ pẹlu apejuwe onibara ati iṣẹ.';
 
   @override
-  String get privacySetupNote => 'Awọn eto rẹ wa lori ẹrọ yii nikan.';
+  String get privacySetupNote =>
+      'Àwọn ètò rẹ wà lórí ẹ̀rọ yìí nìkan. O lè ṣẹ̀dá fáìlì àfẹ́yìntì tí a fi ìpamọ́ bo nínú Ètò.';
 
   @override
   String get setupSaveFailed => 'Eto ko fi pamọ. Data rẹ kò yi pada.';
@@ -157,16 +158,16 @@ class AppLocalizationsYo extends AppLocalizations {
   String get navWork => 'Iṣẹ';
 
   @override
-  String get navMoney => 'Owo';
+  String get navMoney => 'Ìsanwó';
 
   @override
-  String get navProof => 'Ẹ̀rí';
+  String get navProof => 'Àkọsílẹ̀';
 
   @override
-  String get navMore => 'Siwaju sii';
+  String get navMore => 'Ètò';
 
   @override
-  String get moneyTitle => 'Owo';
+  String get moneyTitle => 'Ìsanwó àti owó-wiwọle';
 
   @override
   String get moneyExpected => 'Owo ti a reti';
@@ -181,19 +182,19 @@ class AppLocalizationsYo extends AppLocalizations {
   String get moneyEmpty => 'Pari iṣẹ ti a kọ silẹ lati ri iṣiro owo nihin.';
 
   @override
-  String get proofTitle => 'Ẹ̀rí';
+  String get proofTitle => 'Àkọsílẹ̀ iṣẹ́';
 
   @override
-  String get proofSubtitle => 'Akọsilẹ iṣẹ agbegbe';
+  String get proofSubtitle => 'Ìṣe tí a fipamọ́ sórí ẹ̀rọ yìí';
 
   @override
   String get proofEmpty => 'Awọn iṣẹ ti a kọ silẹ yoo han nihin.';
 
   @override
-  String get savedOnDevice => 'A ti fi pamọ lori ẹrọ yii';
+  String get savedOnDevice => 'A fipamọ́ sórí ẹ̀rọ yìí';
 
   @override
-  String get localOnlyStatus => 'Agbegbe nikan';
+  String get localOnlyStatus => 'A fipamọ́ sórí ẹ̀rọ yìí';
 
   @override
   String get auditOnboardingCompleted => 'A ti pari eto WorkProof';
@@ -241,10 +242,10 @@ class AppLocalizationsYo extends AppLocalizations {
   String get tradesmanFlow => 'Iṣẹ onibara';
 
   @override
-  String get peopleTitle => 'Awọn eniyan & awọn iṣẹ';
+  String get peopleTitle => 'Àwọn olubásọrọ̀ àti iṣẹ́';
 
   @override
-  String get calendarTitle => 'Kàlẹ́ndà';
+  String get calendarTitle => 'Kàlẹ́ńdà iṣẹ́';
 
   @override
   String get newShift => 'Shift tuntun';
@@ -388,7 +389,7 @@ class AppLocalizationsYo extends AppLocalizations {
   String get notesLabel => 'Awọn akọsilẹ';
 
   @override
-  String get timeZoneLabel => 'Abala akoko';
+  String get timeZoneLabel => 'Àgbègbè àkókò';
 
   @override
   String get newCustomer => 'Onibara tuntun';
@@ -718,6 +719,22 @@ class AppLocalizationsYo extends AppLocalizations {
   String get helpAndGuidance => 'Ibabajẹ & itọsọna';
 
   @override
+  String get sendFeedbackOnWhatsApp => 'Fi èsì ránṣẹ́ lórí WhatsApp';
+
+  @override
+  String whatsAppFeedbackSubtitle(String phoneNumber) {
+    return 'Ṣí àkọsílẹ̀ tí a lè ṣàtúnṣe sí $phoneNumber';
+  }
+
+  @override
+  String get whatsAppFeedbackMessage =>
+      'Ẹ kú iṣẹ́, ẹgbẹ́ WorkProof, mo fẹ́ pín èsì mi:';
+
+  @override
+  String get whatsAppFeedbackFailed =>
+      'A kò lè ṣí WhatsApp. Jọ̀wọ́ gbìyànjú lẹ́ẹ̀kan sí i.';
+
+  @override
   String get replayShowcase => 'Tún atọsona rẹ wo';
 
   @override
@@ -766,7 +783,8 @@ class AppLocalizationsYo extends AppLocalizations {
   String get showcaseProofTitle => 'Tọju akọsilẹ ti o ni igbẹkẹle';
 
   @override
-  String get showcaseProofBody => 'Gbogbo àtúnṣe nilo idi kan.';
+  String get showcaseProofBody =>
+      'Àtúnṣe nílò ìdí. A máa ń fi àkókò ìkẹyìn àti ìṣírò ìsanwó pamọ́ sínú Àkọsílẹ̀ iṣẹ́.';
 
   @override
   String get skipShowcase => 'Fò itọsọna';
@@ -796,7 +814,7 @@ class AppLocalizationsYo extends AppLocalizations {
   String get notificationsTitle => 'Àwọn ìfitónilétí';
 
   @override
-  String get offlineNotificationsTitle => 'Ìfitónilétí offline ati ìkìlọ̀ iṣẹ';
+  String get offlineNotificationsTitle => 'Àwọn ìránnilétí àti ìkìlọ̀ iṣẹ́';
 
   @override
   String get offlineNotificationsDescription =>
@@ -809,17 +827,17 @@ class AppLocalizationsYo extends AppLocalizations {
   String get localDataDescription => 'Àkọọlẹ tàbí intanẹẹti kò ṣe dandan.';
 
   @override
-  String get payProtectionGuide => 'Ìtọ́sọ́nà ààbò owó iṣẹ';
+  String get payProtectionGuide => 'Ìtọ́sọ́nà àyẹ̀wò ìsanwó';
 
   @override
   String get payProtectionGuideDescription =>
-      'Wo owó tí a retí, payslip, ẹ̀rí ati export';
+      'Ṣàyẹ̀wò owó tí a retí, àwọn ìwé ìsanwó, àwọn ìwé àfikún àti àwọn ohun tí a kó jáde.';
 
   @override
   String get regionLanguageTitle => 'Agbègbè ati èdè';
 
   @override
-  String get localWorkspaceTitle => 'Àyè iṣẹ agbègbè rẹ';
+  String get localWorkspaceTitle => 'Dátà lórí ẹ̀rọ yìí';
 
   @override
   String get localWorkspaceDescription =>
@@ -829,10 +847,10 @@ class AppLocalizationsYo extends AppLocalizations {
   String get appLanguageLabel => 'Èdè app';
 
   @override
-  String get countryMarketLabel => 'Orílẹ̀-èdè / ọjà';
+  String get countryMarketLabel => 'Orílẹ̀-èdè tàbí agbègbè';
 
   @override
-  String get defaultCurrencyLabel => 'Owó àkọ́kọ́ fún workspace';
+  String get defaultCurrencyLabel => 'Owó àkọ́kọ́';
 
   @override
   String get currencyHistoryNote =>
@@ -848,19 +866,19 @@ class AppLocalizationsYo extends AppLocalizations {
   String get preferencesSaveFailed => 'A kò lè fi àwọn ààyò pamọ́.';
 
   @override
-  String get m05PayProtection => 'Pay Protection';
+  String get m05PayProtection => 'Àyẹ̀wò ìsanwó';
 
   @override
-  String get m05WorkerPay => 'Worker pay';
+  String get m05WorkerPay => 'Ìsanwó mi';
 
   @override
-  String get m05BusinessMoney => 'Business money';
+  String get m05BusinessMoney => 'Owó-wiwọle iṣowo';
 
   @override
-  String get m05PayAtAGlance => 'Pay at a glance';
+  String get m05PayAtAGlance => 'Àkótán ìsanwó';
 
   @override
-  String get m05StartAPayPeriod => 'Start a pay period';
+  String get m05StartAPayPeriod => 'Ṣàfikún àsìkò ìsanwó';
 
   @override
   String get m05PayPeriods => 'Pay periods';
@@ -911,7 +929,7 @@ class AppLocalizationsYo extends AppLocalizations {
   String get m05EditPayslip => 'Edit payslip';
 
   @override
-  String get m05AddEvidence => 'Add evidence';
+  String get m05AddEvidence => 'Ṣàfikún ìwé';
 
   @override
   String get m05RecordedHours => 'Recorded hours';
@@ -1039,10 +1057,10 @@ class AppLocalizationsYo extends AppLocalizations {
       'Choose employer, schedule and currency inside this screen. No popup dropdown is used.';
 
   @override
-  String get m05CreatePayProtectionPeriod => 'Create pay protection period';
+  String get m05CreatePayProtectionPeriod => 'Ṣàfikún àsìkò ìsanwó';
 
   @override
-  String get m05ReviewEvidenceExport => 'Review, evidence, export';
+  String get m05ReviewEvidenceExport => 'Ṣàyẹ̀wò ìsanwó àti àwọn ìwé';
 
   @override
   String get m05OpenAPeriodToAddAPayslip =>
@@ -1071,7 +1089,7 @@ class AppLocalizationsYo extends AppLocalizations {
   String get m05ExportCouldNotBeCreated => 'Export could not be created.';
 
   @override
-  String get m05EvidenceTimeline => 'Evidence timeline';
+  String get m05EvidenceTimeline => 'Àwọn ìwé àti àkọsílẹ̀';
 
   @override
   String get m05ExportsUseSelectedEvidenceAndPrivacyShare =>
@@ -1409,11 +1427,11 @@ class AppLocalizationsYo extends AppLocalizations {
   String get recordDeleted => 'Record deleted.';
 
   @override
-  String get payEvidencePacksTitle => 'Pay evidence packs';
+  String get payEvidencePacksTitle => 'Àkọsílẹ̀ ìsanwó àti ohun tí a kó jáde';
 
   @override
   String get payEvidencePacksDescription =>
-      'Open payslips, evidence and PDF + ZIP exports from Money';
+      'Ṣí àwọn ìwé ìsanwó, àwọn ìwé àfikún àti ohun tí a kó jáde sí PDF + ZIP láti Ìsanwó àti owó-wiwọle.';
 
   @override
   String get auditPreferencesUpdated => 'Workspace preferences updated';
@@ -1537,7 +1555,7 @@ class AppLocalizationsYo extends AppLocalizations {
   String get lockNow => 'Lock now';
 
   @override
-  String get evidenceEncryptionTitle => 'Encrypted evidence';
+  String get evidenceEncryptionTitle => 'Àwọn ìwé tó ní ààbò';
 
   @override
   String get evidenceEncryptionDescription =>
@@ -1799,7 +1817,7 @@ class AppLocalizationsYo extends AppLocalizations {
   String get reportAllParties => 'All employers and customers';
 
   @override
-  String get reportWorkerSummary => 'Worker pay summary';
+  String get reportWorkerSummary => 'Àkótán ìsanwó';
 
   @override
   String get reportIncomeSummary => 'Business income summary';
@@ -1902,86 +1920,296 @@ class AppLocalizationsYo extends AppLocalizations {
       'Some completed entries have no saved rate. Review totals before sharing.';
 
   @override
-  String get marketingStudioTitle => 'Marketing Studio';
+  String get marketingStudioTitle => 'Ṣẹ̀dá ohun èlò ìpolówó';
 
   @override
   String get marketingStudioSubtitle =>
-      'Create a premium promotion image or PDF offline, then share it with Facebook, WhatsApp, email or another device app.';
+      'Ṣẹ̀dá àwòrán ìpolówó tó rẹwà tàbí PDF láìsí ìnternet, lẹ́yìn náà pín in nípasẹ̀ Facebook, WhatsApp, ímeèlì tàbí àpù míì lórí ẹ̀rọ rẹ.';
 
   @override
-  String get marketingProfileTitle => 'Business or personal promotion';
+  String get marketingProfileTitle => 'Àlàyé ìpolówó';
 
   @override
-  String get marketingNameLabel => 'Company or professional name';
+  String get marketingNameLabel => 'Orúkọ ilé-iṣẹ́ tàbí orúkọ iṣẹ́';
 
   @override
-  String get marketingHeadlineLabel => 'Headline or short message';
+  String get marketingHeadlineLabel => 'Àkọlé tàbí ìfiránṣẹ́ kúkúrú';
 
   @override
-  String get marketingOfferLabel => 'Offer or promotion (optional)';
+  String get marketingOfferLabel => 'Ìpèsè tàbí ìpolówó (kò pọn dandan)';
 
   @override
-  String get marketingServicesLabel => 'Services';
+  String get marketingServicesLabel => 'Àwọn iṣẹ́';
 
   @override
-  String get marketingServicesHint => 'Enter one service per line';
+  String get marketingServicesHint => 'Kọ iṣẹ́ kan sí ìlà kọ̀ọ̀kan';
 
   @override
-  String get marketingServicesTitle => 'Our services';
+  String get marketingServicesTitle => 'Àwọn iṣẹ́ wa';
 
   @override
-  String get marketingWebsiteLabel => 'Website or social page';
+  String get marketingWebsiteLabel => 'Wẹ́ẹ̀bù tàbí ojú-ewé àwùjọ';
 
   @override
-  String get marketingTemplateLabel => 'Premium design';
+  String get marketingTemplateLabel => 'Ọ̀nà àwòrán';
 
   @override
-  String get marketingTemplateProfessional => 'Professional';
+  String get marketingTemplateProfessional => 'Ti amọ̀ja';
 
   @override
-  String get marketingTemplateBold => 'Bold';
+  String get marketingTemplateBold => 'Tó lágbára';
 
   @override
-  String get marketingTemplateElegant => 'Elegant';
+  String get marketingTemplateElegant => 'Tó rẹwà';
 
   @override
-  String get marketingChooseLogo => 'Add logo or photo';
+  String get marketingChooseLogo => 'Ṣàfikún àmì ilé-iṣẹ́';
 
   @override
-  String get marketingRemoveLogo => 'Remove logo';
+  String get marketingRemoveLogo => 'Yọ àmì ilé-iṣẹ́';
 
   @override
-  String get marketingPreview => 'Live promotion preview';
+  String get marketingChooseCoverPhoto => 'Ṣàfikún fọ́tò iṣẹ́';
 
   @override
-  String get marketingSaveProfile => 'Save promotion profile';
+  String get marketingRemoveCoverPhoto => 'Yọ fọ́tò iṣẹ́ kúrò';
 
   @override
-  String get marketingProfileSaved => 'Promotion profile saved on this device.';
+  String get marketingPreview => 'Àwòtẹ́lẹ̀ ìpolówó lẹ́sẹ̀kẹsẹ̀';
 
   @override
-  String get marketingCreateImage => 'Image';
+  String get marketingSaveProfile => 'Fi àlàyé ìpolówó pamọ́';
+
+  @override
+  String get marketingProfileSaved =>
+      'A ti fi àlàyé ìpolówó pamọ́ sórí ẹ̀rọ yìí.';
+
+  @override
+  String get marketingCreateImage => 'Àwòrán';
 
   @override
   String get marketingCreatePdf => 'PDF';
 
   @override
-  String get marketingCreating => 'Creating…';
+  String get marketingCreating => 'Ń ṣẹ̀dá…';
 
   @override
   String get marketingExportSaved =>
-      'Promotion saved. Choose an app to share it.';
+      'A ti fi ohun èlò ìpolówó pamọ́. Yan àpù kan láti pín in.';
 
   @override
-  String get marketingExportFailed => 'The promotion could not be created.';
+  String get marketingExportFailed => 'A kò lè ṣẹ̀dá ohun èlò ìpolówó náà.';
 
   @override
   String get marketingLogoFailed =>
-      'Choose a PNG, JPG or WebP logo up to 12 MB.';
+      'Yan àmì PNG, JPG tàbí WebP tí kò ju 12 MB lọ.';
 
   @override
-  String get marketingRequiredInfo => 'Add the required promotion information.';
+  String get marketingCoverPhotoFailed =>
+      'Yan fọ́tò iṣẹ́ PNG, JPG tàbí WebP tí kò ju 12 MB lọ.';
 
   @override
-  String get marketingContactRequired => 'Add a phone number or email address.';
+  String get marketingRequiredInfo => 'Ṣàfikún ìmọ̀ tó ṣe pàtàkì fún ìpolówó.';
+
+  @override
+  String get marketingContactRequired =>
+      'Ṣàfikún nọ́mbà fóònù tàbí àdírẹ́sì ímeèlì.';
+
+  @override
+  String get aboutWorkProof => 'Nípa WorkProof';
+
+  @override
+  String get appInformationTitle => 'Ìmọ̀ nípa àpù';
+
+  @override
+  String get aboutAppDescription =>
+      'Olùrànlọ́wọ́ iṣẹ́ tó kọ́kọ́ ṣiṣẹ́ láìsí ìnternet fún ṣíṣètò iṣẹ́ àti àkókò iṣẹ́, títọpinpin àkókò, ṣíṣàyẹ̀wò ìsanwó àti pípa àkọsílẹ̀ tó ṣeé gbẹ́kẹ̀ lé.';
+
+  @override
+  String get rateWorkProof => 'Ṣe àgbéyẹ̀wò WorkProof';
+
+  @override
+  String get storeListingFailed =>
+      'A kò lè ṣí ilé ìtajà àǹfààní náà. Gbìyànjú lẹ́ẹ̀kan sí i.';
+
+  @override
+  String get appFeaturesTitle => 'Ohun tí o lè ṣe';
+
+  @override
+  String versionLabel(String version) {
+    return 'Ẹ̀yà $version';
+  }
+
+  @override
+  String get versionUnavailable => 'Ẹ̀yà kò sí';
+
+  @override
+  String get featureDetails => 'Àlàyé ẹ̀ya iṣẹ́';
+
+  @override
+  String get openFeature => 'Ṣí ẹ̀ya iṣẹ́';
+
+  @override
+  String get featureWorkShortDescription =>
+      'Ṣẹ̀dá, ṣètò àkókò, kí o sì ṣàkóso iṣẹ́ oníbàárà tàbí àkókò iṣẹ́ agbanisíṣẹ́.';
+
+  @override
+  String get featureWorkDescription =>
+      'Pa iṣẹ́ tàbí àkókò iṣẹ́ kọ̀ọ̀kan mọ́ ní ìṣètò pẹ̀lú àkókò rẹ̀, iye owó, ìránnilétí àti ipò lọ́wọ́lọ́wọ́.';
+
+  @override
+  String get featureTimeTrackingTitle => 'Títọpinpin àkókò';
+
+  @override
+  String get featureTimeTrackingShortDescription =>
+      'Forúkọ sílẹ̀ ní ìbẹ̀rẹ̀ àti òpin iṣẹ́, kọ ìsinmi sílẹ̀, kí o sì fi àkókò tí a ṣètò wé àkókò gidi.';
+
+  @override
+  String get featureTimeTrackingDescription =>
+      'Tọpinpin iṣẹ́ láìsí ìnternet pẹ̀lú aago kan tó ṣeé gbẹ́kẹ̀ lé, ìsinmi tí a sanwó tàbí tí a kò sanwó, àtúnṣe pẹ̀lú ìdí àti ìṣírò owó-wiwọle tí a fipamọ́.';
+
+  @override
+  String get featureContactsShortDescription =>
+      'Ṣètò àwọn agbanisíṣẹ́, ibi iṣẹ́, oníbàárà àti iṣẹ́ rẹ.';
+
+  @override
+  String get featureContactsDescription =>
+      'Fi àwọn ènìyàn, ibi àti iṣẹ́ tó ní í ṣe pẹ̀lú iṣẹ́ rẹ pamọ́ kí o lè ṣẹ̀dá iṣẹ́ tuntun àti àkókò iṣẹ́ ní kíákíá.';
+
+  @override
+  String get featureCalendarShortDescription =>
+      'Wo iṣẹ́ àti àkókò iṣẹ́ gẹ́gẹ́ bí ọjọ́, kí o sì ṣètò ohun tó ń bọ̀.';
+
+  @override
+  String get featureCalendarDescription =>
+      'Wo kàlẹ́ńdà oṣooṣù àti ètò ojoojúmọ́, lẹ́yìn náà ṣí tàbí ṣàfikún iṣẹ́ tí o nílò.';
+
+  @override
+  String get featurePayShortDescription =>
+      'Ṣàyẹ̀wò owó tí a retí, owó tí a gba, owó-wiwọle iṣowo àti iye tó ṣì kù.';
+
+  @override
+  String get featurePayDescription =>
+      'Fi àsìkò ìsanwó àti ìwé ìsanwó wé ara wọn, tàbí wo risíìtì, ìsanwó, ìnáwó àti owó-wiwọle láti iṣẹ́ tí a fipamọ́.';
+
+  @override
+  String get featureRecordsShortDescription =>
+      'Pa ìtàn iṣẹ́ àti ìsanwó pàtàkì tó mọ́ kedere mọ́ sórí ẹ̀rọ yìí.';
+
+  @override
+  String get featureRecordsDescription =>
+      'Ṣàyẹ̀wò ìṣe tí a fipamọ́, àwọn ìwé àfikún, àtúnṣe àti ohun tí a kó jáde tó ń ṣàlàyé ohun tó ṣẹlẹ̀.';
+
+  @override
+  String get featureReportsShortDescription =>
+      'Ṣẹ̀dá ìròyìn ọ̀sẹ̀, oṣù tàbí àkókò àdáni láti inú àkọsílẹ̀ rẹ.';
+
+  @override
+  String get featureReportsDescription =>
+      'Wo àpapọ̀ iṣẹ́, àkókò, ìsanwó àti iṣowo, lẹ́yìn náà kó ìròyìn PDF tàbí CSV jáde láìsí ìnternet.';
+
+  @override
+  String get featureRemindersShortDescription =>
+      'Gba ìkìlọ̀ lórí ẹ̀rọ fún iṣẹ́ tó ń bọ̀, ìsinmi àti àkókò òpin tí a ṣètò.';
+
+  @override
+  String get featureRemindersDescription =>
+      'Yan àkókò ìránnilétí, wákàtí ìdákẹ́jẹ́, ìpamọ́ àti àkótán ojoojúmọ́ láìní ìnternet.';
+
+  @override
+  String get featureBackupShortDescription =>
+      'Ṣẹ̀dá fáìlì àfẹ́yìntì tí a fi ìpamọ́ bo, kí o sì dá àyè iṣẹ́ rẹ padà láìléwu.';
+
+  @override
+  String get featureBackupDescription =>
+      'Dáàbò bo àkọsílẹ̀ àti ìwé agbègbè pẹ̀lú àfẹ́yìntì tí ọ̀rọ̀ aṣínà dáàbò bo, tí a sì máa ṣàyẹ̀wò kí a tó dá a padà.';
+
+  @override
+  String get featureSecurityShortDescription =>
+      'Dáàbò bo àkọsílẹ̀ aládàáni pẹ̀lú PIN, ìdánimọ̀ ara àti àwọn ìwé tí a fi ìpamọ́ bo.';
+
+  @override
+  String get featureSecurityDescription =>
+      'Ti WorkProof pa nígbà tí o bá kúrò, kí o sì fi àwọn fáìlì àfikún tuntun pamọ́ pẹ̀lú ìpamọ́ lórí ẹ̀rọ yìí.';
+
+  @override
+  String get featurePromotionsShortDescription =>
+      'Ṣẹ̀dá àwòrán ìpolówó tó rẹwà tàbí PDF, kí o sì pín in láti ẹ̀rọ rẹ.';
+
+  @override
+  String get featurePromotionsDescription =>
+      'Fi iṣẹ́, ìmọ̀ olubásọrọ̀, àmì ilé-iṣẹ́, ìpèsè àti ọ̀nà àwòrán pamọ́ láti ṣẹ̀dá ohun èlò ìpolówó tí a lè tún lò láìsí ìnternet.';
+
+  @override
+  String get codeToolsTitle => 'Ṣàyẹ̀wò kí o sì ṣẹ̀dá kóòdù';
+
+  @override
+  String get codeToolsShortDescription =>
+      'Ṣàyẹ̀wò kóòdù QR àti bàákóòdù, tàbí ṣẹ̀dá tirẹ kí o sì pín wọn.';
+
+  @override
+  String get codeToolsDescription =>
+      'Lo kámẹ́rà láti ka àwọn kóòdù tí a ṣe àtìlẹ́yìn fún, tàbí ṣẹ̀dá kóòdù QR àti bàákóòdù láti inú ọ̀rọ̀ lórí ẹ̀rọ rẹ nìkan.';
+
+  @override
+  String get manageJobTitle => 'Ṣàkóso iṣẹ́';
+
+  @override
+  String get manageJobDescription => 'Ipò · Ìnáwó · Ìsanwó · Àwọn ìwé iṣẹ́';
+
+  @override
+  String get jobStatusTitle => 'Ipò iṣẹ́';
+
+  @override
+  String get costsAndPaymentsTitle => 'Ìnáwó àti ìsanwó';
+
+  @override
+  String get jobDocumentsTitle => 'Àwọn ìwé iṣẹ́';
+
+  @override
+  String get updateAvailableTitle => 'Ẹ̀yà tuntun wà';
+
+  @override
+  String get updateAvailableMessage =>
+      'Ẹ̀yà tuntun WorkProof wà pẹ̀lú ìmúdára, àtúnṣe àṣìṣe àti àwọn ẹ̀ya iṣẹ́ tuntun.';
+
+  @override
+  String get updateRequiredMessage =>
+      'Ìmúdójúìwọ̀n pàtàkì yìí pọndandan láti tẹ̀síwájú láìléwu.';
+
+  @override
+  String get updateNow => 'Ṣe ìmúdójúìwọ̀n báyìí';
+
+  @override
+  String get later => 'Nígbà míì';
+
+  @override
+  String get checkingForUpdates => 'Ń ṣàyẹ̀wò ìmúdójúìwọ̀n…';
+
+  @override
+  String get installingUpdate => 'Ń pèsè ìmúdójúìwọ̀n rẹ…';
+
+  @override
+  String get updateDownloadReadyTitle => 'Ìmúdójúìwọ̀n ti ṣetán';
+
+  @override
+  String get updateDownloadReadyMessage =>
+      'A ti gba ìmúdójúìwọ̀n náà. Tun WorkProof bẹ̀rẹ̀ láti parí fifi sori ẹrọ.';
+
+  @override
+  String get restartToUpdate => 'Tun bẹ̀rẹ̀ láti ṣe ìmúdójúìwọ̀n';
+
+  @override
+  String get updateFailed =>
+      'A kò lè parí ìmúdójúìwọ̀n náà. O lè tẹ̀síwájú láti lo WorkProof.';
+
+  @override
+  String get updateCheckFailed =>
+      'A kò lè ṣàyẹ̀wò ìmúdójúìwọ̀n báyìí. O lè tẹ̀síwájú bí ó ti yẹ.';
+
+  @override
+  String get latestVersionInstalled => 'O ti ní ẹ̀yà tuntun jù lọ.';
+
+  @override
+  String get checkForUpdates => 'Ṣàyẹ̀wò ìmúdójúìwọ̀n';
 }

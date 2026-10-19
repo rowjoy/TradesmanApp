@@ -18,7 +18,9 @@ class BackupRecoveryCoordinator {
     try {
       final preferences = await SharedPreferences.getInstance();
       final lastValue = preferences.getString(_lastSnapshotKey);
-      final last = lastValue == null ? null : DateTime.tryParse(lastValue)?.toUtc();
+      final last = lastValue == null
+          ? null
+          : DateTime.tryParse(lastValue)?.toUtc();
       final now = DateTime.now().toUtc();
       if (last != null && now.difference(last) < const Duration(hours: 24)) {
         return;

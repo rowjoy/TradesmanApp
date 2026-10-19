@@ -95,9 +95,7 @@ class _PayslipEditorScreenState extends ConsumerState<PayslipEditorScreen> {
     } catch (_) {
       if (mounted)
         // ignore: curly_braces_in_flow_control_structures
-        _message(
-          context.l10n.m05FileCouldNotBePrepared,
-        );
+        _message(context.l10n.m05FileCouldNotBePrepared);
     } finally {
       if (mounted) setState(() => _picking = false);
     }
@@ -127,9 +125,7 @@ class _PayslipEditorScreenState extends ConsumerState<PayslipEditorScreen> {
     );
     final net = Money.tryParse(_net.text, currencyCode: period.currencyCode);
     if (gross == null || deductions == null || net == null) {
-      _message(
-        context.l10n.m05EnterValidGrossDeductionsAndNetAmounts,
-      );
+      _message(context.l10n.m05EnterValidGrossDeductionsAndNetAmounts);
       return;
     }
     setState(() => _saving = true);
@@ -154,9 +150,7 @@ class _PayslipEditorScreenState extends ConsumerState<PayslipEditorScreen> {
       if (mounted) context.pop(true);
     } catch (_) {
       if (mounted) {
-        _message(
-          context.l10n.m05PayslipCouldNotBeSaved,
-        );
+        _message(context.l10n.m05PayslipCouldNotBeSaved);
       }
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -169,17 +163,11 @@ class _PayslipEditorScreenState extends ConsumerState<PayslipEditorScreen> {
   Widget build(BuildContext context) {
     final period = _period;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.l10n.m05RecordPayslip),
-      ),
+      appBar: AppBar(title: Text(context.l10n.m05RecordPayslip)),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : period == null
-          ? Center(
-              child: Text(
-                context.l10n.m05PayPeriodNotFound,
-              ),
-            )
+          ? Center(child: Text(context.l10n.m05PayPeriodNotFound))
           : ListView(
               padding: const EdgeInsets.fromLTRB(16, 4, 16, 28),
               children: [
@@ -304,9 +292,7 @@ class _PayslipEditorScreenState extends ConsumerState<PayslipEditorScreen> {
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
                       : const Icon(Icons.save_outlined),
-                  label: Text(
-                    context.l10n.m05SaveAndCompare,
-                  ),
+                  label: Text(context.l10n.m05SaveAndCompare),
                 ),
               ],
             ),

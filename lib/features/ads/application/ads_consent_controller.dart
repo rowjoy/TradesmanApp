@@ -1,7 +1,15 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+
+const _adsOperationTimeout = Duration(seconds: 45);
+
+bool get _adsPlatformSupported =>
+    !kIsWeb &&
+    (defaultTargetPlatform == TargetPlatform.android ||
+        defaultTargetPlatform == TargetPlatform.iOS);
 
 enum AdsConsentStatus { idle, gathering, ready }
 
@@ -46,7 +54,19 @@ class AdsConsentController extends StateNotifier<AdsConsentState> {
 
   Future<void>? _initialization;
 
-  Future<void> initialize() => _initialization ??= _initialize();
+  Future<void> initialize() => _initialization ??= _initializeSafely();
+
+  Future<void> _initializeSafely() async {
+    if (!_adsPlatformSupported) {
+      _markAdsUnavailable('ads_unsupported_platform');
+      return;
+    }
+    try {
+      await _initialize();
+    } catch (_) {
+      _markAdsUnavailable('ads_initialization_failed');
+    }
+  }
 
   Future<void> _initialize() async {
     state = state.copyWith(
@@ -54,76 +74,114 @@ class AdsConsentController extends StateNotifier<AdsConsentState> {
       clearError: true,
     );
     final completer = Completer<void>();
+    var settling = false;
+
+    Future<void> settle({String? errorCode}) async {
+      if (settling || completer.isCompleted) return;
+      settling = true;
+      await _finishConsentSafely(errorCode: errorCode);
+      if (!completer.isCompleted) completer.complete();
+    }
+
+    final timeout = Timer(_adsOperationTimeout, () {
+      if (completer.isCompleted) return;
+      _markAdsUnavailable('consent_timeout');
+      completer.complete();
+    });
     final parameters = ConsentRequestParameters();
-    ConsentInformation.instance.requestConsentInfoUpdate(
-      parameters,
-      () {
-        ConsentForm.loadAndShowConsentFormIfRequired((formError) {
-          unawaited(
-            _finishConsent(
-              errorCode: formError == null ? null : 'consent_form_failed',
-            ).whenComplete(() {
-              if (!completer.isCompleted) completer.complete();
-            }),
-          );
-        });
-      },
-      (_) {
-        unawaited(
-          _finishConsent(errorCode: 'consent_update_failed').whenComplete(() {
-            if (!completer.isCompleted) completer.complete();
-          }),
-        );
-      },
-    );
+    try {
+      ConsentInformation.instance.requestConsentInfoUpdate(parameters, () {
+        try {
+          ConsentForm.loadAndShowConsentFormIfRequired((formError) {
+            unawaited(
+              settle(
+                errorCode: formError == null ? null : 'consent_form_failed',
+              ),
+            );
+          });
+        } catch (_) {
+          unawaited(settle(errorCode: 'consent_form_failed'));
+        }
+      }, (_) => unawaited(settle(errorCode: 'consent_update_failed')));
+    } catch (_) {
+      await settle(errorCode: 'consent_update_failed');
+    }
     await completer.future;
+    timeout.cancel();
   }
 
   Future<PrivacyChoiceResult> showPrivacyChoices() async {
-    if (state.errorCode != null) {
-      _initialization = null;
-      await initialize();
-      if (state.errorCode != null && !state.privacyOptionsRequired) {
+    if (!_adsPlatformSupported) return PrivacyChoiceResult.failed;
+    try {
+      if (state.errorCode != null) {
+        _initialization = null;
+        await initialize();
+        if (state.errorCode != null && !state.privacyOptionsRequired) {
+          return PrivacyChoiceResult.failed;
+        }
+      }
+      final requirement = await ConsentInformation.instance
+          .getPrivacyOptionsRequirementStatus()
+          .timeout(_adsOperationTimeout);
+      if (requirement != PrivacyOptionsRequirementStatus.required) {
+        final refreshed = await _finishConsentSafely();
+        return refreshed
+            ? PrivacyChoiceResult.notRequired
+            : PrivacyChoiceResult.failed;
+      }
+      state = state.copyWith(
+        status: AdsConsentStatus.gathering,
+        clearError: true,
+      );
+      final completer = Completer<PrivacyChoiceResult>();
+      final timeout = Timer(_adsOperationTimeout, () {
+        if (completer.isCompleted) return;
+        state = state.copyWith(
+          status: AdsConsentStatus.ready,
+          errorCode: 'privacy_options_timeout',
+        );
+        completer.complete(PrivacyChoiceResult.failed);
+      });
+      try {
+        ConsentForm.showPrivacyOptionsForm((formError) {
+          unawaited(_completePrivacyChoice(completer, formError));
+        });
+      } catch (_) {
+        timeout.cancel();
+        state = state.copyWith(
+          status: AdsConsentStatus.ready,
+          errorCode: 'privacy_options_failed',
+        );
         return PrivacyChoiceResult.failed;
       }
-    }
-    final requirement = await ConsentInformation.instance
-        .getPrivacyOptionsRequirementStatus();
-    if (requirement != PrivacyOptionsRequirementStatus.required) {
-      await _finishConsent();
-      return PrivacyChoiceResult.notRequired;
-    }
-    state = state.copyWith(
-      status: AdsConsentStatus.gathering,
-      clearError: true,
-    );
-    final completer = Completer<PrivacyChoiceResult>();
-    ConsentForm.showPrivacyOptionsForm((formError) {
-      unawaited(
-        _finishConsent(
-          errorCode: formError == null ? null : 'privacy_options_failed',
-        ).whenComplete(() {
-          if (!completer.isCompleted) {
-            completer.complete(
-              formError == null
-                  ? PrivacyChoiceResult.shown
-                  : PrivacyChoiceResult.failed,
-            );
-          }
-        }),
+      final result = await completer.future;
+      timeout.cancel();
+      return result;
+    } catch (_) {
+      state = state.copyWith(
+        status: AdsConsentStatus.ready,
+        errorCode: 'privacy_options_failed',
       );
-    });
-    return completer.future;
+      return PrivacyChoiceResult.failed;
+    }
   }
 
   Future<void> _finishConsent({String? errorCode}) async {
-    final canRequest = await ConsentInformation.instance.canRequestAds();
+    final canRequest = await ConsentInformation.instance
+        .canRequestAds()
+        .timeout(_adsOperationTimeout);
     final requirement = await ConsentInformation.instance
-        .getPrivacyOptionsRequirementStatus();
+        .getPrivacyOptionsRequirementStatus()
+        .timeout(_adsOperationTimeout);
     var initialized = state.sdkInitialized;
+    var resolvedError = errorCode;
     if (canRequest && !initialized) {
-      await MobileAds.instance.initialize();
-      initialized = true;
+      try {
+        await MobileAds.instance.initialize().timeout(_adsOperationTimeout);
+        initialized = true;
+      } catch (_) {
+        resolvedError = 'mobile_ads_initialization_failed';
+      }
     }
     state = AdsConsentState(
       status: AdsConsentStatus.ready,
@@ -131,6 +189,39 @@ class AdsConsentController extends StateNotifier<AdsConsentState> {
       privacyOptionsRequired:
           requirement == PrivacyOptionsRequirementStatus.required,
       sdkInitialized: initialized,
+      errorCode: resolvedError,
+    );
+  }
+
+  Future<bool> _finishConsentSafely({String? errorCode}) async {
+    try {
+      await _finishConsent(errorCode: errorCode);
+      return true;
+    } catch (_) {
+      _markAdsUnavailable('ads_initialization_failed');
+      return false;
+    }
+  }
+
+  Future<void> _completePrivacyChoice(
+    Completer<PrivacyChoiceResult> completer,
+    FormError? formError,
+  ) async {
+    if (completer.isCompleted) return;
+    final refreshed = await _finishConsentSafely(
+      errorCode: formError == null ? null : 'privacy_options_failed',
+    );
+    if (completer.isCompleted) return;
+    completer.complete(
+      formError == null && refreshed
+          ? PrivacyChoiceResult.shown
+          : PrivacyChoiceResult.failed,
+    );
+  }
+
+  void _markAdsUnavailable(String errorCode) {
+    state = AdsConsentState(
+      status: AdsConsentStatus.ready,
       errorCode: errorCode,
     );
   }

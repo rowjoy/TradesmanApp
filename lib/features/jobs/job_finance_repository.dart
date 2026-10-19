@@ -428,7 +428,8 @@ class JobFinanceRepository {
       final total = rows.isEmpty
           ? 0
           : (rows.first['total_minor'] as num).round();
-      final paid = Sqflite.firstIntValue(
+      final paid =
+          Sqflite.firstIntValue(
             await txn.rawQuery(
               '''SELECT COALESCE(SUM(amount_minor), 0) FROM payments
                  WHERE invoice_id = ? AND deleted_at IS NULL
@@ -521,7 +522,8 @@ class JobFinanceRepository {
 
   String _number(String prefix, DateTime value, String id) {
     final local = value.toLocal();
-    final date = '${local.year.toString().padLeft(4, '0')}'
+    final date =
+        '${local.year.toString().padLeft(4, '0')}'
         '${local.month.toString().padLeft(2, '0')}'
         '${local.day.toString().padLeft(2, '0')}';
     return '$prefix-$date-${_token(id).toUpperCase()}';

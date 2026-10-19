@@ -381,7 +381,7 @@ abstract class AppLocalizations {
   /// No description provided for @privacySetupNote.
   ///
   /// In en, this message translates to:
-  /// **'Your setup is saved only on this device. Cloud backup is optional and can be enabled later.'**
+  /// **'Your setup is saved only on this device. You can create an encrypted backup file in Settings.'**
   String get privacySetupNote;
 
   /// No description provided for @setupSaveFailed.
@@ -405,25 +405,25 @@ abstract class AppLocalizations {
   /// No description provided for @navMoney.
   ///
   /// In en, this message translates to:
-  /// **'Money'**
+  /// **'Pay'**
   String get navMoney;
 
   /// No description provided for @navProof.
   ///
   /// In en, this message translates to:
-  /// **'Proof'**
+  /// **'Records'**
   String get navProof;
 
   /// No description provided for @navMore.
   ///
   /// In en, this message translates to:
-  /// **'More'**
+  /// **'Settings'**
   String get navMore;
 
   /// No description provided for @moneyTitle.
   ///
   /// In en, this message translates to:
-  /// **'Money'**
+  /// **'Pay & Income'**
   String get moneyTitle;
 
   /// No description provided for @moneyExpected.
@@ -453,13 +453,13 @@ abstract class AppLocalizations {
   /// No description provided for @proofTitle.
   ///
   /// In en, this message translates to:
-  /// **'Proof'**
+  /// **'Work Records'**
   String get proofTitle;
 
   /// No description provided for @proofSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Local activity record'**
+  /// **'Activity saved on this device'**
   String get proofSubtitle;
 
   /// No description provided for @proofEmpty.
@@ -471,13 +471,13 @@ abstract class AppLocalizations {
   /// No description provided for @savedOnDevice.
   ///
   /// In en, this message translates to:
-  /// **'Saved on this device'**
+  /// **'Stored on This Device'**
   String get savedOnDevice;
 
   /// No description provided for @localOnlyStatus.
   ///
   /// In en, this message translates to:
-  /// **'Local only'**
+  /// **'Stored on This Device'**
   String get localOnlyStatus;
 
   /// No description provided for @auditOnboardingCompleted.
@@ -573,13 +573,13 @@ abstract class AppLocalizations {
   /// No description provided for @peopleTitle.
   ///
   /// In en, this message translates to:
-  /// **'People & services'**
+  /// **'Contacts & Services'**
   String get peopleTitle;
 
   /// No description provided for @calendarTitle.
   ///
   /// In en, this message translates to:
-  /// **'Calendar'**
+  /// **'Work Calendar'**
   String get calendarTitle;
 
   /// No description provided for @newShift.
@@ -867,7 +867,7 @@ abstract class AppLocalizations {
   /// No description provided for @timeZoneLabel.
   ///
   /// In en, this message translates to:
-  /// **'IANA time zone'**
+  /// **'Time Zone'**
   String get timeZoneLabel;
 
   /// No description provided for @newCustomer.
@@ -1512,6 +1512,30 @@ abstract class AppLocalizations {
   /// **'Help & guidance'**
   String get helpAndGuidance;
 
+  /// No description provided for @sendFeedbackOnWhatsApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Send feedback on WhatsApp'**
+  String get sendFeedbackOnWhatsApp;
+
+  /// Explains that WhatsApp opens an editable feedback draft to the support phone number.
+  ///
+  /// In en, this message translates to:
+  /// **'Opens an editable draft to {phoneNumber}'**
+  String whatsAppFeedbackSubtitle(String phoneNumber);
+
+  /// No description provided for @whatsAppFeedbackMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Hi WorkProof team, I would like to share feedback:'**
+  String get whatsAppFeedbackMessage;
+
+  /// No description provided for @whatsAppFeedbackFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open WhatsApp. Please try again.'**
+  String get whatsAppFeedbackFailed;
+
   /// No description provided for @replayShowcase.
   ///
   /// In en, this message translates to:
@@ -1599,7 +1623,7 @@ abstract class AppLocalizations {
   /// No description provided for @showcaseProofBody.
   ///
   /// In en, this message translates to:
-  /// **'Corrections require a reason. Final time and pay calculations are saved for Proof.'**
+  /// **'Corrections require a reason. Final time and pay calculations are saved in Work Records.'**
   String get showcaseProofBody;
 
   /// No description provided for @skipShowcase.
@@ -1659,7 +1683,7 @@ abstract class AppLocalizations {
   /// No description provided for @offlineNotificationsTitle.
   ///
   /// In en, this message translates to:
-  /// **'Offline notifications & job alerts'**
+  /// **'Work Reminders & Alerts'**
   String get offlineNotificationsTitle;
 
   /// No description provided for @offlineNotificationsDescription.
@@ -1683,13 +1707,13 @@ abstract class AppLocalizations {
   /// No description provided for @payProtectionGuide.
   ///
   /// In en, this message translates to:
-  /// **'Pay Protection guide'**
+  /// **'Pay Review guide'**
   String get payProtectionGuide;
 
   /// No description provided for @payProtectionGuideDescription.
   ///
   /// In en, this message translates to:
-  /// **'See expected pay, payslip, evidence and export'**
+  /// **'Review expected pay, payslips, supporting documents, and exports.'**
   String get payProtectionGuideDescription;
 
   /// No description provided for @regionLanguageTitle.
@@ -1701,7 +1725,7 @@ abstract class AppLocalizations {
   /// No description provided for @localWorkspaceTitle.
   ///
   /// In en, this message translates to:
-  /// **'Your local workspace'**
+  /// **'Data on This Device'**
   String get localWorkspaceTitle;
 
   /// No description provided for @localWorkspaceDescription.
@@ -1719,13 +1743,13 @@ abstract class AppLocalizations {
   /// No description provided for @countryMarketLabel.
   ///
   /// In en, this message translates to:
-  /// **'Country / market'**
+  /// **'Country or Region'**
   String get countryMarketLabel;
 
   /// No description provided for @defaultCurrencyLabel.
   ///
   /// In en, this message translates to:
-  /// **'Default workspace currency'**
+  /// **'Default Currency'**
   String get defaultCurrencyLabel;
 
   /// No description provided for @currencyHistoryNote.
@@ -1755,31 +1779,31 @@ abstract class AppLocalizations {
   /// No description provided for @m05PayProtection.
   ///
   /// In en, this message translates to:
-  /// **'Pay Protection'**
+  /// **'Pay Review'**
   String get m05PayProtection;
 
   /// No description provided for @m05WorkerPay.
   ///
   /// In en, this message translates to:
-  /// **'Worker pay'**
+  /// **'My Pay'**
   String get m05WorkerPay;
 
   /// No description provided for @m05BusinessMoney.
   ///
   /// In en, this message translates to:
-  /// **'Business money'**
+  /// **'Business Income'**
   String get m05BusinessMoney;
 
   /// No description provided for @m05PayAtAGlance.
   ///
   /// In en, this message translates to:
-  /// **'Pay at a glance'**
+  /// **'Pay Summary'**
   String get m05PayAtAGlance;
 
   /// No description provided for @m05StartAPayPeriod.
   ///
   /// In en, this message translates to:
-  /// **'Start a pay period'**
+  /// **'Add a Pay Period'**
   String get m05StartAPayPeriod;
 
   /// No description provided for @m05PayPeriods.
@@ -1881,7 +1905,7 @@ abstract class AppLocalizations {
   /// No description provided for @m05AddEvidence.
   ///
   /// In en, this message translates to:
-  /// **'Add evidence'**
+  /// **'Add a document'**
   String get m05AddEvidence;
 
   /// No description provided for @m05RecordedHours.
@@ -2133,13 +2157,13 @@ abstract class AppLocalizations {
   /// No description provided for @m05CreatePayProtectionPeriod.
   ///
   /// In en, this message translates to:
-  /// **'Create pay protection period'**
+  /// **'Add a Pay Period'**
   String get m05CreatePayProtectionPeriod;
 
   /// No description provided for @m05ReviewEvidenceExport.
   ///
   /// In en, this message translates to:
-  /// **'Review, evidence, export'**
+  /// **'Review Pay & Documents'**
   String get m05ReviewEvidenceExport;
 
   /// No description provided for @m05OpenAPeriodToAddAPayslip.
@@ -2187,7 +2211,7 @@ abstract class AppLocalizations {
   /// No description provided for @m05EvidenceTimeline.
   ///
   /// In en, this message translates to:
-  /// **'Evidence timeline'**
+  /// **'Documents & Notes'**
   String get m05EvidenceTimeline;
 
   /// No description provided for @m05ExportsUseSelectedEvidenceAndPrivacyShare.
@@ -2727,13 +2751,13 @@ abstract class AppLocalizations {
   /// No description provided for @payEvidencePacksTitle.
   ///
   /// In en, this message translates to:
-  /// **'Pay evidence packs'**
+  /// **'Pay Records & Exports'**
   String get payEvidencePacksTitle;
 
   /// No description provided for @payEvidencePacksDescription.
   ///
   /// In en, this message translates to:
-  /// **'Open payslips, evidence and PDF + ZIP exports from Money'**
+  /// **'Open payslips, supporting documents, and PDF + ZIP exports from Pay & Income.'**
   String get payEvidencePacksDescription;
 
   /// No description provided for @auditPreferencesUpdated.
@@ -2937,7 +2961,7 @@ abstract class AppLocalizations {
   /// No description provided for @evidenceEncryptionTitle.
   ///
   /// In en, this message translates to:
-  /// **'Encrypted evidence'**
+  /// **'Protected Documents'**
   String get evidenceEncryptionTitle;
 
   /// No description provided for @evidenceEncryptionDescription.
@@ -3399,7 +3423,7 @@ abstract class AppLocalizations {
   /// No description provided for @reportWorkerSummary.
   ///
   /// In en, this message translates to:
-  /// **'Worker pay summary'**
+  /// **'Pay summary'**
   String get reportWorkerSummary;
 
   /// No description provided for @reportIncomeSummary.
@@ -3591,7 +3615,7 @@ abstract class AppLocalizations {
   /// No description provided for @marketingStudioTitle.
   ///
   /// In en, this message translates to:
-  /// **'Marketing Studio'**
+  /// **'Create Promotions'**
   String get marketingStudioTitle;
 
   /// No description provided for @marketingStudioSubtitle.
@@ -3603,7 +3627,7 @@ abstract class AppLocalizations {
   /// No description provided for @marketingProfileTitle.
   ///
   /// In en, this message translates to:
-  /// **'Business or personal promotion'**
+  /// **'Promotion Details'**
   String get marketingProfileTitle;
 
   /// No description provided for @marketingNameLabel.
@@ -3651,7 +3675,7 @@ abstract class AppLocalizations {
   /// No description provided for @marketingTemplateLabel.
   ///
   /// In en, this message translates to:
-  /// **'Premium design'**
+  /// **'Design Style'**
   String get marketingTemplateLabel;
 
   /// No description provided for @marketingTemplateProfessional.
@@ -3675,7 +3699,7 @@ abstract class AppLocalizations {
   /// No description provided for @marketingChooseLogo.
   ///
   /// In en, this message translates to:
-  /// **'Add logo or photo'**
+  /// **'Add company logo'**
   String get marketingChooseLogo;
 
   /// No description provided for @marketingRemoveLogo.
@@ -3683,6 +3707,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remove logo'**
   String get marketingRemoveLogo;
+
+  /// No description provided for @marketingChooseCoverPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Add business photo'**
+  String get marketingChooseCoverPhoto;
+
+  /// No description provided for @marketingRemoveCoverPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove business photo'**
+  String get marketingRemoveCoverPhoto;
 
   /// No description provided for @marketingPreview.
   ///
@@ -3738,6 +3774,12 @@ abstract class AppLocalizations {
   /// **'Choose a PNG, JPG or WebP logo up to 12 MB.'**
   String get marketingLogoFailed;
 
+  /// No description provided for @marketingCoverPhotoFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a PNG, JPG or WebP business photo up to 12 MB.'**
+  String get marketingCoverPhotoFailed;
+
   /// No description provided for @marketingRequiredInfo.
   ///
   /// In en, this message translates to:
@@ -3749,6 +3791,336 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add a phone number or email address.'**
   String get marketingContactRequired;
+
+  /// No description provided for @aboutWorkProof.
+  ///
+  /// In en, this message translates to:
+  /// **'About WorkProof'**
+  String get aboutWorkProof;
+
+  /// No description provided for @appInformationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'App information'**
+  String get appInformationTitle;
+
+  /// No description provided for @aboutAppDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'An offline-first work companion for planning jobs and shifts, tracking time, reviewing pay, and keeping reliable records.'**
+  String get aboutAppDescription;
+
+  /// No description provided for @rateWorkProof.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate WorkProof'**
+  String get rateWorkProof;
+
+  /// No description provided for @storeListingFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The app store could not be opened. Try again.'**
+  String get storeListingFailed;
+
+  /// No description provided for @appFeaturesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What you can do'**
+  String get appFeaturesTitle;
+
+  /// No description provided for @versionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version}'**
+  String versionLabel(String version);
+
+  /// No description provided for @versionUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Version unavailable'**
+  String get versionUnavailable;
+
+  /// No description provided for @featureDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Feature details'**
+  String get featureDetails;
+
+  /// No description provided for @openFeature.
+  ///
+  /// In en, this message translates to:
+  /// **'Open feature'**
+  String get openFeature;
+
+  /// No description provided for @featureWorkShortDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Create, schedule, and manage customer jobs or employer shifts.'**
+  String get featureWorkShortDescription;
+
+  /// No description provided for @featureWorkDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep each job or shift organized with its schedule, pricing, reminders, and current status.'**
+  String get featureWorkDescription;
+
+  /// No description provided for @featureTimeTrackingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Time Tracking'**
+  String get featureTimeTrackingTitle;
+
+  /// No description provided for @featureTimeTrackingShortDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Clock in and out, record breaks, and compare planned time with actual time.'**
+  String get featureTimeTrackingShortDescription;
+
+  /// No description provided for @featureTimeTrackingDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Track work offline with one reliable timer, paid or unpaid breaks, corrections with reasons, and saved earnings calculations.'**
+  String get featureTimeTrackingDescription;
+
+  /// No description provided for @featureContactsShortDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep employers, workplaces, customers, and services organized.'**
+  String get featureContactsShortDescription;
+
+  /// No description provided for @featureContactsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Save the people, places, and services connected to your work so new jobs and shifts are quicker to create.'**
+  String get featureContactsDescription;
+
+  /// No description provided for @featureCalendarShortDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'See jobs and shifts by date and plan what is coming next.'**
+  String get featureCalendarShortDescription;
+
+  /// No description provided for @featureCalendarDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse a monthly calendar and daily agenda, then open or add the work you need.'**
+  String get featureCalendarDescription;
+
+  /// No description provided for @featurePayShortDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Review expected pay, received pay, business income, and outstanding amounts.'**
+  String get featurePayShortDescription;
+
+  /// No description provided for @featurePayDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare pay periods and payslips or review invoices, payments, expenses, and income from your saved work.'**
+  String get featurePayDescription;
+
+  /// No description provided for @featureRecordsShortDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep a clear, on-device history of important work and pay activity.'**
+  String get featureRecordsShortDescription;
+
+  /// No description provided for @featureRecordsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Review saved activity, supporting documents, corrections, and exports that help explain what happened.'**
+  String get featureRecordsDescription;
+
+  /// No description provided for @featureReportsShortDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Create weekly, monthly, or custom reports from your saved records.'**
+  String get featureReportsShortDescription;
+
+  /// No description provided for @featureReportsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Review work, time, pay, and business totals, then export PDF or CSV statements offline.'**
+  String get featureReportsDescription;
+
+  /// No description provided for @featureRemindersShortDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Get on-device alerts for upcoming work, breaks, and planned finish times.'**
+  String get featureRemindersShortDescription;
+
+  /// No description provided for @featureRemindersDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose reminder timing, quiet hours, privacy, and daily summaries without needing an internet connection.'**
+  String get featureRemindersDescription;
+
+  /// No description provided for @featureBackupShortDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Create encrypted backup files and safely restore your workspace.'**
+  String get featureBackupShortDescription;
+
+  /// No description provided for @featureBackupDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Protect local records and documents with a password-encrypted backup that is verified before restore.'**
+  String get featureBackupDescription;
+
+  /// No description provided for @featureSecurityShortDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Protect private records with a PIN, biometrics, and encrypted documents.'**
+  String get featureSecurityShortDescription;
+
+  /// No description provided for @featureSecurityDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock WorkProof when you are away and keep new supporting files encrypted on this device.'**
+  String get featureSecurityDescription;
+
+  /// No description provided for @featurePromotionsShortDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a polished promotion image or PDF and share it from your device.'**
+  String get featurePromotionsShortDescription;
+
+  /// No description provided for @featurePromotionsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Save your services, contact details, logo, offer, and design style to make reusable promotional material offline.'**
+  String get featurePromotionsDescription;
+
+  /// No description provided for @codeToolsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan & Create Codes'**
+  String get codeToolsTitle;
+
+  /// No description provided for @codeToolsShortDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan QR codes and barcodes or create and share your own.'**
+  String get codeToolsShortDescription;
+
+  /// No description provided for @codeToolsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the camera to read supported codes, or generate QR codes and barcodes from text entirely on your device.'**
+  String get codeToolsDescription;
+
+  /// No description provided for @manageJobTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Job'**
+  String get manageJobTitle;
+
+  /// No description provided for @manageJobDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Status · Costs · Payments · Job documents'**
+  String get manageJobDescription;
+
+  /// No description provided for @jobStatusTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Job Status'**
+  String get jobStatusTitle;
+
+  /// No description provided for @costsAndPaymentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Costs & Payments'**
+  String get costsAndPaymentsTitle;
+
+  /// No description provided for @jobDocumentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Job Documents'**
+  String get jobDocumentsTitle;
+
+  /// No description provided for @updateAvailableTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New Version Available'**
+  String get updateAvailableTitle;
+
+  /// No description provided for @updateAvailableMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'A new version of WorkProof is available with improvements, bug fixes, and new features.'**
+  String get updateAvailableMessage;
+
+  /// No description provided for @updateRequiredMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This important update is required to continue safely.'**
+  String get updateRequiredMessage;
+
+  /// No description provided for @updateNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Now'**
+  String get updateNow;
+
+  /// No description provided for @later.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get later;
+
+  /// No description provided for @checkingForUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking for updates…'**
+  String get checkingForUpdates;
+
+  /// No description provided for @installingUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing your update…'**
+  String get installingUpdate;
+
+  /// No description provided for @updateDownloadReadyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Ready'**
+  String get updateDownloadReadyTitle;
+
+  /// No description provided for @updateDownloadReadyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The update has downloaded. Restart WorkProof to finish installing it.'**
+  String get updateDownloadReadyMessage;
+
+  /// No description provided for @restartToUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart to Update'**
+  String get restartToUpdate;
+
+  /// No description provided for @updateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The update could not be completed. You can continue using WorkProof.'**
+  String get updateFailed;
+
+  /// No description provided for @updateCheckFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Updates could not be checked right now. You can continue normally.'**
+  String get updateCheckFailed;
+
+  /// No description provided for @latestVersionInstalled.
+  ///
+  /// In en, this message translates to:
+  /// **'You already have the latest version.'**
+  String get latestVersionInstalled;
+
+  /// No description provided for @checkForUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'Check for Updates'**
+  String get checkForUpdates;
 }
 
 class _AppLocalizationsDelegate

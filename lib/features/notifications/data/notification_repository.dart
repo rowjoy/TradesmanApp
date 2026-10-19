@@ -199,17 +199,19 @@ class NotificationRepository {
       for (final row in rows) {
         final occurrence = row['occurrence_id'] as String?;
         if (occurrence == null || desiredIds.contains(occurrence)) continue;
+        if (row['status'] == 'cancelled') continue;
         final osId = row['os_notification_id'] as int?;
-        if (osId != null && row['status'] != 'cancelled') cancel.add(osId);
+        if (osId != null) cancel.add(osId);
+        final status = osId == null ? 'cancelled' : 'pending_cancellation';
         await txn.update(
           'notifications',
-          {'status': 'cancelled', 'updated_at': now},
+          {'status': status, 'updated_at': now},
           where: 'id = ?',
           whereArgs: [row['id']],
         );
         await txn.update(
           'notification_deliveries',
-          {'status': 'cancelled'},
+          {'status': status},
           where: 'occurrence_id = ?',
           whereArgs: [occurrence],
         );
@@ -228,8 +230,14 @@ class NotificationRepository {
             existing['scheduled_for_utc'] !=
                 plan.scheduledForUtc.toIso8601String();
         final missingFromOs = !pendingOsIds.contains(osId);
-        if (changed && existing != null) cancel.add(osId);
-        final shouldSchedule = canSchedule && (changed || missingFromOs);
+        // Keep cancellation intent durable while replacing a plan with the
+        // same OS ID: a failed cancel must survive this fingerprint update.
+        final needsCancellation =
+            existing != null &&
+            (changed || existing['last_error_code'] == 'os_cancel_pending');
+        if (needsCancellation) cancel.add(osId);
+        final shouldSchedule =
+            canSchedule && (changed || missingFromOs || needsCancellation);
         final status = canSchedule
             ? shouldSchedule
                   ? 'pending'
@@ -258,7 +266,7 @@ class NotificationRepository {
           'body_text': plan.body,
           'content_fingerprint': plan.contentFingerprint,
           'content_locale': null,
-          'last_error_code': null,
+          'last_error_code': needsCancellation ? 'os_cancel_pending' : null,
           'created_at': existing?['created_at'] ?? now,
           'updated_at': now,
         };
@@ -305,6 +313,39 @@ class NotificationRepository {
       if (owner == null || owner == occurrence) return candidate;
     }
     throw StateError('notification_id_space_exhausted');
+  }
+
+  Future<void> markCancelled(int osNotificationId) async {
+    final db = await DatabaseHelper.instance.database;
+    await db.transaction((txn) async {
+      final rows = await txn.query(
+        'notifications',
+        where: 'os_notification_id = ?',
+        whereArgs: [osNotificationId],
+      );
+      for (final row in rows) {
+        final obsolete = row['status'] == 'pending_cancellation';
+        await txn.update(
+          'notifications',
+          {
+            if (obsolete) 'status': 'cancelled',
+            'last_error_code': null,
+            'updated_at': _clock.nowUtc().toIso8601String(),
+          },
+          where: 'id = ?',
+          whereArgs: [row['id']],
+        );
+        // A replacement shares this OS ID but must retain its pending status.
+        if (obsolete) {
+          await txn.update(
+            'notification_deliveries',
+            {'status': 'cancelled'},
+            where: 'notification_id = ?',
+            whereArgs: [row['id']],
+          );
+        }
+      }
+    });
   }
 
   Future<void> markScheduled(String id) async {

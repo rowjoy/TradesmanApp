@@ -15,6 +15,7 @@ class MarketingProfile {
     required this.address,
     required this.template,
     this.logoBytes,
+    this.coverPhotoBytes,
   });
 
   const MarketingProfile.empty()
@@ -27,7 +28,8 @@ class MarketingProfile {
       website = '',
       address = '',
       template = MarketingTemplate.professional,
-      logoBytes = null;
+      logoBytes = null,
+      coverPhotoBytes = null;
 
   final String displayName;
   final String headline;
@@ -39,6 +41,7 @@ class MarketingProfile {
   final String address;
   final MarketingTemplate template;
   final Uint8List? logoBytes;
+  final Uint8List? coverPhotoBytes;
 
   Map<String, Object?> toJson() => {
     'displayName': displayName,
@@ -51,18 +54,12 @@ class MarketingProfile {
     'address': address,
     'template': template.name,
     'logoBase64': logoBytes == null ? null : base64Encode(logoBytes!),
+    'coverPhotoBase64': coverPhotoBytes == null
+        ? null
+        : base64Encode(coverPhotoBytes!),
   };
 
   factory MarketingProfile.fromJson(Map<String, Object?> json) {
-    Uint8List? logo;
-    final encoded = json['logoBase64'] as String?;
-    if (encoded != null && encoded.isNotEmpty) {
-      try {
-        logo = base64Decode(encoded);
-      } on FormatException {
-        logo = null;
-      }
-    }
     return MarketingProfile(
       displayName: json['displayName'] as String? ?? '',
       headline: json['headline'] as String? ?? '',
@@ -82,7 +79,17 @@ class MarketingProfile {
         (item) => item.name == json['template'],
         orElse: () => MarketingTemplate.professional,
       ),
-      logoBytes: logo,
+      logoBytes: _decodeImageBytes(json['logoBase64']),
+      coverPhotoBytes: _decodeImageBytes(json['coverPhotoBase64']),
     );
+  }
+}
+
+Uint8List? _decodeImageBytes(Object? encoded) {
+  if (encoded is! String || encoded.isEmpty) return null;
+  try {
+    return base64Decode(encoded);
+  } on FormatException {
+    return null;
   }
 }

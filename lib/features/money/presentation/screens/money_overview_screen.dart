@@ -61,9 +61,7 @@ class _MoneyOverviewScreenState extends ConsumerState<MoneyOverviewScreen> {
                     ButtonSegment(
                       value: false,
                       icon: const Icon(Icons.business_center_outlined),
-                      label: Text(
-                        context.l10n.m05BusinessMoney,
-                      ),
+                      label: Text(context.l10n.m05BusinessMoney),
                     ),
                   ],
                   selected: {_showPayProtection},
@@ -167,14 +165,13 @@ class _PayProtectionHomeState extends ConsumerState<_PayProtectionHome> {
           AppShowcase(
             showcaseKey: _createKey,
             title: context.l10n.m05StartAPayPeriod,
-            description: context.l10n.m05ChooseEmployerScheduleAndCurrencyInsideThis,
+            description:
+                context.l10n.m05ChooseEmployerScheduleAndCurrencyInsideThis,
             targetBorderRadius: BorderRadius.circular(16),
             child: FilledButton.icon(
               onPressed: () => context.push(AppRoutes.newPayPeriod),
               icon: const Icon(Icons.add_rounded),
-              label: Text(
-                context.l10n.m05CreatePayProtectionPeriod,
-              ),
+              label: Text(context.l10n.m05CreatePayProtectionPeriod),
             ),
           ),
           const SizedBox(height: 22),
@@ -357,8 +354,7 @@ class _PayPeriodCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      period.employerName ??
-                          context.l10n.m05AllEmployers,
+                      period.employerName ?? context.l10n.m05AllEmployers,
                       style: const TextStyle(
                         fontWeight: FontWeight.w800,
                         fontSize: 16,
@@ -601,40 +597,28 @@ class _BusinessMoneyContent extends ConsumerWidget {
                     children: [
                       _BusinessAmountTile(
                         icon: Icons.description_outlined,
-                        label: Localizations.localeOf(context).languageCode ==
-                                'bn'
-                            ? 'ইনভয়েস মোট'
-                            : 'Invoiced',
+                        label: context.l10n.reportInvoiced,
                         amountMinor: value.invoicedMinor,
                         currencyCode: value.currencyCode,
                       ),
                       const Divider(height: 1),
                       _BusinessAmountTile(
                         icon: Icons.payments_outlined,
-                        label: Localizations.localeOf(context).languageCode ==
-                                'bn'
-                            ? 'পরিশোধিত'
-                            : 'Paid',
+                        label: context.l10n.reportPaid,
                         amountMinor: value.paidMinor,
                         currencyCode: value.currencyCode,
                       ),
                       const Divider(height: 1),
                       _BusinessAmountTile(
                         icon: Icons.pending_actions_outlined,
-                        label: Localizations.localeOf(context).languageCode ==
-                                'bn'
-                            ? 'বকেয়া ব্যালেন্স'
-                            : 'Outstanding balance',
+                        label: context.l10n.reportOutstanding,
                         amountMinor: value.outstandingMinor,
                         currencyCode: value.currencyCode,
                       ),
                       const Divider(height: 1),
                       _BusinessAmountTile(
                         icon: Icons.receipt_long_outlined,
-                        label: Localizations.localeOf(context).languageCode ==
-                                'bn'
-                            ? 'খরচ'
-                            : 'Expenses',
+                        label: context.l10n.reportExpenses,
                         amountMinor: value.expensesMinor,
                         currencyCode: value.currencyCode,
                       ),
@@ -694,10 +678,7 @@ class _BusinessAmountTile extends StatelessWidget {
     leading: Icon(icon),
     title: Text(label),
     trailing: Text(
-      AppFormatters.currencyMinor(
-        amountMinor,
-        currencyCode: currencyCode,
-      ),
+      AppFormatters.currencyMinor(amountMinor, currencyCode: currencyCode),
       style: const TextStyle(fontWeight: FontWeight.w800),
     ),
   );

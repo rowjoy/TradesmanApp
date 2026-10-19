@@ -109,8 +109,7 @@ class MoneySummaryRepository {
         expectedMinor += regularMinor + overtimeMinor + premiumMinor;
       }
       expectedMinor += extraMinor;
-      if (fixedMinor > 0 &&
-          fixedWorkItemsAdded.add(workKey)) {
+      if (fixedMinor > 0 && fixedWorkItemsAdded.add(workKey)) {
         expectedMinor += fixedMinor;
       }
     }

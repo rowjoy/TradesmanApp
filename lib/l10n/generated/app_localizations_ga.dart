@@ -149,7 +149,7 @@ class AppLocalizationsGa extends AppLocalizations {
 
   @override
   String get privacySetupNote =>
-      'Níl do shocrú sábháilte ach ar an ngléas seo.';
+      'Ní shábháiltear do shocrú ach ar an ngléas seo. Is féidir leat comhad cúltaca criptithe a chruthú sna Socruithe.';
 
   @override
   String get setupSaveFailed => 'Níorbh fhéidir an socrú a shábháil.';
@@ -161,16 +161,16 @@ class AppLocalizationsGa extends AppLocalizations {
   String get navWork => 'Obair';
 
   @override
-  String get navMoney => 'Airgead';
+  String get navMoney => 'Pá';
 
   @override
-  String get navProof => 'Cruthúnas';
+  String get navProof => 'Taifid';
 
   @override
-  String get navMore => 'Tuilleadh';
+  String get navMore => 'Socruithe';
 
   @override
-  String get moneyTitle => 'Airgead';
+  String get moneyTitle => 'Pá & Ioncam';
 
   @override
   String get moneyExpected => 'Pá elilithe';
@@ -185,19 +185,19 @@ class AppLocalizationsGa extends AppLocalizations {
   String get moneyEmpty => 'Críochnaigh post chun ríomhanna a fheiceáil anseo.';
 
   @override
-  String get proofTitle => 'Cruthúnas';
+  String get proofTitle => 'Taifid Oibre';
 
   @override
-  String get proofSubtitle => 'Taifead gníomhaíochta áitiúil';
+  String get proofSubtitle => 'Gníomhaíocht sábháilte ar an ngléas seo';
 
   @override
   String get proofEmpty => 'Taispeánfar gníomhaíochtaí atá taifeadta anseo.';
 
   @override
-  String get savedOnDevice => 'Sábháilte ar an ngléas';
+  String get savedOnDevice => 'Sábháilte ar an nGléas Seo';
 
   @override
-  String get localOnlyStatus => 'Áitiúil amháin';
+  String get localOnlyStatus => 'Sábháilte ar an nGléas Seo';
 
   @override
   String get auditOnboardingCompleted => 'Socrú WorkProof críochnaithe';
@@ -245,10 +245,10 @@ class AppLocalizationsGa extends AppLocalizations {
   String get tradesmanFlow => 'Obair chustaiméara';
 
   @override
-  String get peopleTitle => 'Daoine & seirbhísí';
+  String get peopleTitle => 'Teagmhálaithe & Seirbhísí';
 
   @override
-  String get calendarTitle => 'Féilire';
+  String get calendarTitle => 'Féilire Oibre';
 
   @override
   String get newShift => 'Shift nua';
@@ -393,7 +393,7 @@ class AppLocalizationsGa extends AppLocalizations {
   String get notesLabel => 'Nótaí';
 
   @override
-  String get timeZoneLabel => 'Crios ama';
+  String get timeZoneLabel => 'Crios Ama';
 
   @override
   String get newCustomer => 'Custaiméir nua';
@@ -721,6 +721,22 @@ class AppLocalizationsGa extends AppLocalizations {
   String get helpAndGuidance => 'Cabhair & treoir';
 
   @override
+  String get sendFeedbackOnWhatsApp => 'Seol aiseolas ar WhatsApp';
+
+  @override
+  String whatsAppFeedbackSubtitle(String phoneNumber) {
+    return 'Osclaítear dréacht ineagarthóireachta chuig $phoneNumber';
+  }
+
+  @override
+  String get whatsAppFeedbackMessage =>
+      'Dia daoibh, foireann WorkProof, ba mhaith liom aiseolas a roinnt:';
+
+  @override
+  String get whatsAppFeedbackFailed =>
+      'Níorbh fhéidir WhatsApp a oscailt. Bain triail eile as.';
+
+  @override
   String get replayShowcase => 'Ath-imir treoir';
 
   @override
@@ -768,7 +784,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get showcaseProofTitle => 'Coinnigh taifead iontaofa';
 
   @override
-  String get showcaseProofBody => 'Teastaíonn cúis le gach ceartúchán.';
+  String get showcaseProofBody =>
+      'Teastaíonn cúis le ceartúcháin. Sábháiltear na ríomhanna deiridh ama agus pá i dTaifid Oibre.';
 
   @override
   String get skipShowcase => 'Léim treoir';
@@ -798,7 +815,7 @@ class AppLocalizationsGa extends AppLocalizations {
   String get notificationsTitle => 'Fógraí';
 
   @override
-  String get offlineNotificationsTitle => 'Fógraí as líne agus foláirimh oibre';
+  String get offlineNotificationsTitle => 'Meabhrúcháin & Foláirimh Oibre';
 
   @override
   String get offlineNotificationsDescription =>
@@ -811,17 +828,17 @@ class AppLocalizationsGa extends AppLocalizations {
   String get localDataDescription => 'Ní theastaíonn cuntas ná idirlíon.';
 
   @override
-  String get payProtectionGuide => 'Treoir um chosaint pá';
+  String get payProtectionGuide => 'Treoir athbhreithnithe pá';
 
   @override
   String get payProtectionGuideDescription =>
-      'Féach pá measta, duillín pá, fianaise agus easpórtáil';
+      'Athbhreithnigh pá measta, duillíní pá, doiciméid tacaíochta agus easpórtálacha.';
 
   @override
   String get regionLanguageTitle => 'Réigiún agus teanga';
 
   @override
-  String get localWorkspaceTitle => 'Do spás oibre áitiúil';
+  String get localWorkspaceTitle => 'Sonraí ar an nGléas Seo';
 
   @override
   String get localWorkspaceDescription =>
@@ -831,10 +848,10 @@ class AppLocalizationsGa extends AppLocalizations {
   String get appLanguageLabel => 'Teanga na haipe';
 
   @override
-  String get countryMarketLabel => 'Tír / margadh';
+  String get countryMarketLabel => 'Tír nó Réigiún';
 
   @override
-  String get defaultCurrencyLabel => 'Airgeadra réamhshocraithe';
+  String get defaultCurrencyLabel => 'Airgeadra Réamhshocraithe';
 
   @override
   String get currencyHistoryNote =>
@@ -851,19 +868,19 @@ class AppLocalizationsGa extends AppLocalizations {
       'Níorbh fhéidir na sainroghanna a shábháil.';
 
   @override
-  String get m05PayProtection => 'Pay Protection';
+  String get m05PayProtection => 'Athbhreithniú Pá';
 
   @override
-  String get m05WorkerPay => 'Worker pay';
+  String get m05WorkerPay => 'Mo Phá';
 
   @override
-  String get m05BusinessMoney => 'Business money';
+  String get m05BusinessMoney => 'Ioncam Gnó';
 
   @override
-  String get m05PayAtAGlance => 'Pay at a glance';
+  String get m05PayAtAGlance => 'Achoimre Pá';
 
   @override
-  String get m05StartAPayPeriod => 'Start a pay period';
+  String get m05StartAPayPeriod => 'Cuir Tréimhse Pá Leis';
 
   @override
   String get m05PayPeriods => 'Pay periods';
@@ -914,7 +931,7 @@ class AppLocalizationsGa extends AppLocalizations {
   String get m05EditPayslip => 'Edit payslip';
 
   @override
-  String get m05AddEvidence => 'Add evidence';
+  String get m05AddEvidence => 'Cuir doiciméad leis';
 
   @override
   String get m05RecordedHours => 'Recorded hours';
@@ -1042,10 +1059,10 @@ class AppLocalizationsGa extends AppLocalizations {
       'Choose employer, schedule and currency inside this screen. No popup dropdown is used.';
 
   @override
-  String get m05CreatePayProtectionPeriod => 'Create pay protection period';
+  String get m05CreatePayProtectionPeriod => 'Cuir Tréimhse Pá Leis';
 
   @override
-  String get m05ReviewEvidenceExport => 'Review, evidence, export';
+  String get m05ReviewEvidenceExport => 'Athbhreithnigh Pá & Doiciméid';
 
   @override
   String get m05OpenAPeriodToAddAPayslip =>
@@ -1074,7 +1091,7 @@ class AppLocalizationsGa extends AppLocalizations {
   String get m05ExportCouldNotBeCreated => 'Export could not be created.';
 
   @override
-  String get m05EvidenceTimeline => 'Evidence timeline';
+  String get m05EvidenceTimeline => 'Doiciméid & Nótaí';
 
   @override
   String get m05ExportsUseSelectedEvidenceAndPrivacyShare =>
@@ -1412,11 +1429,11 @@ class AppLocalizationsGa extends AppLocalizations {
   String get recordDeleted => 'Record deleted.';
 
   @override
-  String get payEvidencePacksTitle => 'Pay evidence packs';
+  String get payEvidencePacksTitle => 'Taifid Pá & Easpórtálacha';
 
   @override
   String get payEvidencePacksDescription =>
-      'Open payslips, evidence and PDF + ZIP exports from Money';
+      'Oscail duillíní pá, doiciméid tacaíochta agus easpórtálacha PDF + ZIP ón rannán Pá & Ioncam.';
 
   @override
   String get auditPreferencesUpdated => 'Workspace preferences updated';
@@ -1540,7 +1557,7 @@ class AppLocalizationsGa extends AppLocalizations {
   String get lockNow => 'Lock now';
 
   @override
-  String get evidenceEncryptionTitle => 'Encrypted evidence';
+  String get evidenceEncryptionTitle => 'Doiciméid Chosanta';
 
   @override
   String get evidenceEncryptionDescription =>
@@ -1802,7 +1819,7 @@ class AppLocalizationsGa extends AppLocalizations {
   String get reportAllParties => 'All employers and customers';
 
   @override
-  String get reportWorkerSummary => 'Worker pay summary';
+  String get reportWorkerSummary => 'Achoimre pá';
 
   @override
   String get reportIncomeSummary => 'Business income summary';
@@ -1905,86 +1922,300 @@ class AppLocalizationsGa extends AppLocalizations {
       'Some completed entries have no saved rate. Review totals before sharing.';
 
   @override
-  String get marketingStudioTitle => 'Marketing Studio';
+  String get marketingStudioTitle => 'Cruthaigh Fógraí';
 
   @override
   String get marketingStudioSubtitle =>
-      'Create a premium promotion image or PDF offline, then share it with Facebook, WhatsApp, email or another device app.';
+      'Cruthaigh íomhá nó PDF bolscaireachta snasta as líne, ansin roinn é le Facebook, WhatsApp, ríomhphost nó aip eile ar do ghléas.';
 
   @override
-  String get marketingProfileTitle => 'Business or personal promotion';
+  String get marketingProfileTitle => 'Sonraí an Fhógra';
 
   @override
-  String get marketingNameLabel => 'Company or professional name';
+  String get marketingNameLabel => 'Ainm comhlachta nó gairmiúil';
 
   @override
-  String get marketingHeadlineLabel => 'Headline or short message';
+  String get marketingHeadlineLabel => 'Ceannteideal nó teachtaireacht ghearr';
 
   @override
-  String get marketingOfferLabel => 'Offer or promotion (optional)';
+  String get marketingOfferLabel => 'Tairiscint nó cur chun cinn (roghnach)';
 
   @override
-  String get marketingServicesLabel => 'Services';
+  String get marketingServicesLabel => 'Seirbhísí';
 
   @override
-  String get marketingServicesHint => 'Enter one service per line';
+  String get marketingServicesHint =>
+      'Cuir seirbhís amháin isteach ar gach líne';
 
   @override
-  String get marketingServicesTitle => 'Our services';
+  String get marketingServicesTitle => 'Ár seirbhísí';
 
   @override
-  String get marketingWebsiteLabel => 'Website or social page';
+  String get marketingWebsiteLabel => 'Suíomh gréasáin nó leathanach sóisialta';
 
   @override
-  String get marketingTemplateLabel => 'Premium design';
+  String get marketingTemplateLabel => 'Stíl Dearaidh';
 
   @override
-  String get marketingTemplateProfessional => 'Professional';
+  String get marketingTemplateProfessional => 'Gairmiúil';
 
   @override
-  String get marketingTemplateBold => 'Bold';
+  String get marketingTemplateBold => 'Trom';
 
   @override
-  String get marketingTemplateElegant => 'Elegant';
+  String get marketingTemplateElegant => 'Galánta';
 
   @override
-  String get marketingChooseLogo => 'Add logo or photo';
+  String get marketingChooseLogo => 'Cuir lógó gnó leis';
 
   @override
-  String get marketingRemoveLogo => 'Remove logo';
+  String get marketingRemoveLogo => 'Bain an lógó';
 
   @override
-  String get marketingPreview => 'Live promotion preview';
+  String get marketingChooseCoverPhoto => 'Cuir grianghraf gnó leis';
 
   @override
-  String get marketingSaveProfile => 'Save promotion profile';
+  String get marketingRemoveCoverPhoto => 'Bain an grianghraf gnó';
 
   @override
-  String get marketingProfileSaved => 'Promotion profile saved on this device.';
+  String get marketingPreview => 'Réamhamharc beo ar an bhfógra';
 
   @override
-  String get marketingCreateImage => 'Image';
+  String get marketingSaveProfile => 'Sábháil sonraí an fhógra';
+
+  @override
+  String get marketingProfileSaved =>
+      'Sábháladh sonraí an fhógra ar an ngléas seo.';
+
+  @override
+  String get marketingCreateImage => 'Íomhá';
 
   @override
   String get marketingCreatePdf => 'PDF';
 
   @override
-  String get marketingCreating => 'Creating…';
+  String get marketingCreating => 'Á chruthú…';
 
   @override
   String get marketingExportSaved =>
-      'Promotion saved. Choose an app to share it.';
+      'Sábháladh an fógra. Roghnaigh aip chun é a roinnt.';
 
   @override
-  String get marketingExportFailed => 'The promotion could not be created.';
+  String get marketingExportFailed => 'Níorbh fhéidir an fógra a chruthú.';
 
   @override
   String get marketingLogoFailed =>
-      'Choose a PNG, JPG or WebP logo up to 12 MB.';
+      'Roghnaigh lógó PNG, JPG nó WebP nach mó ná 12 MB.';
 
   @override
-  String get marketingRequiredInfo => 'Add the required promotion information.';
+  String get marketingCoverPhotoFailed =>
+      'Roghnaigh grianghraf gnó PNG, JPG nó WebP nach mó ná 12 MB.';
 
   @override
-  String get marketingContactRequired => 'Add a phone number or email address.';
+  String get marketingRequiredInfo =>
+      'Cuir isteach an fhaisnéis riachtanach don fhógra.';
+
+  @override
+  String get marketingContactRequired =>
+      'Cuir uimhir ghutháin nó seoladh ríomhphoist leis.';
+
+  @override
+  String get aboutWorkProof => 'Maidir le WorkProof';
+
+  @override
+  String get appInformationTitle => 'Faisnéis faoin aip';
+
+  @override
+  String get aboutAppDescription =>
+      'Compánach oibre a oibríonn as líne ar dtús chun jabanna agus sealanna a phleanáil, am a rianú, pá a athbhreithniú agus taifid iontaofa a choinneáil.';
+
+  @override
+  String get rateWorkProof => 'Déan rátáil ar WorkProof';
+
+  @override
+  String get storeListingFailed =>
+      'Níorbh fhéidir an siopa aipeanna a oscailt. Bain triail eile as.';
+
+  @override
+  String get appFeaturesTitle => 'Cad is féidir leat a dhéanamh';
+
+  @override
+  String versionLabel(String version) {
+    return 'Leagan $version';
+  }
+
+  @override
+  String get versionUnavailable => 'Níl eolas faoin leagan ar fáil';
+
+  @override
+  String get featureDetails => 'Sonraí na gné';
+
+  @override
+  String get openFeature => 'Oscail an ghné';
+
+  @override
+  String get featureWorkShortDescription =>
+      'Cruthaigh, sceideal agus bainistigh jabanna custaiméirí nó sealanna fostóra.';
+
+  @override
+  String get featureWorkDescription =>
+      'Coinnigh gach jab nó seal eagraithe lena sceideal, praghsáil, meabhrúcháin agus stádas reatha.';
+
+  @override
+  String get featureTimeTrackingTitle => 'Rianú Ama';
+
+  @override
+  String get featureTimeTrackingShortDescription =>
+      'Cláraigh isteach agus amach, taifead sosanna agus cuir am pleanáilte i gcomparáid leis an am iarbhír.';
+
+  @override
+  String get featureTimeTrackingDescription =>
+      'Rianaigh obair as líne le hamadóir iontaofa amháin, sosanna íoctha nó neamhíoctha, ceartúcháin le cúiseanna agus ríomhanna tuillimh sábháilte.';
+
+  @override
+  String get featureContactsShortDescription =>
+      'Coinnigh fostóirí, ionaid oibre, custaiméirí agus seirbhísí eagraithe.';
+
+  @override
+  String get featureContactsDescription =>
+      'Sábháil na daoine, na háiteanna agus na seirbhísí a bhaineann le do chuid oibre chun jabanna agus sealanna nua a chruthú níos tapúla.';
+
+  @override
+  String get featureCalendarShortDescription =>
+      'Féach jabanna agus sealanna de réir dáta agus pleanáil an chéad obair eile.';
+
+  @override
+  String get featureCalendarDescription =>
+      'Brabhsáil féilire míosúil agus clár oibre laethúil, ansin oscail nó cuir leis an obair atá uait.';
+
+  @override
+  String get featurePayShortDescription =>
+      'Athbhreithnigh pá measta, pá faighte, ioncam gnó agus suimeanna atá fós le híoc.';
+
+  @override
+  String get featurePayDescription =>
+      'Cuir tréimhsí pá agus duillíní pá i gcomparáid, nó athbhreithnigh sonraisc, íocaíochtaí, costais agus ioncam ó d\'obair shábháilte.';
+
+  @override
+  String get featureRecordsShortDescription =>
+      'Coinnigh stair shoiléir ar an ngléas de ghníomhaíocht thábhachtach oibre agus pá.';
+
+  @override
+  String get featureRecordsDescription =>
+      'Athbhreithnigh gníomhaíocht shábháilte, doiciméid tacaíochta, ceartúcháin agus easpórtálacha a mhíníonn cad a tharla.';
+
+  @override
+  String get featureReportsShortDescription =>
+      'Cruthaigh tuarascálacha seachtainiúla, míosúla nó saincheaptha ó do thaifid shábháilte.';
+
+  @override
+  String get featureReportsDescription =>
+      'Athbhreithnigh iomláin oibre, ama, pá agus gnó, ansin easpórtáil ráitis PDF nó CSV as líne.';
+
+  @override
+  String get featureRemindersShortDescription =>
+      'Faigh foláirimh ar an ngléas faoi obair atá le teacht, sosanna agus amanna críochnaithe pleanáilte.';
+
+  @override
+  String get featureRemindersDescription =>
+      'Roghnaigh amanna meabhrúcháin, uaireanta ciúine, príobháideachas agus achoimrí laethúla gan nasc idirlín.';
+
+  @override
+  String get featureBackupShortDescription =>
+      'Cruthaigh comhaid chúltaca criptithe agus athchóirigh do spás oibre go sábháilte.';
+
+  @override
+  String get featureBackupDescription =>
+      'Cosain taifid agus doiciméid áitiúla le cúltaca criptithe le pasfhocal a fhíoraítear roimh athchóiriú.';
+
+  @override
+  String get featureSecurityShortDescription =>
+      'Cosain taifid phríobháideacha le PIN, bithmhéadracht agus doiciméid chriptithe.';
+
+  @override
+  String get featureSecurityDescription =>
+      'Cuir WorkProof faoi ghlas nuair atá tú as láthair agus coinnigh comhaid tacaíochta nua criptithe ar an ngléas seo.';
+
+  @override
+  String get featurePromotionsShortDescription =>
+      'Cruthaigh íomhá nó PDF bolscaireachta snasta agus roinn é ó do ghléas.';
+
+  @override
+  String get featurePromotionsDescription =>
+      'Sábháil do sheirbhísí, sonraí teagmhála, lógó, tairiscint agus stíl dearaidh chun ábhar bolscaireachta in-athúsáidte a chruthú as líne.';
+
+  @override
+  String get codeToolsTitle => 'Scan agus Cruthaigh Cóid';
+
+  @override
+  String get codeToolsShortDescription =>
+      'Scan cóid QR agus barrachóid, nó cruthaigh agus roinn do chuid féin.';
+
+  @override
+  String get codeToolsDescription =>
+      'Úsáid an ceamara chun cóid tacaithe a léamh, nó cruthaigh cóid QR agus barrachóid ó théacs go hiomlán ar do ghléas.';
+
+  @override
+  String get manageJobTitle => 'Bainistigh Jab';
+
+  @override
+  String get manageJobDescription =>
+      'Stádas · Costais · Íocaíochtaí · Doiciméid jab';
+
+  @override
+  String get jobStatusTitle => 'Stádas Jab';
+
+  @override
+  String get costsAndPaymentsTitle => 'Costais & Íocaíochtaí';
+
+  @override
+  String get jobDocumentsTitle => 'Doiciméid Jab';
+
+  @override
+  String get updateAvailableTitle => 'Leagan Nua Ar Fáil';
+
+  @override
+  String get updateAvailableMessage =>
+      'Tá leagan nua de WorkProof ar fáil le feabhsuithe, ceartúcháin fabhtanna agus gnéithe nua.';
+
+  @override
+  String get updateRequiredMessage =>
+      'Tá an nuashonrú tábhachtach seo riachtanach chun leanúint ar aghaidh go sábháilte.';
+
+  @override
+  String get updateNow => 'Nuashonraigh Anois';
+
+  @override
+  String get later => 'Níos Déanaí';
+
+  @override
+  String get checkingForUpdates => 'Ag seiceáil nuashonruithe…';
+
+  @override
+  String get installingUpdate => 'Do nuashonrú á ullmhú…';
+
+  @override
+  String get updateDownloadReadyTitle => 'Nuashonrú Réidh';
+
+  @override
+  String get updateDownloadReadyMessage =>
+      'Íoslódáladh an nuashonrú. Atosaigh WorkProof chun an tsuiteáil a chríochnú.';
+
+  @override
+  String get restartToUpdate => 'Atosaigh chun Nuashonrú';
+
+  @override
+  String get updateFailed =>
+      'Níorbh fhéidir an nuashonrú a chríochnú. Is féidir leat leanúint de WorkProof a úsáid.';
+
+  @override
+  String get updateCheckFailed =>
+      'Níorbh fhéidir nuashonruithe a sheiceáil anois. Is féidir leat leanúint ar aghaidh mar is gnách.';
+
+  @override
+  String get latestVersionInstalled =>
+      'Tá an leagan is déanaí agat cheana féin.';
+
+  @override
+  String get checkForUpdates => 'Seiceáil le haghaidh Nuashonruithe';
 }

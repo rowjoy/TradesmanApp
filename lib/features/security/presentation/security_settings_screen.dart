@@ -48,8 +48,7 @@ class SecuritySettingsScreen extends ConsumerWidget {
                           ? context.l10n.biometricLockSubtitle
                           : context.l10n.biometricUnavailable,
                     ),
-                    value:
-                        state.biometricsAvailable && state.biometricsEnabled,
+                    value: state.biometricsAvailable && state.biometricsEnabled,
                     onChanged: state.busy || !state.biometricsAvailable
                         ? null
                         : (value) async {
@@ -153,10 +152,7 @@ Future<String?> _pinDialog(
 }) {
   return showDialog<String>(
     context: context,
-    builder: (_) => _PinDialog(
-      confirm: confirm,
-      verifyOnly: verifyOnly,
-    ),
+    builder: (_) => _PinDialog(confirm: confirm, verifyOnly: verifyOnly),
   );
 }
 

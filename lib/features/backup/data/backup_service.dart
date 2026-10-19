@@ -128,7 +128,10 @@ class BackupService {
         debugName: 'workproof-backup-hash-files',
       );
       final evidenceCount = entries
-          .where((entry) => (entry['archivePath']! as String).startsWith('evidence/'))
+          .where(
+            (entry) =>
+                (entry['archivePath']! as String).startsWith('evidence/'),
+          )
           .length;
       final manifest = <String, Object?>{
         'manifestVersion': manifestVersion,
@@ -140,9 +143,7 @@ class BackupService {
         'recordCounts': counts,
         'entries': entries,
       };
-      await File(
-        p.join(packageDirectory.path, 'manifest.json'),
-      ).writeAsString(
+      await File(p.join(packageDirectory.path, 'manifest.json')).writeAsString(
         const JsonEncoder.withIndent('  ').convert(manifest),
         flush: true,
       );
@@ -166,7 +167,10 @@ class BackupService {
         debugName: 'workproof-backup-hash-envelope',
       );
       final size = await output.length();
-      final totalRecords = counts.values.fold<int>(0, (sum, value) => sum + value);
+      final totalRecords = counts.values.fold<int>(
+        0,
+        (sum, value) => sum + value,
+      );
       if (recordHistory) {
         await _writeHistory(
           id: historyId,
@@ -253,7 +257,9 @@ class BackupService {
       if (version is! int || version < 1 || version > manifestVersion) {
         throw const FormatException('Unsupported backup manifest version.');
       }
-      if (schema is! int || schema < 1 || schema > DatabaseHelper.schemaVersion) {
+      if (schema is! int ||
+          schema < 1 ||
+          schema > DatabaseHelper.schemaVersion) {
         throw const FormatException('Unsupported backup database version.');
       }
       final rawEntries = manifest['entries'];
@@ -276,9 +282,11 @@ class BackupService {
         throw const FormatException('Backup security data is incomplete.');
       }
       await _validateStagedDatabase(databaseFile, schema);
-      final counts = (manifest['recordCounts'] as Map?)?.values
-              .whereType<num>()
-              .fold<int>(0, (sum, value) => sum + value.toInt()) ??
+      final counts =
+          (manifest['recordCounts'] as Map?)?.values.whereType<num>().fold<int>(
+            0,
+            (sum, value) => sum + value.toInt(),
+          ) ??
           0;
       final createdAt = DateTime.tryParse('${manifest['createdAtUtc']}');
       if (createdAt == null) {
@@ -409,7 +417,9 @@ class BackupService {
     if (await prepared.evidenceDirectory.exists()) {
       await _copyDirectory(prepared.evidenceDirectory, evidenceDirectory);
     }
-    await _keys.replaceEvidenceKey(await prepared.evidenceKeyFile.readAsBytes());
+    await _keys.replaceEvidenceKey(
+      await prepared.evidenceKeyFile.readAsBytes(),
+    );
   }
 
   Future<void> _mergeRestore(
@@ -443,7 +453,9 @@ class BackupService {
     await db.execute('PRAGMA foreign_keys = OFF');
     var attached = false;
     try {
-      await db.execute('ATTACH DATABASE ? AS incoming', [prepared.databaseFile.path]);
+      await db.execute('ATTACH DATABASE ? AS incoming', [
+        prepared.databaseFile.path,
+      ]);
       attached = true;
       final incomingTables = await db.rawQuery(
         "SELECT name FROM incoming.sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'",
@@ -495,8 +507,9 @@ class BackupService {
     final row = rows.first;
     return BackupHistorySummary(
       completedAtUtc:
-          DateTime.tryParse('${row['completed_at_utc'] ?? row['started_at_utc']}')
-              ?.toUtc() ??
+          DateTime.tryParse(
+            '${row['completed_at_utc'] ?? row['started_at_utc']}',
+          )?.toUtc() ??
           _clock.nowUtc(),
       fileSizeBytes: row['file_size_bytes'] as int?,
       status: '${row['status']}',
@@ -534,26 +547,22 @@ class BackupService {
     String? errorCode,
   }) async {
     final db = await _database.database;
-    await db.insert(
-      'backup_history',
-      {
-        'id': id,
-        'workspace_id': workspaceId,
-        'backup_type': type,
-        'status': status,
-        'destination_label': destination,
-        'schema_version': DatabaseHelper.schemaVersion,
-        'record_counts_json': counts == null ? null : jsonEncode(counts),
-        'sha256': digest,
-        'started_at_utc': startedAt.toIso8601String(),
-        'completed_at_utc': completedAt?.toIso8601String(),
-        'error_code': errorCode,
-        'manifest_version': manifestVersion,
-        'file_size_bytes': size,
-        'restore_mode': restoreMode,
-      },
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+    await db.insert('backup_history', {
+      'id': id,
+      'workspace_id': workspaceId,
+      'backup_type': type,
+      'status': status,
+      'destination_label': destination,
+      'schema_version': DatabaseHelper.schemaVersion,
+      'record_counts_json': counts == null ? null : jsonEncode(counts),
+      'sha256': digest,
+      'started_at_utc': startedAt.toIso8601String(),
+      'completed_at_utc': completedAt?.toIso8601String(),
+      'error_code': errorCode,
+      'manifest_version': manifestVersion,
+      'file_size_bytes': size,
+      'restore_mode': restoreMode,
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<void> _assertForeignKeys() async {
@@ -572,13 +581,13 @@ class BackupService {
     if (oldDocuments.isEmpty || oldDocuments == newDocuments) return;
     final db = await openDatabase(databaseFile.path, singleInstance: false);
     try {
-      final columns = (await db.rawQuery('PRAGMA table_info(attachments)'))
-          .map((row) => row['name'])
-          .whereType<String>()
-          .toSet();
-      final pathColumns = ['local_path', 'shared_copy_path']
-          .where(columns.contains)
-          .toList();
+      final columns = (await db.rawQuery(
+        'PRAGMA table_info(attachments)',
+      )).map((row) => row['name']).whereType<String>().toSet();
+      final pathColumns = [
+        'local_path',
+        'shared_copy_path',
+      ].where(columns.contains).toList();
       if (pathColumns.isEmpty) return;
       final rows = await db.query('attachments');
       await db.transaction((transaction) async {
@@ -662,7 +671,10 @@ class BackupService {
     bool overwrite = true,
   }) async {
     await destination.create(recursive: true);
-    await for (final entity in source.list(recursive: true, followLinks: false)) {
+    await for (final entity in source.list(
+      recursive: true,
+      followLinks: false,
+    )) {
       final relative = p.relative(entity.path, from: source.path);
       final target = p.join(destination.path, relative);
       if (entity is Directory) {
@@ -688,10 +700,8 @@ class BackupService {
     return '"$escaped"';
   }
 
-  static String _safeStamp(DateTime value) => value
-      .toUtc()
-      .toIso8601String()
-      .replaceAll(RegExp(r'[:.]'), '-');
+  static String _safeStamp(DateTime value) =>
+      value.toUtc().toIso8601String().replaceAll(RegExp(r'[:.]'), '-');
 
   static void _validatePassword(String password) {
     if (password.length < minimumPasswordLength) {

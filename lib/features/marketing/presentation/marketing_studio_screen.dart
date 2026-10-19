@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
-import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,11 +12,17 @@ import '../../onboarding/presentation/controllers/onboarding_controller.dart';
 import '../data/marketing_repository.dart';
 import '../domain/marketing_profile.dart';
 import '../infrastructure/marketing_export_service.dart';
+import 'widgets/marketing_banner.dart';
 
 const _a4AspectRatio = 210 / 297;
-const _a4CanvasWidth = 420.0;
-const _a4CanvasHeight = 594.0;
 const _a4ExportWidthPixels = 2480.0;
+
+double marketingA4ExportPixelRatio(Size previewSize) {
+  if (!previewSize.width.isFinite || previewSize.width <= 0) {
+    throw ArgumentError.value(previewSize, 'previewSize');
+  }
+  return _a4ExportWidthPixels / previewSize.width;
+}
 
 class MarketingStudioScreen extends ConsumerStatefulWidget {
   const MarketingStudioScreen({super.key});
@@ -27,8 +32,7 @@ class MarketingStudioScreen extends ConsumerStatefulWidget {
       _MarketingStudioScreenState();
 }
 
-class _MarketingStudioScreenState
-    extends ConsumerState<MarketingStudioScreen> {
+class _MarketingStudioScreenState extends ConsumerState<MarketingStudioScreen> {
   final _formKey = GlobalKey<FormState>();
   final _previewKey = GlobalKey();
   final _displayName = TextEditingController();
@@ -42,6 +46,7 @@ class _MarketingStudioScreenState
 
   MarketingTemplate _template = MarketingTemplate.professional;
   Uint8List? _logoBytes;
+  Uint8List? _coverPhotoBytes;
   bool _loading = true;
   bool _saving = false;
   bool _exporting = false;
@@ -70,7 +75,8 @@ class _MarketingStudioScreenState
   Future<void> _load() async {
     final saved = await ref.read(marketingRepositoryProvider).load();
     if (!mounted) return;
-    final profession = ref.read(currentProfileProvider)?.profession.trim() ?? '';
+    final profession =
+        ref.read(currentProfileProvider)?.profession.trim() ?? '';
     _hydrating = true;
     _displayName.text = saved.displayName;
     _headline.text = saved.headline;
@@ -84,6 +90,7 @@ class _MarketingStudioScreenState
     _address.text = saved.address;
     _template = saved.template;
     _logoBytes = saved.logoBytes;
+    _coverPhotoBytes = saved.coverPhotoBytes;
     _hydrating = false;
     setState(() => _loading = false);
   }
@@ -120,6 +127,7 @@ class _MarketingStudioScreenState
     address: _address.text.trim(),
     template: _template,
     logoBytes: _logoBytes,
+    coverPhotoBytes: _coverPhotoBytes,
   );
 
   bool _validate() {
@@ -159,6 +167,20 @@ class _MarketingStudioScreenState
     } catch (_) {
       if (mounted) {
         AppFeedback.error(context, context.l10n.marketingLogoFailed);
+      }
+    }
+  }
+
+  Future<void> _pickCoverPhoto() async {
+    try {
+      final selected = await ref
+          .read(marketingRepositoryProvider)
+          .pickCoverPhoto();
+      if (!mounted || selected == null) return;
+      setState(() => _coverPhotoBytes = selected);
+    } catch (_) {
+      if (mounted) {
+        AppFeedback.error(context, context.l10n.marketingCoverPhotoFailed);
       }
     }
   }
@@ -205,10 +227,10 @@ class _MarketingStudioScreenState
         renderObject.size.width <= 0) {
       throw StateError('Marketing preview is not ready.');
     }
-    // A4 at 300 DPI is 2480 x 3508 pixels. The preview keeps the exact A4
-    // aspect ratio, so deriving the scale from its width produces a
-    // print-ready image without cropping or adding a square canvas.
-    final pixelRatio = _a4ExportWidthPixels / renderObject.size.width;
+    // A4 at 300 DPI is 2480 x 3508 pixels. At the 210:297 preview ratio,
+    // scaling the width to 2480 produces 3507.43 logical output pixels;
+    // Flutter rounds image bounds upward to the exact 2480 x 3508 raster.
+    final pixelRatio = marketingA4ExportPixelRatio(renderObject.size);
     final image = await renderObject.toImage(pixelRatio: pixelRatio);
     final data = await image.toByteData(format: ui.ImageByteFormat.png);
     image.dispose();
@@ -279,11 +301,7 @@ class _MarketingStudioScreenState
                 return SingleChildScrollView(
                   padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
                   child: Column(
-                    children: [
-                      preview,
-                      const SizedBox(height: 24),
-                      editor,
-                    ],
+                    children: [preview, const SizedBox(height: 24), editor],
                   ),
                 );
               },
@@ -296,9 +314,9 @@ class _MarketingStudioScreenState
     children: [
       Text(
         context.l10n.marketingPreview,
-        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-          fontWeight: FontWeight.w800,
-        ),
+        style: Theme.of(
+          context,
+        ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
       ),
       const SizedBox(height: 10),
       DecoratedBox(
@@ -315,7 +333,7 @@ class _MarketingStudioScreenState
           key: _previewKey,
           child: AspectRatio(
             aspectRatio: _a4AspectRatio,
-            child: _MarketingBanner(profile: _profile),
+            child: MarketingBanner(profile: _profile),
           ),
         ),
       ),
@@ -333,10 +351,7 @@ class _MarketingStudioScreenState
               child: OutlinedButton.icon(
                 onPressed: _exporting
                     ? null
-                    : () => _export(
-                        MarketingExportFormat.image,
-                        buttonContext,
-                      ),
+                    : () => _export(MarketingExportFormat.image, buttonContext),
                 icon: const Icon(Icons.image_outlined),
                 label: Text(context.l10n.marketingCreateImage),
               ),
@@ -346,10 +361,7 @@ class _MarketingStudioScreenState
               child: FilledButton.icon(
                 onPressed: _exporting
                     ? null
-                    : () => _export(
-                        MarketingExportFormat.pdf,
-                        buttonContext,
-                      ),
+                    : () => _export(MarketingExportFormat.pdf, buttonContext),
                 icon: _exporting
                     ? const SizedBox.square(
                         dimension: 18,
@@ -376,9 +388,9 @@ class _MarketingStudioScreenState
       children: [
         Text(
           context.l10n.marketingProfileTitle,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w800,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
         ),
         const SizedBox(height: 16),
         Row(
@@ -405,6 +417,20 @@ class _MarketingStudioScreenState
             ),
           ],
         ),
+        const SizedBox(height: 18),
+        _CoverPhotoPreview(bytes: _coverPhotoBytes),
+        const SizedBox(height: 10),
+        OutlinedButton.icon(
+          onPressed: _pickCoverPhoto,
+          icon: const Icon(Icons.add_photo_alternate_outlined),
+          label: Text(context.l10n.marketingChooseCoverPhoto),
+        ),
+        if (_coverPhotoBytes != null)
+          TextButton.icon(
+            onPressed: () => setState(() => _coverPhotoBytes = null),
+            icon: const Icon(Icons.delete_outline_rounded),
+            label: Text(context.l10n.marketingRemoveCoverPhoto),
+          ),
         const SizedBox(height: 18),
         TextFormField(
           controller: _displayName,
@@ -447,9 +473,8 @@ class _MarketingStudioScreenState
             prefixIcon: const Icon(Icons.design_services_outlined),
             alignLabelWithHint: true,
           ),
-          validator: (_) => _serviceList.isEmpty
-              ? context.l10n.marketingRequiredInfo
-              : null,
+          validator: (_) =>
+              _serviceList.isEmpty ? context.l10n.marketingRequiredInfo : null,
         ),
         const SizedBox(height: 20),
         Text(
@@ -527,14 +552,11 @@ class _MarketingStudioScreenState
   Widget _templateChip(MarketingTemplate template, String label) => ChoiceChip(
     selected: _template == template,
     label: Text(label),
-    avatar: Icon(
-      switch (template) {
-        MarketingTemplate.professional => Icons.workspace_premium_outlined,
-        MarketingTemplate.bold => Icons.bolt_outlined,
-        MarketingTemplate.elegant => Icons.auto_awesome_outlined,
-      },
-      size: 18,
-    ),
+    avatar: Icon(switch (template) {
+      MarketingTemplate.professional => Icons.workspace_premium_outlined,
+      MarketingTemplate.bold => Icons.bolt_outlined,
+      MarketingTemplate.elegant => Icons.auto_awesome_outlined,
+    }, size: 18),
     onSelected: (_) => setState(() => _template = template),
   );
 }
@@ -556,359 +578,52 @@ class _LogoPreview extends StatelessWidget {
     ),
     child: bytes == null
         ? const Icon(Icons.add_business_outlined, size: 34)
-        : Image.memory(bytes!, fit: BoxFit.cover, gaplessPlayback: true),
+        : Padding(
+            padding: const EdgeInsets.all(6),
+            child: Image.memory(
+              bytes!,
+              fit: BoxFit.contain,
+              gaplessPlayback: true,
+            ),
+          ),
   );
 }
 
-class _MarketingBanner extends StatelessWidget {
-  const _MarketingBanner({required this.profile});
+class _CoverPhotoPreview extends StatelessWidget {
+  const _CoverPhotoPreview({required this.bytes});
 
-  final MarketingProfile profile;
+  final Uint8List? bytes;
 
   @override
-  Widget build(BuildContext context) {
-    final palette = _BannerPalette.forTemplate(profile.template);
-    final services = profile.services.take(8).toList(growable: false);
-    return FittedBox(
-      fit: BoxFit.contain,
-      child: SizedBox(
-        width: _a4CanvasWidth,
-        height: _a4CanvasHeight,
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: palette.gradient,
-            border: Border.all(color: palette.border, width: 1.5),
-          ),
-          clipBehavior: Clip.antiAlias,
-          child: Stack(
-            children: [
-          Positioned(
-            right: -48,
-            top: -58,
-            child: Container(
-              width: 190,
-              height: 190,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: palette.accent.withValues(alpha: 0.16),
-              ),
-            ),
-          ),
-          Positioned(
-            left: -76,
-            bottom: -92,
-            child: Container(
-              width: 250,
-              height: 250,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: palette.accent.withValues(alpha: 0.1),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 76,
-                      height: 76,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                        color: palette.logoBackground,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: profile.logoBytes == null
-                          ? Icon(
-                              Icons.handyman_outlined,
-                              color: palette.primaryText,
-                              size: 36,
-                            )
-                          : Image.memory(
-                              profile.logoBytes!,
-                              fit: BoxFit.cover,
-                              gaplessPlayback: true,
-                            ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            profile.displayName.isEmpty
-                                ? context.l10n.marketingNameLabel
-                                : profile.displayName,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: palette.primaryText,
-                              fontSize: 27,
-                              height: 1.05,
-                              fontWeight: FontWeight.w900,
-                              letterSpacing: -0.5,
-                            ),
-                          ),
-                          if (profile.headline.isNotEmpty) ...[
-                            const SizedBox(height: 6),
-                            Text(
-                              profile.headline,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: palette.secondaryText,
-                                fontSize: 13,
-                                height: 1.25,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                if (profile.offer.isNotEmpty) ...[
-                  const SizedBox(height: 22),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 10,
-                    ),
-                    decoration: BoxDecoration(
-                      color: palette.accent,
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    child: Text(
-                      profile.offer,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: palette.accentText,
-                        fontWeight: FontWeight.w900,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ),
+  Widget build(BuildContext context) => AspectRatio(
+    aspectRatio: 16 / 9,
+    child: Container(
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        gradient: bytes == null
+            ? LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Theme.of(context).colorScheme.primaryContainer,
+                  Theme.of(context).colorScheme.tertiaryContainer,
                 ],
-                const SizedBox(height: 26),
-                Text(
-                  context.l10n.marketingServicesTitle.toUpperCase(),
-                  style: TextStyle(
-                    color: palette.secondaryText,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w900,
-                    letterSpacing: 1.3,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                if (services.isEmpty)
-                  Text(
-                    context.l10n.marketingServicesHint,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: palette.secondaryText),
-                  )
-                else
-                  Wrap(
-                    spacing: 9,
-                    runSpacing: 9,
-                    children: [
-                      for (final service in services)
-                        Container(
-                          constraints: const BoxConstraints(maxWidth: 176),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            color: palette.card,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(
-                            service,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: palette.primaryText,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                const Spacer(),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: palette.card,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: palette.cardBorder),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (profile.phone.isNotEmpty)
-                        _BannerContact(
-                          icon: Icons.phone_outlined,
-                          text: profile.phone,
-                          color: palette.primaryText,
-                        ),
-                      if (profile.email.isNotEmpty)
-                        _BannerContact(
-                          icon: Icons.email_outlined,
-                          text: profile.email,
-                          color: palette.primaryText,
-                        ),
-                      if (profile.website.isNotEmpty)
-                        _BannerContact(
-                          icon: Icons.language_outlined,
-                          text: profile.website,
-                          color: palette.primaryText,
-                        ),
-                      if (profile.address.isNotEmpty)
-                        _BannerContact(
-                          icon: Icons.location_on_outlined,
-                          text: profile.address,
-                          color: palette.primaryText,
-                          maxLines: 2,
-                        ),
-                      if (profile.phone.isEmpty &&
-                          profile.email.isEmpty &&
-                          profile.website.isEmpty &&
-                          profile.address.isEmpty)
-                        Text(
-                          context.l10n.marketingContactRequired,
-                          maxLines: 2,
-                          style: TextStyle(color: palette.secondaryText),
-                        ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-            ],
-          ),
-        ),
+              )
+            : null,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
       ),
-    );
-  }
-}
-
-class _BannerContact extends StatelessWidget {
-  const _BannerContact({
-    required this.icon,
-    required this.text,
-    required this.color,
-    this.maxLines = 1,
-  });
-
-  final IconData icon;
-  final String text;
-  final Color color;
-  final int maxLines;
-
-  @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 2),
-    child: Row(
-      children: [
-        Icon(icon, size: 14, color: color),
-        const SizedBox(width: 7),
-        Expanded(
-          child: Text(
-            text,
-            maxLines: maxLines,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: color,
-              fontSize: 11,
-              height: 1.25,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-      ],
+      child: bytes == null
+          ? Semantics(
+              label: context.l10n.marketingChooseCoverPhoto,
+              image: true,
+              child: Icon(
+                Icons.business_center_outlined,
+                size: 42,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
+            )
+          : Image.memory(bytes!, fit: BoxFit.cover, gaplessPlayback: true),
     ),
   );
-}
-
-class _BannerPalette {
-  const _BannerPalette({
-    required this.gradient,
-    required this.primaryText,
-    required this.secondaryText,
-    required this.accent,
-    required this.accentText,
-    required this.card,
-    required this.cardBorder,
-    required this.logoBackground,
-    required this.border,
-  });
-
-  final LinearGradient gradient;
-  final Color primaryText;
-  final Color secondaryText;
-  final Color accent;
-  final Color accentText;
-  final Color card;
-  final Color cardBorder;
-  final Color logoBackground;
-  final Color border;
-
-  static _BannerPalette forTemplate(MarketingTemplate template) =>
-      switch (template) {
-        MarketingTemplate.professional => _BannerPalette(
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFF0D3434), Color(0xFF17645F)],
-          ),
-          primaryText: Colors.white,
-          secondaryText: const Color(0xFFD7EBE8),
-          accent: const Color(0xFFF4C95D),
-          accentText: const Color(0xFF183231),
-          card: Colors.white.withValues(alpha: 0.11),
-          cardBorder: Colors.white.withValues(alpha: 0.14),
-          logoBackground: Colors.white.withValues(alpha: 0.14),
-          border: const Color(0xFF5A9A95),
-        ),
-        MarketingTemplate.bold => _BannerPalette(
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFF31104C), Color(0xFF8F245B), Color(0xFFF06A3A)],
-          ),
-          primaryText: Colors.white,
-          secondaryText: const Color(0xFFFFE9E2),
-          accent: const Color(0xFFFFD166),
-          accentText: const Color(0xFF38123E),
-          card: Colors.white.withValues(alpha: 0.13),
-          cardBorder: Colors.white.withValues(alpha: 0.18),
-          logoBackground: Colors.white.withValues(alpha: 0.16),
-          border: const Color(0xFFF3A17E),
-        ),
-        MarketingTemplate.elegant => _BannerPalette(
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFFFFF9EC), Color(0xFFEDE0BF)],
-          ),
-          primaryText: const Color(0xFF25231F),
-          secondaryText: const Color(0xFF605B4E),
-          accent: const Color(0xFF9A722B),
-          accentText: Colors.white,
-          card: Colors.white.withValues(alpha: 0.58),
-          cardBorder: const Color(0x339A722B),
-          logoBackground: Colors.white.withValues(alpha: 0.7),
-          border: const Color(0xFFB99653),
-        ),
-      };
 }

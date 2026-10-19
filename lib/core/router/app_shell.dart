@@ -4,14 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/about/domain/app_feature.dart';
+import '../../features/about/presentation/app_feature_catalog.dart';
+import '../../features/ads/application/ad_content_eligibility.dart';
 import '../../features/notifications/application/notification_controller.dart';
-import '../../features/ads/application/ads_consent_controller.dart';
 import '../../features/backup/application/backup_recovery_coordinator.dart';
 import '../../features/onboarding/domain/entities/local_profile.dart';
 import '../../features/onboarding/presentation/controllers/onboarding_controller.dart';
+import '../../features/proof/presentation/controllers/audit_controller.dart';
 import '../../features/showcase/presentation/app_showcase.dart';
+import '../../features/work/domain/work_models.dart';
+import '../../features/work/presentation/controllers/work_controller.dart';
 import '../../l10n/l10n.dart';
 import '../security/evidence_encryption_migration.dart';
+import '../widgets/app_banner_frame.dart';
 
 class AppShell extends ConsumerStatefulWidget {
   const AppShell({super.key, required this.navigationShell});
@@ -41,11 +47,6 @@ class _AppShellState extends ConsumerState<AppShell>
     unawaited(
       Future.microtask(
         () => ref.read(evidenceEncryptionMigrationProvider).run(),
-      ),
-    );
-    unawaited(
-      Future.microtask(
-        () => ref.read(adsConsentControllerProvider.notifier).initialize(),
       ),
     );
   }
@@ -89,6 +90,9 @@ class _AppShellState extends ConsumerState<AppShell>
         });
       },
     );
+    final workFeature = AppFeatureCatalog.forId(AppFeatureId.workPlanning);
+    final payFeature = AppFeatureCatalog.forId(AppFeatureId.payAndIncome);
+    final recordsFeature = AppFeatureCatalog.forId(AppFeatureId.workRecords);
     final destinations = [
       _Destination(Icons.home_outlined, Icons.home, context.l10n.navHome),
       _Destination(
@@ -97,9 +101,7 @@ class _AppShellState extends ConsumerState<AppShell>
         context.l10n.navWork,
         showcaseKey: AppShowcaseKeys.work,
         showcaseTitle: context.l10n.navWork,
-        showcaseDescription:
-            '${context.l10n.jobsLabel} · ${context.l10n.shiftsLabel} · '
-            '${context.l10n.peopleTitle} · ${context.l10n.calendarTitle}',
+        showcaseDescription: workFeature.shortDescription(context.l10n),
       ),
       _Destination(
         Icons.payments_outlined,
@@ -107,9 +109,7 @@ class _AppShellState extends ConsumerState<AppShell>
         context.l10n.navMoney,
         showcaseKey: AppShowcaseKeys.money,
         showcaseTitle: context.l10n.moneyTitle,
-        showcaseDescription:
-            '${context.l10n.moneyExpected} · ${context.l10n.m05Received} · '
-            '${context.l10n.reportsTitle}',
+        showcaseDescription: payFeature.shortDescription(context.l10n),
       ),
       _Destination(
         Icons.verified_outlined,
@@ -117,7 +117,7 @@ class _AppShellState extends ConsumerState<AppShell>
         context.l10n.navProof,
         showcaseKey: AppShowcaseKeys.proof,
         showcaseTitle: context.l10n.showcaseProofTitle,
-        showcaseDescription: context.l10n.showcaseProofBody,
+        showcaseDescription: recordsFeature.shortDescription(context.l10n),
       ),
       _Destination(
         Icons.more_horiz,
@@ -135,7 +135,17 @@ class _AppShellState extends ConsumerState<AppShell>
     final mode = ref.watch(
       currentProfileProvider.select((value) => value?.workMode),
     );
-
+    final proofHasContent = hasPublisherContent(ref.watch(auditEventsProvider));
+    final currentIndex = widget.navigationShell.currentIndex;
+    final workHasContent = currentIndex != 1
+        ? true
+        : switch (ref.watch(selectedWorkFlowProvider)) {
+            WorkFlow.worker => hasPublisherContent(ref.watch(shiftsProvider)),
+            WorkFlow.tradesman => hasPublisherContent(
+              ref.watch(workJobsProvider),
+            ),
+          };
+    final keyboardVisible = MediaQuery.viewInsetsOf(context).bottom > 0;
     return LayoutBuilder(
       builder: (context, constraints) {
         final useRail = constraints.maxWidth >= 840;
@@ -166,7 +176,15 @@ class _AppShellState extends ConsumerState<AppShell>
                     ],
                   ),
                   const VerticalDivider(width: 1),
-                  Expanded(child: widget.navigationShell),
+                  Expanded(
+                    child: MainShellBannerRegion(
+                      currentIndex: widget.navigationShell.currentIndex,
+                      proofHasContent: proofHasContent,
+                      workHasContent: workHasContent,
+                      keyboardVisible: keyboardVisible,
+                      child: widget.navigationShell,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -174,7 +192,13 @@ class _AppShellState extends ConsumerState<AppShell>
         }
 
         return Scaffold(
-          body: widget.navigationShell,
+          body: MainShellBannerRegion(
+            currentIndex: widget.navigationShell.currentIndex,
+            proofHasContent: proofHasContent,
+            workHasContent: workHasContent,
+            keyboardVisible: keyboardVisible,
+            child: widget.navigationShell,
+          ),
           bottomNavigationBar: NavigationBar(
             selectedIndex: widget.navigationShell.currentIndex,
             onDestinationSelected: _onTap,
@@ -189,6 +213,38 @@ class _AppShellState extends ConsumerState<AppShell>
           ),
         );
       },
+    );
+  }
+}
+
+class MainShellBannerRegion extends StatelessWidget {
+  const MainShellBannerRegion({
+    required this.currentIndex,
+    required this.proofHasContent,
+    required this.workHasContent,
+    required this.keyboardVisible,
+    required this.child,
+    super.key,
+  });
+
+  final int currentIndex;
+  final bool proofHasContent;
+  final bool workHasContent;
+  final bool keyboardVisible;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final enabled =
+        !keyboardVisible &&
+        (currentIndex == 0 ||
+            (currentIndex == 1 && workHasContent) ||
+            currentIndex == 2 ||
+            (currentIndex == 3 && proofHasContent));
+    return AppBannerFrame(
+      placement: AdPlacement.appShell,
+      enabled: enabled,
+      child: child,
     );
   }
 }

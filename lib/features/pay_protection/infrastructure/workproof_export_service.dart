@@ -42,17 +42,14 @@ class WorkProofExportService {
     final zipPath = p.join(directory.path, 'WorkProof-$stamp.zip');
     final manifestPath = p.join(directory.path, 'manifest-$stamp.json');
 
-    final pdfResult = await BackgroundTaskRunner.run(
-      () async {
-        final document = WorkProofExportService._buildPdf(detail, generatedAt);
-        final bytes = await document.save();
-        return (
-          bytes: TransferableTypedData.fromList([bytes]),
-          digest: sha256.convert(bytes).toString(),
-        );
-      },
-      debugName: 'workproof-pdf-build',
-    );
+    final pdfResult = await BackgroundTaskRunner.run(() async {
+      final document = WorkProofExportService._buildPdf(detail, generatedAt);
+      final bytes = await document.save();
+      return (
+        bytes: TransferableTypedData.fromList([bytes]),
+        digest: sha256.convert(bytes).toString(),
+      );
+    }, debugName: 'workproof-pdf-build');
     final pdfBytes = pdfResult.bytes.materialize().asUint8List();
     await File(pdfPath).writeAsBytes(pdfBytes, flush: true);
     final pdfDigest = pdfResult.digest;
@@ -178,18 +175,15 @@ class WorkProofExportService {
   }) async {
     await SharePlus.instance.share(
       ShareParams(
-        subject: 'WorkProof evidence pack',
-        text: 'WorkProof evidence pack — verify checksums in manifest.json.',
+        subject: 'WorkProof pay records',
+        text: 'WorkProof pay records — verify checksums in manifest.json.',
         files: [XFile(export.zipPath)],
         sharePositionOrigin: sharePositionOrigin,
       ),
     );
   }
 
-  static pw.Document _buildPdf(
-    PayPeriodDetail detail,
-    DateTime generatedAt,
-  ) {
+  static pw.Document _buildPdf(PayPeriodDetail detail, DateTime generatedAt) {
     final period = detail.period;
     final document = pw.Document();
     String money(int? minor) {
@@ -226,7 +220,7 @@ class WorkProofExportService {
         build: (context) => [
           pw.SizedBox(height: 18),
           pw.Text(
-            'Pay Protection summary',
+            'Pay review summary',
             style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold),
           ),
           pw.SizedBox(height: 8),
@@ -268,7 +262,7 @@ class WorkProofExportService {
           _line('Deductions', money(period.deductionsMinor)),
           _line('Net payment', money(period.netPaymentMinor)),
           pw.SizedBox(height: 18),
-          _heading('Evidence timeline'),
+          _heading('Documents & notes'),
           if (detail.evidence.where((item) => item.selectedForExport).isEmpty)
             pw.Text('No evidence items selected for this export.'),
           for (final item in detail.evidence.where(
@@ -330,25 +324,24 @@ class WorkProofExportService {
     String label,
     String value, {
     bool warning = false,
-  }) =>
-      pw.Container(
-        width: double.infinity,
-        padding: const pw.EdgeInsets.all(12),
-        decoration: pw.BoxDecoration(
-          color: warning ? PdfColors.amber50 : PdfColors.teal50,
-          border: pw.Border.all(
-            color: warning ? PdfColors.amber700 : PdfColors.teal700,
-          ),
-          borderRadius: const pw.BorderRadius.all(pw.Radius.circular(8)),
-        ),
-        child: pw.Row(
-          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-          children: [
-            pw.Text(label),
-            pw.Text(value, style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-          ],
-        ),
-      );
+  }) => pw.Container(
+    width: double.infinity,
+    padding: const pw.EdgeInsets.all(12),
+    decoration: pw.BoxDecoration(
+      color: warning ? PdfColors.amber50 : PdfColors.teal50,
+      border: pw.Border.all(
+        color: warning ? PdfColors.amber700 : PdfColors.teal700,
+      ),
+      borderRadius: const pw.BorderRadius.all(pw.Radius.circular(8)),
+    ),
+    child: pw.Row(
+      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+      children: [
+        pw.Text(label),
+        pw.Text(value, style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      ],
+    ),
+  );
 
   static pw.Widget _heading(String value) => pw.Padding(
     padding: const pw.EdgeInsets.only(bottom: 8),

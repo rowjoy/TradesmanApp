@@ -9,8 +9,7 @@ import 'currency_catalog.dart';
 class Money implements Comparable<Money> {
   const Money({required this.minorUnits, required this.currencyCode});
 
-  const Money.zero(this.currencyCode)
-    : minorUnits = 0;
+  const Money.zero(this.currencyCode) : minorUnits = 0;
 
   final int minorUnits;
   final String currencyCode;

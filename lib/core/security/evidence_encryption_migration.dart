@@ -26,10 +26,9 @@ class EvidenceEncryptionMigration {
   Future<void> _migrate() async {
     try {
       final db = await DatabaseHelper.instance.database;
-      final columns = (await db.rawQuery('PRAGMA table_info(attachments)'))
-          .map((row) => row['name'])
-          .whereType<String>()
-          .toSet();
+      final columns = (await db.rawQuery(
+        'PRAGMA table_info(attachments)',
+      )).map((row) => row['name']).whereType<String>().toSet();
       if (!columns.contains('encryption_version')) return;
       final hasSharedCopy = columns.contains('shared_copy_path');
       final rows = await db.query(

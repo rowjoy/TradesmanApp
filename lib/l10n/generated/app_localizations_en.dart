@@ -146,7 +146,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get privacySetupNote =>
-      'Your setup is saved only on this device. Cloud backup is optional and can be enabled later.';
+      'Your setup is saved only on this device. You can create an encrypted backup file in Settings.';
 
   @override
   String get setupSaveFailed =>
@@ -159,16 +159,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navWork => 'Work';
 
   @override
-  String get navMoney => 'Money';
+  String get navMoney => 'Pay';
 
   @override
-  String get navProof => 'Proof';
+  String get navProof => 'Records';
 
   @override
-  String get navMore => 'More';
+  String get navMore => 'Settings';
 
   @override
-  String get moneyTitle => 'Money';
+  String get moneyTitle => 'Pay & Income';
 
   @override
   String get moneyExpected => 'Expected earnings';
@@ -184,20 +184,20 @@ class AppLocalizationsEn extends AppLocalizations {
       'Complete a tracked job to see deterministic earnings here.';
 
   @override
-  String get proofTitle => 'Proof';
+  String get proofTitle => 'Work Records';
 
   @override
-  String get proofSubtitle => 'Local activity record';
+  String get proofSubtitle => 'Activity saved on this device';
 
   @override
   String get proofEmpty =>
       'Actions recorded from this version will appear here.';
 
   @override
-  String get savedOnDevice => 'Saved on this device';
+  String get savedOnDevice => 'Stored on This Device';
 
   @override
-  String get localOnlyStatus => 'Local only';
+  String get localOnlyStatus => 'Stored on This Device';
 
   @override
   String get auditOnboardingCompleted => 'WorkProof setup completed';
@@ -245,10 +245,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tradesmanFlow => 'Customer work';
 
   @override
-  String get peopleTitle => 'People & services';
+  String get peopleTitle => 'Contacts & Services';
 
   @override
-  String get calendarTitle => 'Calendar';
+  String get calendarTitle => 'Work Calendar';
 
   @override
   String get newShift => 'New shift';
@@ -394,7 +394,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notesLabel => 'Notes';
 
   @override
-  String get timeZoneLabel => 'IANA time zone';
+  String get timeZoneLabel => 'Time Zone';
 
   @override
   String get newCustomer => 'New customer';
@@ -727,6 +727,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get helpAndGuidance => 'Help & guidance';
 
   @override
+  String get sendFeedbackOnWhatsApp => 'Send feedback on WhatsApp';
+
+  @override
+  String whatsAppFeedbackSubtitle(String phoneNumber) {
+    return 'Opens an editable draft to $phoneNumber';
+  }
+
+  @override
+  String get whatsAppFeedbackMessage =>
+      'Hi WorkProof team, I would like to share feedback:';
+
+  @override
+  String get whatsAppFeedbackFailed =>
+      'Could not open WhatsApp. Please try again.';
+
+  @override
   String get replayShowcase => 'Replay time tracking guide';
 
   @override
@@ -778,7 +794,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get showcaseProofBody =>
-      'Corrections require a reason. Final time and pay calculations are saved for Proof.';
+      'Corrections require a reason. Final time and pay calculations are saved in Work Records.';
 
   @override
   String get skipShowcase => 'Skip guide';
@@ -808,7 +824,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notificationsTitle => 'Notifications';
 
   @override
-  String get offlineNotificationsTitle => 'Offline notifications & job alerts';
+  String get offlineNotificationsTitle => 'Work Reminders & Alerts';
 
   @override
   String get offlineNotificationsDescription =>
@@ -821,17 +837,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get localDataDescription => 'No account or internet is required.';
 
   @override
-  String get payProtectionGuide => 'Pay Protection guide';
+  String get payProtectionGuide => 'Pay Review guide';
 
   @override
   String get payProtectionGuideDescription =>
-      'See expected pay, payslip, evidence and export';
+      'Review expected pay, payslips, supporting documents, and exports.';
 
   @override
   String get regionLanguageTitle => 'Region & language';
 
   @override
-  String get localWorkspaceTitle => 'Your local workspace';
+  String get localWorkspaceTitle => 'Data on This Device';
 
   @override
   String get localWorkspaceDescription =>
@@ -841,10 +857,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appLanguageLabel => 'App language';
 
   @override
-  String get countryMarketLabel => 'Country / market';
+  String get countryMarketLabel => 'Country or Region';
 
   @override
-  String get defaultCurrencyLabel => 'Default workspace currency';
+  String get defaultCurrencyLabel => 'Default Currency';
 
   @override
   String get currencyHistoryNote =>
@@ -860,19 +876,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get preferencesSaveFailed => 'Preferences could not be saved.';
 
   @override
-  String get m05PayProtection => 'Pay Protection';
+  String get m05PayProtection => 'Pay Review';
 
   @override
-  String get m05WorkerPay => 'Worker pay';
+  String get m05WorkerPay => 'My Pay';
 
   @override
-  String get m05BusinessMoney => 'Business money';
+  String get m05BusinessMoney => 'Business Income';
 
   @override
-  String get m05PayAtAGlance => 'Pay at a glance';
+  String get m05PayAtAGlance => 'Pay Summary';
 
   @override
-  String get m05StartAPayPeriod => 'Start a pay period';
+  String get m05StartAPayPeriod => 'Add a Pay Period';
 
   @override
   String get m05PayPeriods => 'Pay periods';
@@ -923,7 +939,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get m05EditPayslip => 'Edit payslip';
 
   @override
-  String get m05AddEvidence => 'Add evidence';
+  String get m05AddEvidence => 'Add a document';
 
   @override
   String get m05RecordedHours => 'Recorded hours';
@@ -1051,10 +1067,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Choose employer, schedule and currency inside this screen. No popup dropdown is used.';
 
   @override
-  String get m05CreatePayProtectionPeriod => 'Create pay protection period';
+  String get m05CreatePayProtectionPeriod => 'Add a Pay Period';
 
   @override
-  String get m05ReviewEvidenceExport => 'Review, evidence, export';
+  String get m05ReviewEvidenceExport => 'Review Pay & Documents';
 
   @override
   String get m05OpenAPeriodToAddAPayslip =>
@@ -1083,7 +1099,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get m05ExportCouldNotBeCreated => 'Export could not be created.';
 
   @override
-  String get m05EvidenceTimeline => 'Evidence timeline';
+  String get m05EvidenceTimeline => 'Documents & Notes';
 
   @override
   String get m05ExportsUseSelectedEvidenceAndPrivacyShare =>
@@ -1421,11 +1437,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recordDeleted => 'Record deleted.';
 
   @override
-  String get payEvidencePacksTitle => 'Pay evidence packs';
+  String get payEvidencePacksTitle => 'Pay Records & Exports';
 
   @override
   String get payEvidencePacksDescription =>
-      'Open payslips, evidence and PDF + ZIP exports from Money';
+      'Open payslips, supporting documents, and PDF + ZIP exports from Pay & Income.';
 
   @override
   String get auditPreferencesUpdated => 'Workspace preferences updated';
@@ -1549,7 +1565,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get lockNow => 'Lock now';
 
   @override
-  String get evidenceEncryptionTitle => 'Encrypted evidence';
+  String get evidenceEncryptionTitle => 'Protected Documents';
 
   @override
   String get evidenceEncryptionDescription =>
@@ -1811,7 +1827,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reportAllParties => 'All employers and customers';
 
   @override
-  String get reportWorkerSummary => 'Worker pay summary';
+  String get reportWorkerSummary => 'Pay summary';
 
   @override
   String get reportIncomeSummary => 'Business income summary';
@@ -1914,14 +1930,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'Some completed entries have no saved rate. Review totals before sharing.';
 
   @override
-  String get marketingStudioTitle => 'Marketing Studio';
+  String get marketingStudioTitle => 'Create Promotions';
 
   @override
   String get marketingStudioSubtitle =>
       'Create a premium promotion image or PDF offline, then share it with Facebook, WhatsApp, email or another device app.';
 
   @override
-  String get marketingProfileTitle => 'Business or personal promotion';
+  String get marketingProfileTitle => 'Promotion Details';
 
   @override
   String get marketingNameLabel => 'Company or professional name';
@@ -1945,7 +1961,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get marketingWebsiteLabel => 'Website or social page';
 
   @override
-  String get marketingTemplateLabel => 'Premium design';
+  String get marketingTemplateLabel => 'Design Style';
 
   @override
   String get marketingTemplateProfessional => 'Professional';
@@ -1957,10 +1973,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get marketingTemplateElegant => 'Elegant';
 
   @override
-  String get marketingChooseLogo => 'Add logo or photo';
+  String get marketingChooseLogo => 'Add company logo';
 
   @override
   String get marketingRemoveLogo => 'Remove logo';
+
+  @override
+  String get marketingChooseCoverPhoto => 'Add business photo';
+
+  @override
+  String get marketingRemoveCoverPhoto => 'Remove business photo';
 
   @override
   String get marketingPreview => 'Live promotion preview';
@@ -1992,8 +2014,211 @@ class AppLocalizationsEn extends AppLocalizations {
       'Choose a PNG, JPG or WebP logo up to 12 MB.';
 
   @override
+  String get marketingCoverPhotoFailed =>
+      'Choose a PNG, JPG or WebP business photo up to 12 MB.';
+
+  @override
   String get marketingRequiredInfo => 'Add the required promotion information.';
 
   @override
   String get marketingContactRequired => 'Add a phone number or email address.';
+
+  @override
+  String get aboutWorkProof => 'About WorkProof';
+
+  @override
+  String get appInformationTitle => 'App information';
+
+  @override
+  String get aboutAppDescription =>
+      'An offline-first work companion for planning jobs and shifts, tracking time, reviewing pay, and keeping reliable records.';
+
+  @override
+  String get rateWorkProof => 'Rate WorkProof';
+
+  @override
+  String get storeListingFailed =>
+      'The app store could not be opened. Try again.';
+
+  @override
+  String get appFeaturesTitle => 'What you can do';
+
+  @override
+  String versionLabel(String version) {
+    return 'Version $version';
+  }
+
+  @override
+  String get versionUnavailable => 'Version unavailable';
+
+  @override
+  String get featureDetails => 'Feature details';
+
+  @override
+  String get openFeature => 'Open feature';
+
+  @override
+  String get featureWorkShortDescription =>
+      'Create, schedule, and manage customer jobs or employer shifts.';
+
+  @override
+  String get featureWorkDescription =>
+      'Keep each job or shift organized with its schedule, pricing, reminders, and current status.';
+
+  @override
+  String get featureTimeTrackingTitle => 'Time Tracking';
+
+  @override
+  String get featureTimeTrackingShortDescription =>
+      'Clock in and out, record breaks, and compare planned time with actual time.';
+
+  @override
+  String get featureTimeTrackingDescription =>
+      'Track work offline with one reliable timer, paid or unpaid breaks, corrections with reasons, and saved earnings calculations.';
+
+  @override
+  String get featureContactsShortDescription =>
+      'Keep employers, workplaces, customers, and services organized.';
+
+  @override
+  String get featureContactsDescription =>
+      'Save the people, places, and services connected to your work so new jobs and shifts are quicker to create.';
+
+  @override
+  String get featureCalendarShortDescription =>
+      'See jobs and shifts by date and plan what is coming next.';
+
+  @override
+  String get featureCalendarDescription =>
+      'Browse a monthly calendar and daily agenda, then open or add the work you need.';
+
+  @override
+  String get featurePayShortDescription =>
+      'Review expected pay, received pay, business income, and outstanding amounts.';
+
+  @override
+  String get featurePayDescription =>
+      'Compare pay periods and payslips or review invoices, payments, expenses, and income from your saved work.';
+
+  @override
+  String get featureRecordsShortDescription =>
+      'Keep a clear, on-device history of important work and pay activity.';
+
+  @override
+  String get featureRecordsDescription =>
+      'Review saved activity, supporting documents, corrections, and exports that help explain what happened.';
+
+  @override
+  String get featureReportsShortDescription =>
+      'Create weekly, monthly, or custom reports from your saved records.';
+
+  @override
+  String get featureReportsDescription =>
+      'Review work, time, pay, and business totals, then export PDF or CSV statements offline.';
+
+  @override
+  String get featureRemindersShortDescription =>
+      'Get on-device alerts for upcoming work, breaks, and planned finish times.';
+
+  @override
+  String get featureRemindersDescription =>
+      'Choose reminder timing, quiet hours, privacy, and daily summaries without needing an internet connection.';
+
+  @override
+  String get featureBackupShortDescription =>
+      'Create encrypted backup files and safely restore your workspace.';
+
+  @override
+  String get featureBackupDescription =>
+      'Protect local records and documents with a password-encrypted backup that is verified before restore.';
+
+  @override
+  String get featureSecurityShortDescription =>
+      'Protect private records with a PIN, biometrics, and encrypted documents.';
+
+  @override
+  String get featureSecurityDescription =>
+      'Lock WorkProof when you are away and keep new supporting files encrypted on this device.';
+
+  @override
+  String get featurePromotionsShortDescription =>
+      'Create a polished promotion image or PDF and share it from your device.';
+
+  @override
+  String get featurePromotionsDescription =>
+      'Save your services, contact details, logo, offer, and design style to make reusable promotional material offline.';
+
+  @override
+  String get codeToolsTitle => 'Scan & Create Codes';
+
+  @override
+  String get codeToolsShortDescription =>
+      'Scan QR codes and barcodes or create and share your own.';
+
+  @override
+  String get codeToolsDescription =>
+      'Use the camera to read supported codes, or generate QR codes and barcodes from text entirely on your device.';
+
+  @override
+  String get manageJobTitle => 'Manage Job';
+
+  @override
+  String get manageJobDescription =>
+      'Status · Costs · Payments · Job documents';
+
+  @override
+  String get jobStatusTitle => 'Job Status';
+
+  @override
+  String get costsAndPaymentsTitle => 'Costs & Payments';
+
+  @override
+  String get jobDocumentsTitle => 'Job Documents';
+
+  @override
+  String get updateAvailableTitle => 'New Version Available';
+
+  @override
+  String get updateAvailableMessage =>
+      'A new version of WorkProof is available with improvements, bug fixes, and new features.';
+
+  @override
+  String get updateRequiredMessage =>
+      'This important update is required to continue safely.';
+
+  @override
+  String get updateNow => 'Update Now';
+
+  @override
+  String get later => 'Later';
+
+  @override
+  String get checkingForUpdates => 'Checking for updates…';
+
+  @override
+  String get installingUpdate => 'Preparing your update…';
+
+  @override
+  String get updateDownloadReadyTitle => 'Update Ready';
+
+  @override
+  String get updateDownloadReadyMessage =>
+      'The update has downloaded. Restart WorkProof to finish installing it.';
+
+  @override
+  String get restartToUpdate => 'Restart to Update';
+
+  @override
+  String get updateFailed =>
+      'The update could not be completed. You can continue using WorkProof.';
+
+  @override
+  String get updateCheckFailed =>
+      'Updates could not be checked right now. You can continue normally.';
+
+  @override
+  String get latestVersionInstalled => 'You already have the latest version.';
+
+  @override
+  String get checkForUpdates => 'Check for Updates';
 }

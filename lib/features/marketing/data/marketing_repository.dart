@@ -15,13 +15,17 @@ class MarketingLogoException implements Exception {
   const MarketingLogoException();
 }
 
+typedef MarketingImagePicker = Future<FilePickerResult?> Function();
+
 class MarketingRepository {
-  const MarketingRepository(this._databaseHelper);
+  MarketingRepository(this._databaseHelper, {MarketingImagePicker? imagePicker})
+    : _imagePicker = imagePicker ?? _pickMarketingImage;
 
   static const _profileKey = 'marketing_profile_v1';
   static const _maxLogoBytes = 12 * 1024 * 1024;
 
   final DatabaseHelper _databaseHelper;
+  final MarketingImagePicker _imagePicker;
 
   Future<MarketingProfile> load() async {
     final db = await _databaseHelper.database;
@@ -52,24 +56,33 @@ class MarketingRepository {
     }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<Uint8List?> pickLogo() async {
-    final result = await FilePicker.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: const ['png', 'jpg', 'jpeg', 'webp'],
-      allowMultiple: false,
-      withData: true,
-    );
+  Future<Uint8List?> pickLogo() => _pickAndPrepareImage(
+    maxDimension: 512,
+    debugName: 'workproof-marketing-logo',
+  );
+
+  Future<Uint8List?> pickCoverPhoto() => _pickAndPrepareImage(
+    maxDimension: 1600,
+    debugName: 'workproof-marketing-cover-photo',
+  );
+
+  Future<Uint8List?> _pickAndPrepareImage({
+    required int maxDimension,
+    required String debugName,
+  }) async {
+    final result = await _imagePicker();
     if (result == null || result.files.isEmpty) return null;
     final picked = result.files.single;
     if (picked.size > _maxLogoBytes) throw const MarketingLogoException();
-    final bytes = picked.bytes ??
+    final bytes =
+        picked.bytes ??
         (picked.path == null ? null : await File(picked.path!).readAsBytes());
     if (bytes == null || bytes.isEmpty || bytes.length > _maxLogoBytes) {
       throw const MarketingLogoException();
     }
     return BackgroundTaskRunner.run(
-      () => _prepareMarketingLogo(bytes),
-      debugName: 'workproof-marketing-logo',
+      () => _prepareMarketingImage(bytes, maxDimension),
+      debugName: debugName,
     );
   }
 }
@@ -78,14 +91,51 @@ final marketingRepositoryProvider = Provider(
   (ref) => MarketingRepository(DatabaseHelper.instance),
 );
 
-Future<Uint8List> _prepareMarketingLogo(Uint8List source) async {
-  var decoded = img.decodeImage(source);
-  if (decoded == null) throw const MarketingLogoException();
-  decoded = img.bakeOrientation(decoded);
-  if (decoded.width > 512 || decoded.height > 512) {
-    decoded = decoded.width >= decoded.height
-        ? img.copyResize(decoded, width: 512)
-        : img.copyResize(decoded, height: 512);
+Future<FilePickerResult?> _pickMarketingImage() => FilePicker.pickFiles(
+  type: FileType.custom,
+  allowedExtensions: const ['png', 'jpg', 'jpeg', 'webp'],
+  allowMultiple: false,
+  withData: true,
+);
+
+Future<Uint8List> _prepareMarketingImage(
+  Uint8List source,
+  int maxDimension,
+) async {
+  try {
+    final decoder = img.findDecoderForData(source);
+    if (decoder == null ||
+        !const {
+          img.ImageFormat.jpg,
+          img.ImageFormat.png,
+          img.ImageFormat.webp,
+        }.contains(decoder.format)) {
+      throw const MarketingLogoException();
+    }
+    final info = decoder.startDecode(source);
+    if (info == null ||
+        !marketingImageDimensionsAreSafe(info.width, info.height)) {
+      throw const MarketingLogoException();
+    }
+    var decoded = decoder.decodeFrame(0);
+    if (decoded == null) throw const MarketingLogoException();
+    decoded = img.bakeOrientation(decoded);
+    if (decoded.width > maxDimension || decoded.height > maxDimension) {
+      decoded = decoded.width >= decoded.height
+          ? img.copyResize(decoded, width: maxDimension)
+          : img.copyResize(decoded, height: maxDimension);
+    }
+    return Uint8List.fromList(img.encodePng(decoded, level: 6));
+  } on MarketingLogoException {
+    rethrow;
+  } catch (_) {
+    throw const MarketingLogoException();
   }
-  return Uint8List.fromList(img.encodePng(decoded, level: 6));
 }
+
+const _maxDecodedMarketingImagePixels = 16 * 1000 * 1000;
+
+bool marketingImageDimensionsAreSafe(int width, int height) =>
+    width > 0 &&
+    height > 0 &&
+    width <= _maxDecodedMarketingImagePixels ~/ height;

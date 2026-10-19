@@ -79,8 +79,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       );
       return;
     }
-    if (_page == _introPageCount + 2 &&
-        !_validateRate(localizedContext)) {
+    if (_page == _introPageCount + 2 && !_validateRate(localizedContext)) {
       return;
     }
     _pageController.nextPage(
@@ -232,8 +231,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       _IntroStep(
                         asset: 'assets/onboarding/track_offline.svg',
                         title: localizedContext.l10n.tagline,
-                        description:
-                            localizedContext.l10n.showcaseClockInBody,
+                        description: localizedContext.l10n.showcaseClockInBody,
                         benefits: [
                           localizedContext.l10n.clockIn,
                           localizedContext.l10n.startBreak,
@@ -593,9 +591,9 @@ class _MarketStep extends StatelessWidget {
           options: CurrencyCatalog.markets
               .map((item) => item.code)
               .toList(growable: false),
-          optionLabel: (value) => CurrencyCatalog.market(value).label(
-            languageCode: Localizations.localeOf(context).languageCode,
-          ),
+          optionLabel: (value) => CurrencyCatalog.market(
+            value,
+          ).label(languageCode: Localizations.localeOf(context).languageCode),
           optionLeading: (value) => Text(CurrencyCatalog.market(value).flag),
           leading: const Icon(Icons.public_rounded),
           onChanged: onCountryChanged,
@@ -607,9 +605,9 @@ class _MarketStep extends StatelessWidget {
           options: CurrencyCatalog.currencies
               .map((item) => item.code)
               .toList(growable: false),
-          optionLabel: (value) => CurrencyCatalog.currency(value).label(
-            languageCode: Localizations.localeOf(context).languageCode,
-          ),
+          optionLabel: (value) => CurrencyCatalog.currency(
+            value,
+          ).label(languageCode: Localizations.localeOf(context).languageCode),
           optionLeading: (value) => Text(
             CurrencyCatalog.currency(value).symbol,
             style: const TextStyle(fontWeight: FontWeight.w800),

@@ -23,10 +23,7 @@ class SecureKeyStore {
     if (value.length != 32) {
       throw const FormatException('Evidence key must contain 32 bytes.');
     }
-    return _storage.write(
-      key: _evidenceKeyName,
-      value: base64UrlEncode(value),
-    );
+    return _storage.write(key: _evidenceKeyName, value: base64UrlEncode(value));
   }
 
   Future<String> recoverySecret() async {

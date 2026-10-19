@@ -13,11 +13,7 @@ void main() {
     test('does not accept negative input unless explicitly allowed', () {
       expect(Money.tryParse('-5.00', currencyCode: 'GBP'), isNull);
       expect(
-        Money.tryParse(
-          '-5.00',
-          currencyCode: 'GBP',
-          allowNegative: true,
-        ),
+        Money.tryParse('-5.00', currencyCode: 'GBP', allowNegative: true),
         const Money(minorUnits: -500, currencyCode: 'GBP'),
       );
     });

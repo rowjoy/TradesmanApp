@@ -148,7 +148,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get privacySetupNote =>
-      'Configurarea este salvată doar pe acest dispozitiv.';
+      'Configurarea este salvată doar pe acest dispozitiv. Poți crea un fișier de backup criptat din Setări.';
 
   @override
   String get setupSaveFailed => 'Configurarea nu a fost salvată.';
@@ -160,16 +160,16 @@ class AppLocalizationsRo extends AppLocalizations {
   String get navWork => 'Muncă';
 
   @override
-  String get navMoney => 'Bani';
+  String get navMoney => 'Plată';
 
   @override
-  String get navProof => 'Dovadă';
+  String get navProof => 'Evidențe';
 
   @override
-  String get navMore => 'Mai mult';
+  String get navMore => 'Setări';
 
   @override
-  String get moneyTitle => 'Bani';
+  String get moneyTitle => 'Plăți și venituri';
 
   @override
   String get moneyExpected => 'Câștiguri estimate';
@@ -185,19 +185,19 @@ class AppLocalizationsRo extends AppLocalizations {
       'Finalizează o lucrare pentru a vedea calculele aici.';
 
   @override
-  String get proofTitle => 'Dovadă';
+  String get proofTitle => 'Evidența muncii';
 
   @override
-  String get proofSubtitle => 'Jurnal de activitate local';
+  String get proofSubtitle => 'Activitate salvată pe acest dispozitiv';
 
   @override
   String get proofEmpty => 'Activitățile înregistrate vor apărea aici.';
 
   @override
-  String get savedOnDevice => 'Salvat pe dispozitiv';
+  String get savedOnDevice => 'Stocat pe acest dispozitiv';
 
   @override
-  String get localOnlyStatus => 'Doar local';
+  String get localOnlyStatus => 'Stocat pe acest dispozitiv';
 
   @override
   String get auditOnboardingCompleted =>
@@ -246,10 +246,10 @@ class AppLocalizationsRo extends AppLocalizations {
   String get tradesmanFlow => 'Muncă clienți';
 
   @override
-  String get peopleTitle => 'Persoane și servicii';
+  String get peopleTitle => 'Contacte și servicii';
 
   @override
-  String get calendarTitle => 'Calendar';
+  String get calendarTitle => 'Calendar de lucru';
 
   @override
   String get newShift => 'Tură nouă';
@@ -720,6 +720,22 @@ class AppLocalizationsRo extends AppLocalizations {
   String get helpAndGuidance => 'Ajutor și ghid';
 
   @override
+  String get sendFeedbackOnWhatsApp => 'Trimite feedback pe WhatsApp';
+
+  @override
+  String whatsAppFeedbackSubtitle(String phoneNumber) {
+    return 'Deschide o ciornă editabilă către $phoneNumber';
+  }
+
+  @override
+  String get whatsAppFeedbackMessage =>
+      'Bună, echipa WorkProof, aș dori să ofer feedback:';
+
+  @override
+  String get whatsAppFeedbackFailed =>
+      'Nu s-a putut deschide WhatsApp. Încearcă din nou.';
+
+  @override
   String get replayShowcase => 'Reia ghidul de utilizare';
 
   @override
@@ -768,7 +784,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get showcaseProofTitle => 'Păstrează înregistrări sigure';
 
   @override
-  String get showcaseProofBody => 'Modificările necesită motivare.';
+  String get showcaseProofBody =>
+      'Corecțiile necesită un motiv. Calculele finale de timp și plată sunt salvate în Evidența muncii.';
 
   @override
   String get skipShowcase => 'Omite';
@@ -798,8 +815,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get notificationsTitle => 'Notificări';
 
   @override
-  String get offlineNotificationsTitle =>
-      'Notificări offline și alerte de lucru';
+  String get offlineNotificationsTitle => 'Mementouri și alerte de lucru';
 
   @override
   String get offlineNotificationsDescription =>
@@ -812,17 +828,17 @@ class AppLocalizationsRo extends AppLocalizations {
   String get localDataDescription => 'Nu este necesar un cont sau internet.';
 
   @override
-  String get payProtectionGuide => 'Ghid pentru protecția plății';
+  String get payProtectionGuide => 'Ghid pentru verificarea plății';
 
   @override
   String get payProtectionGuideDescription =>
-      'Vezi plata estimată, fluturașul, dovezile și exportul';
+      'Verifică plata estimată, fluturașii de salariu, documentele justificative și exporturile.';
 
   @override
   String get regionLanguageTitle => 'Regiune și limbă';
 
   @override
-  String get localWorkspaceTitle => 'Spațiul tău local de lucru';
+  String get localWorkspaceTitle => 'Date pe acest dispozitiv';
 
   @override
   String get localWorkspaceDescription =>
@@ -832,10 +848,10 @@ class AppLocalizationsRo extends AppLocalizations {
   String get appLanguageLabel => 'Limba aplicației';
 
   @override
-  String get countryMarketLabel => 'Țară / piață';
+  String get countryMarketLabel => 'Țară sau regiune';
 
   @override
-  String get defaultCurrencyLabel => 'Moneda implicită a spațiului de lucru';
+  String get defaultCurrencyLabel => 'Monedă implicită';
 
   @override
   String get currencyHistoryNote =>
@@ -851,19 +867,19 @@ class AppLocalizationsRo extends AppLocalizations {
   String get preferencesSaveFailed => 'Preferințele nu au putut fi salvate.';
 
   @override
-  String get m05PayProtection => 'Pay Protection';
+  String get m05PayProtection => 'Verificarea plății';
 
   @override
-  String get m05WorkerPay => 'Worker pay';
+  String get m05WorkerPay => 'Plata mea';
 
   @override
-  String get m05BusinessMoney => 'Business money';
+  String get m05BusinessMoney => 'Venituri din afacere';
 
   @override
-  String get m05PayAtAGlance => 'Pay at a glance';
+  String get m05PayAtAGlance => 'Rezumatul plății';
 
   @override
-  String get m05StartAPayPeriod => 'Start a pay period';
+  String get m05StartAPayPeriod => 'Adaugă o perioadă de plată';
 
   @override
   String get m05PayPeriods => 'Pay periods';
@@ -914,7 +930,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get m05EditPayslip => 'Edit payslip';
 
   @override
-  String get m05AddEvidence => 'Add evidence';
+  String get m05AddEvidence => 'Adaugă un document';
 
   @override
   String get m05RecordedHours => 'Recorded hours';
@@ -1042,10 +1058,10 @@ class AppLocalizationsRo extends AppLocalizations {
       'Choose employer, schedule and currency inside this screen. No popup dropdown is used.';
 
   @override
-  String get m05CreatePayProtectionPeriod => 'Create pay protection period';
+  String get m05CreatePayProtectionPeriod => 'Adaugă o perioadă de plată';
 
   @override
-  String get m05ReviewEvidenceExport => 'Review, evidence, export';
+  String get m05ReviewEvidenceExport => 'Verifică plata și documentele';
 
   @override
   String get m05OpenAPeriodToAddAPayslip =>
@@ -1074,7 +1090,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get m05ExportCouldNotBeCreated => 'Export could not be created.';
 
   @override
-  String get m05EvidenceTimeline => 'Evidence timeline';
+  String get m05EvidenceTimeline => 'Documente și notițe';
 
   @override
   String get m05ExportsUseSelectedEvidenceAndPrivacyShare =>
@@ -1412,11 +1428,11 @@ class AppLocalizationsRo extends AppLocalizations {
   String get recordDeleted => 'Record deleted.';
 
   @override
-  String get payEvidencePacksTitle => 'Pay evidence packs';
+  String get payEvidencePacksTitle => 'Evidențe de plată și exporturi';
 
   @override
   String get payEvidencePacksDescription =>
-      'Open payslips, evidence and PDF + ZIP exports from Money';
+      'Deschide fluturași de salariu, documente justificative și exporturi PDF + ZIP din Plăți și venituri.';
 
   @override
   String get auditPreferencesUpdated => 'Workspace preferences updated';
@@ -1540,7 +1556,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get lockNow => 'Lock now';
 
   @override
-  String get evidenceEncryptionTitle => 'Encrypted evidence';
+  String get evidenceEncryptionTitle => 'Documente protejate';
 
   @override
   String get evidenceEncryptionDescription =>
@@ -1802,7 +1818,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get reportAllParties => 'All employers and customers';
 
   @override
-  String get reportWorkerSummary => 'Worker pay summary';
+  String get reportWorkerSummary => 'Rezumatul plății';
 
   @override
   String get reportIncomeSummary => 'Business income summary';
@@ -1905,86 +1921,300 @@ class AppLocalizationsRo extends AppLocalizations {
       'Some completed entries have no saved rate. Review totals before sharing.';
 
   @override
-  String get marketingStudioTitle => 'Marketing Studio';
+  String get marketingStudioTitle => 'Creează materiale promoționale';
 
   @override
   String get marketingStudioSubtitle =>
-      'Create a premium promotion image or PDF offline, then share it with Facebook, WhatsApp, email or another device app.';
+      'Creează offline o imagine promoțională elegantă sau un PDF, apoi distribuie-l prin Facebook, WhatsApp, e-mail ori altă aplicație de pe dispozitiv.';
 
   @override
-  String get marketingProfileTitle => 'Business or personal promotion';
+  String get marketingProfileTitle => 'Detaliile promovării';
 
   @override
-  String get marketingNameLabel => 'Company or professional name';
+  String get marketingNameLabel => 'Numele companiei sau numele profesional';
 
   @override
-  String get marketingHeadlineLabel => 'Headline or short message';
+  String get marketingHeadlineLabel => 'Titlu sau mesaj scurt';
 
   @override
-  String get marketingOfferLabel => 'Offer or promotion (optional)';
+  String get marketingOfferLabel => 'Ofertă sau promoție (opțional)';
 
   @override
-  String get marketingServicesLabel => 'Services';
+  String get marketingServicesLabel => 'Servicii';
 
   @override
-  String get marketingServicesHint => 'Enter one service per line';
+  String get marketingServicesHint =>
+      'Introdu câte un serviciu pe fiecare rând';
 
   @override
-  String get marketingServicesTitle => 'Our services';
+  String get marketingServicesTitle => 'Serviciile noastre';
 
   @override
-  String get marketingWebsiteLabel => 'Website or social page';
+  String get marketingWebsiteLabel => 'Site web sau pagină socială';
 
   @override
-  String get marketingTemplateLabel => 'Premium design';
+  String get marketingTemplateLabel => 'Stilul designului';
 
   @override
-  String get marketingTemplateProfessional => 'Professional';
+  String get marketingTemplateProfessional => 'Profesional';
 
   @override
-  String get marketingTemplateBold => 'Bold';
+  String get marketingTemplateBold => 'Îndrăzneț';
 
   @override
   String get marketingTemplateElegant => 'Elegant';
 
   @override
-  String get marketingChooseLogo => 'Add logo or photo';
+  String get marketingChooseLogo => 'Adaugă sigla firmei';
 
   @override
-  String get marketingRemoveLogo => 'Remove logo';
+  String get marketingRemoveLogo => 'Elimină sigla';
 
   @override
-  String get marketingPreview => 'Live promotion preview';
+  String get marketingChooseCoverPhoto => 'Adaugă o fotografie de afaceri';
 
   @override
-  String get marketingSaveProfile => 'Save promotion profile';
+  String get marketingRemoveCoverPhoto => 'Elimină fotografia de afaceri';
 
   @override
-  String get marketingProfileSaved => 'Promotion profile saved on this device.';
+  String get marketingPreview => 'Previzualizare live a promovării';
 
   @override
-  String get marketingCreateImage => 'Image';
+  String get marketingSaveProfile => 'Salvează detaliile promovării';
+
+  @override
+  String get marketingProfileSaved =>
+      'Detaliile promovării au fost salvate pe acest dispozitiv.';
+
+  @override
+  String get marketingCreateImage => 'Imagine';
 
   @override
   String get marketingCreatePdf => 'PDF';
 
   @override
-  String get marketingCreating => 'Creating…';
+  String get marketingCreating => 'Se creează…';
 
   @override
   String get marketingExportSaved =>
-      'Promotion saved. Choose an app to share it.';
+      'Materialul promoțional a fost salvat. Alege o aplicație pentru a-l distribui.';
 
   @override
-  String get marketingExportFailed => 'The promotion could not be created.';
+  String get marketingExportFailed =>
+      'Materialul promoțional nu a putut fi creat.';
 
   @override
   String get marketingLogoFailed =>
-      'Choose a PNG, JPG or WebP logo up to 12 MB.';
+      'Alege o siglă PNG, JPG sau WebP de cel mult 12 MB.';
 
   @override
-  String get marketingRequiredInfo => 'Add the required promotion information.';
+  String get marketingCoverPhotoFailed =>
+      'Alege o fotografie de afaceri PNG, JPG sau WebP de cel mult 12 MB.';
 
   @override
-  String get marketingContactRequired => 'Add a phone number or email address.';
+  String get marketingRequiredInfo =>
+      'Adaugă informațiile necesare pentru promovare.';
+
+  @override
+  String get marketingContactRequired =>
+      'Adaugă un număr de telefon sau o adresă de e-mail.';
+
+  @override
+  String get aboutWorkProof => 'Despre WorkProof';
+
+  @override
+  String get appInformationTitle => 'Informații despre aplicație';
+
+  @override
+  String get aboutAppDescription =>
+      'Un ajutor de lucru conceput în primul rând pentru utilizare offline, pentru planificarea lucrărilor și turelor, urmărirea timpului, verificarea plății și păstrarea unor evidențe de încredere.';
+
+  @override
+  String get rateWorkProof => 'Evaluează WorkProof';
+
+  @override
+  String get storeListingFailed =>
+      'Magazinul de aplicații nu a putut fi deschis. Încearcă din nou.';
+
+  @override
+  String get appFeaturesTitle => 'Ce poți face';
+
+  @override
+  String versionLabel(String version) {
+    return 'Versiunea $version';
+  }
+
+  @override
+  String get versionUnavailable => 'Versiunea nu este disponibilă';
+
+  @override
+  String get featureDetails => 'Detaliile funcției';
+
+  @override
+  String get openFeature => 'Deschide funcția';
+
+  @override
+  String get featureWorkShortDescription =>
+      'Creează, programează și gestionează lucrări pentru clienți sau ture la angajator.';
+
+  @override
+  String get featureWorkDescription =>
+      'Păstrează fiecare lucrare sau tură organizată cu programul, tariful, mementourile și starea curentă.';
+
+  @override
+  String get featureTimeTrackingTitle => 'Urmărirea timpului';
+
+  @override
+  String get featureTimeTrackingShortDescription =>
+      'Înregistrează începutul și sfârșitul lucrului, pauzele și compară timpul planificat cu cel real.';
+
+  @override
+  String get featureTimeTrackingDescription =>
+      'Urmărește lucrul offline cu un singur cronometru de încredere, pauze plătite sau neplătite, corecții motivate și calcule de venit salvate.';
+
+  @override
+  String get featureContactsShortDescription =>
+      'Organizează angajatorii, locurile de muncă, clienții și serviciile.';
+
+  @override
+  String get featureContactsDescription =>
+      'Salvează persoanele, locurile și serviciile legate de munca ta pentru a crea mai rapid lucrări și ture noi.';
+
+  @override
+  String get featureCalendarShortDescription =>
+      'Vezi lucrările și turele după dată și planifică ce urmează.';
+
+  @override
+  String get featureCalendarDescription =>
+      'Răsfoiește calendarul lunar și agenda zilnică, apoi deschide sau adaugă activitatea necesară.';
+
+  @override
+  String get featurePayShortDescription =>
+      'Verifică plata estimată și primită, veniturile afacerii și sumele restante.';
+
+  @override
+  String get featurePayDescription =>
+      'Compară perioadele de plată și fluturașii de salariu sau verifică facturile, plățile, cheltuielile și veniturile din lucrările salvate.';
+
+  @override
+  String get featureRecordsShortDescription =>
+      'Păstrează pe dispozitiv un istoric clar al activităților importante de muncă și plată.';
+
+  @override
+  String get featureRecordsDescription =>
+      'Verifică activitatea salvată, documentele justificative, corecțiile și exporturile care te ajută să înțelegi ce s-a întâmplat.';
+
+  @override
+  String get featureReportsShortDescription =>
+      'Creează rapoarte săptămânale, lunare sau personalizate din evidențele salvate.';
+
+  @override
+  String get featureReportsDescription =>
+      'Verifică totalurile pentru muncă, timp, plăți și afacere, apoi exportă offline situații PDF sau CSV.';
+
+  @override
+  String get featureRemindersShortDescription =>
+      'Primește pe dispozitiv alerte pentru lucrări viitoare, pauze și orele planificate de încheiere.';
+
+  @override
+  String get featureRemindersDescription =>
+      'Alege ora mementourilor, intervalele de liniște, confidențialitatea și rezumatele zilnice fără conexiune la internet.';
+
+  @override
+  String get featureBackupShortDescription =>
+      'Creează fișiere de backup criptate și restaurează în siguranță spațiul de lucru.';
+
+  @override
+  String get featureBackupDescription =>
+      'Protejează evidențele și documentele locale cu un backup criptat prin parolă, verificat înainte de restaurare.';
+
+  @override
+  String get featureSecurityShortDescription =>
+      'Protejează evidențele private cu PIN, date biometrice și documente criptate.';
+
+  @override
+  String get featureSecurityDescription =>
+      'Blochează WorkProof când nu ești lângă dispozitiv și păstrează noile fișiere justificative criptate pe acesta.';
+
+  @override
+  String get featurePromotionsShortDescription =>
+      'Creează o imagine promoțională elegantă sau un PDF și distribuie-l de pe dispozitiv.';
+
+  @override
+  String get featurePromotionsDescription =>
+      'Salvează serviciile, datele de contact, sigla, oferta și stilul designului pentru a crea offline materiale promoționale reutilizabile.';
+
+  @override
+  String get codeToolsTitle => 'Scanează și creează coduri';
+
+  @override
+  String get codeToolsShortDescription =>
+      'Scanează coduri QR și coduri de bare sau creează și distribuie propriile coduri.';
+
+  @override
+  String get codeToolsDescription =>
+      'Folosește camera pentru a citi codurile acceptate sau generează coduri QR și coduri de bare din text, integral pe dispozitiv.';
+
+  @override
+  String get manageJobTitle => 'Gestionează lucrarea';
+
+  @override
+  String get manageJobDescription =>
+      'Stare · Costuri · Plăți · Documentele lucrării';
+
+  @override
+  String get jobStatusTitle => 'Starea lucrării';
+
+  @override
+  String get costsAndPaymentsTitle => 'Costuri și plăți';
+
+  @override
+  String get jobDocumentsTitle => 'Documentele lucrării';
+
+  @override
+  String get updateAvailableTitle => 'Este disponibilă o versiune nouă';
+
+  @override
+  String get updateAvailableMessage =>
+      'Este disponibilă o versiune nouă de WorkProof, cu îmbunătățiri, remedieri și funcții noi.';
+
+  @override
+  String get updateRequiredMessage =>
+      'Această actualizare importantă este necesară pentru a continua în siguranță.';
+
+  @override
+  String get updateNow => 'Actualizează acum';
+
+  @override
+  String get later => 'Mai târziu';
+
+  @override
+  String get checkingForUpdates => 'Se caută actualizări…';
+
+  @override
+  String get installingUpdate => 'Se pregătește actualizarea…';
+
+  @override
+  String get updateDownloadReadyTitle => 'Actualizarea este gata';
+
+  @override
+  String get updateDownloadReadyMessage =>
+      'Actualizarea a fost descărcată. Repornește WorkProof pentru a încheia instalarea.';
+
+  @override
+  String get restartToUpdate => 'Repornește pentru actualizare';
+
+  @override
+  String get updateFailed =>
+      'Actualizarea nu a putut fi finalizată. Poți continua să folosești WorkProof.';
+
+  @override
+  String get updateCheckFailed =>
+      'Actualizările nu pot fi verificate acum. Poți continua să folosești aplicația în mod normal.';
+
+  @override
+  String get latestVersionInstalled => 'Ai deja cea mai recentă versiune.';
+
+  @override
+  String get checkForUpdates => 'Caută actualizări';
 }

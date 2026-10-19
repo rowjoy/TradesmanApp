@@ -11,10 +11,12 @@ abstract interface class NotificationGateway {
   Stream<String> get taps;
   String get localTimeZone;
   Future<String?> initialize();
+  Future<void> refreshTimeZone();
   Future<bool> requestPermission();
   Future<bool?> permissionEnabled();
   Future<void> openSettings();
   Future<Set<int>> pendingIds();
+  Future<void> cancelAllPending();
   Future<void> showTest({
     required String title,
     required String body,
@@ -42,14 +44,7 @@ class LocalNotificationGateway implements NotificationGateway {
   @override
   Future<String?> initialize() async {
     tz_data.initializeTimeZones();
-    try {
-      final zone = await FlutterTimezone.getLocalTimezone();
-      _localTimeZone = zone.identifier;
-      tz.setLocalLocation(tz.getLocation(_localTimeZone));
-    } catch (_) {
-      _localTimeZone = 'Etc/UTC';
-      tz.setLocalLocation(tz.UTC);
-    }
+    await refreshTimeZone();
     const settings = InitializationSettings(
       android: AndroidInitializationSettings('ic_stat_workproof'),
       iOS: DarwinInitializationSettings(
@@ -74,6 +69,19 @@ class LocalNotificationGateway implements NotificationGateway {
     return launch?.didNotificationLaunchApp == true
         ? launch?.notificationResponse?.payload
         : null;
+  }
+
+  @override
+  Future<void> refreshTimeZone() async {
+    try {
+      final zone = await FlutterTimezone.getLocalTimezone();
+      final location = tz.getLocation(zone.identifier);
+      _localTimeZone = zone.identifier;
+      tz.setLocalLocation(location);
+    } catch (_) {
+      _localTimeZone = 'Etc/UTC';
+      tz.setLocalLocation(tz.UTC);
+    }
   }
 
   @override
@@ -143,6 +151,9 @@ class LocalNotificationGateway implements NotificationGateway {
       (await _plugin.pendingNotificationRequests())
           .map((item) => item.id)
           .toSet();
+
+  @override
+  Future<void> cancelAllPending() => _plugin.cancelAllPendingNotifications();
 
   @override
   Future<void> cancel(int id) => _plugin.cancel(id: id);

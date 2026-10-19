@@ -106,10 +106,7 @@ class BackupController extends StateNotifier<BackupState> {
         backupPath: path,
         password: password,
       );
-      state = state.copyWith(
-        action: BackupAction.idle,
-        prepared: prepared,
-      );
+      state = state.copyWith(action: BackupAction.idle, prepared: prepared);
       return true;
     } catch (error) {
       state = state.copyWith(
@@ -136,10 +133,7 @@ class BackupController extends StateNotifier<BackupState> {
         );
         return false;
       }
-      state = state.copyWith(
-        action: BackupAction.idle,
-        prepared: prepared,
-      );
+      state = state.copyWith(action: BackupAction.idle, prepared: prepared);
       return true;
     } catch (error) {
       state = state.copyWith(
@@ -187,37 +181,35 @@ class BackupController extends StateNotifier<BackupState> {
     );
   }
 
-Future<void> clearPrepared() async {
-  if (!mounted) return;
+  Future<void> clearPrepared() async {
+    if (!mounted) return;
 
-  final prepared = state.prepared;
+    final prepared = state.prepared;
 
-  // await-এর আগেই state clear করুন।
-  state = state.copyWith(clearPrepared: true);
+    // await-এর আগেই state clear করুন।
+    state = state.copyWith(clearPrepared: true);
 
-  if (prepared != null) {
-    await _discardPreparedSafely(prepared);
+    if (prepared != null) {
+      await _discardPreparedSafely(prepared);
+    }
   }
-}
 
-Future<void> _discardPreparedSafely(
-  PreparedRestore prepared,
-) async {
-  try {
-    await _service.discardPreparedRestore(prepared);
-  } catch (_) {
-    // Temporary restore cleanup failure should not crash the app.
+  Future<void> _discardPreparedSafely(PreparedRestore prepared) async {
+    try {
+      await _service.discardPreparedRestore(prepared);
+    } catch (_) {
+      // Temporary restore cleanup failure should not crash the app.
+    }
   }
-}
 
-void cleanupOnDispose() {
-  if (!mounted) return;
+  void cleanupOnDispose() {
+    if (!mounted) return;
 
-  final prepared = state.prepared;
-  if (prepared != null) {
-    unawaited(_discardPreparedSafely(prepared));
+    final prepared = state.prepared;
+    if (prepared != null) {
+      unawaited(_discardPreparedSafely(prepared));
+    }
   }
-}
 
   String _errorCode(Object error, {required String fallback}) {
     final value = error.toString().toLowerCase();
@@ -234,11 +226,9 @@ void cleanupOnDispose() {
 
 final backupControllerProvider =
     StateNotifierProvider.autoDispose<BackupController, BackupState>((ref) {
-  final controller = BackupController(
-    ref.watch(backupServiceProvider),
-  );
+      final controller = BackupController(ref.watch(backupServiceProvider));
 
-  ref.onDispose(controller.cleanupOnDispose);
+      ref.onDispose(controller.cleanupOnDispose);
 
-  return controller;
-});
+      return controller;
+    });

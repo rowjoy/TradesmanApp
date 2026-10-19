@@ -185,9 +185,7 @@ class DatabaseHelper {
         FOREIGN KEY (job_id) REFERENCES jobs(id)
       )
     ''');
-    await db.execute(
-      'CREATE INDEX idx_time_entries_job ON time_entries(job_id)',
-    );
+    await db.execute('CREATE INDEX idx_time_entries_job ON time_entries(job_id)');
 
     await db.execute('''
       CREATE TABLE break_entries (
@@ -205,9 +203,7 @@ class DatabaseHelper {
         FOREIGN KEY (time_entry_id) REFERENCES time_entries(id)
       )
     ''');
-    await db.execute(
-      'CREATE INDEX idx_break_entries_time_entry ON break_entries(time_entry_id)',
-    );
+    await db.execute('CREATE INDEX idx_break_entries_time_entry ON break_entries(time_entry_id)');
 
     await db.execute('''
       CREATE TABLE materials (
@@ -271,41 +267,21 @@ class DatabaseHelper {
 
   Future<void> _migrateV1ToV2(Database db) async {
     await _addColumnIfMissing(db, 'customers', 'workspace_id', 'TEXT');
-    await _addColumnIfMissing(
-      db,
-      'customers',
-      'local_version',
-      'INTEGER NOT NULL DEFAULT 1',
-    );
+    await _addColumnIfMissing(db, 'customers', 'local_version', 'INTEGER NOT NULL DEFAULT 1');
     await _addColumnIfMissing(db, 'customers', 'server_version', 'INTEGER');
     await _addColumnIfMissing(db, 'customers', 'last_synced_at', 'TEXT');
 
     await _addColumnIfMissing(db, 'services', 'workspace_id', 'TEXT');
     await _addColumnIfMissing(db, 'services', 'default_rate_minor', 'INTEGER');
-    await _addColumnIfMissing(
-      db,
-      'services',
-      'tax_basis_points',
-      'INTEGER NOT NULL DEFAULT 0',
-    );
+    await _addColumnIfMissing(db, 'services', 'tax_basis_points', 'INTEGER NOT NULL DEFAULT 0');
 
     await _addColumnIfMissing(db, 'jobs', 'workspace_id', 'TEXT');
     await _addColumnIfMissing(db, 'jobs', 'start_at_utc', 'TEXT');
     await _addColumnIfMissing(db, 'jobs', 'end_at_utc', 'TEXT');
-    await _addColumnIfMissing(
-      db,
-      'jobs',
-      'iana_time_zone',
-      "TEXT NOT NULL DEFAULT 'Etc/UTC'",
-    );
+    await _addColumnIfMissing(db, 'jobs', 'iana_time_zone', "TEXT NOT NULL DEFAULT 'Etc/UTC'");
     await _addColumnIfMissing(db, 'jobs', 'hourly_rate_minor', 'INTEGER');
     await _addColumnIfMissing(db, 'jobs', 'fixed_price_minor', 'INTEGER');
-    await _addColumnIfMissing(
-      db,
-      'jobs',
-      'local_version',
-      'INTEGER NOT NULL DEFAULT 1',
-    );
+    await _addColumnIfMissing(db, 'jobs', 'local_version', 'INTEGER NOT NULL DEFAULT 1');
     await _addColumnIfMissing(db, 'jobs', 'server_version', 'INTEGER');
     await _addColumnIfMissing(db, 'jobs', 'last_synced_at', 'TEXT');
 
@@ -885,50 +861,20 @@ class DatabaseHelper {
   Future<void> _migrateV2ToV3(Database db) async {
     await _addColumnIfMissing(db, 'employers', 'default_rate_minor', 'INTEGER');
     await _addColumnIfMissing(db, 'employers', 'official_reference', 'TEXT');
-    await _addColumnIfMissing(
-      db,
-      'workplaces',
-      'iana_time_zone',
-      "TEXT NOT NULL DEFAULT 'Europe/London'",
-    );
+    await _addColumnIfMissing(db, 'workplaces', 'iana_time_zone', "TEXT NOT NULL DEFAULT 'Etc/UTC'");
 
     for (final table in ['jobs', 'shifts']) {
       await _addColumnIfMissing(db, table, 'start_local', 'TEXT');
       await _addColumnIfMissing(db, table, 'end_local', 'TEXT');
       await _addColumnIfMissing(db, table, 'start_offset_minutes', 'INTEGER');
       await _addColumnIfMissing(db, table, 'end_offset_minutes', 'INTEGER');
-      await _addColumnIfMissing(
-        db,
-        table,
-        'reminders_enabled',
-        'INTEGER NOT NULL DEFAULT 1',
-      );
+      await _addColumnIfMissing(db, table, 'reminders_enabled', 'INTEGER NOT NULL DEFAULT 1');
     }
     await _addColumnIfMissing(db, 'shifts', 'hourly_rate_minor', 'INTEGER');
-    await _addColumnIfMissing(
-      db,
-      'shifts',
-      'break_minutes',
-      'INTEGER NOT NULL DEFAULT 0',
-    );
-    await _addColumnIfMissing(
-      db,
-      'shifts',
-      'break_is_paid',
-      'INTEGER NOT NULL DEFAULT 0',
-    );
-    await _addColumnIfMissing(
-      db,
-      'services',
-      'pricing_type',
-      "TEXT NOT NULL DEFAULT 'hourly'",
-    );
-    await _addColumnIfMissing(
-      db,
-      'services',
-      'local_version',
-      'INTEGER NOT NULL DEFAULT 1',
-    );
+    await _addColumnIfMissing(db, 'shifts', 'break_minutes', 'INTEGER NOT NULL DEFAULT 0');
+    await _addColumnIfMissing(db, 'shifts', 'break_is_paid', 'INTEGER NOT NULL DEFAULT 0');
+    await _addColumnIfMissing(db, 'services', 'pricing_type', "TEXT NOT NULL DEFAULT 'hourly'");
+    await _addColumnIfMissing(db, 'services', 'local_version', 'INTEGER NOT NULL DEFAULT 1');
 
     await db.execute('''
       UPDATE jobs
@@ -1180,42 +1126,12 @@ class DatabaseHelper {
   /// stale notifications without relying on an in-memory background isolate.
   Future<void> _migrateV4ToV5(Database db) async {
     for (final table in ['jobs', 'shifts']) {
-      await _addColumnIfMissing(
-        db,
-        table,
-        'reminder_uses_global_defaults',
-        'INTEGER NOT NULL DEFAULT 1',
-      );
-      await _addColumnIfMissing(
-        db,
-        table,
-        'reminder_preview_offset_seconds',
-        'INTEGER NOT NULL DEFAULT 86400',
-      );
-      await _addColumnIfMissing(
-        db,
-        table,
-        'reminder_prepare_offset_seconds',
-        'INTEGER NOT NULL DEFAULT 7200',
-      );
-      await _addColumnIfMissing(
-        db,
-        table,
-        'reminder_start_offset_seconds',
-        'INTEGER NOT NULL DEFAULT 1800',
-      );
-      await _addColumnIfMissing(
-        db,
-        table,
-        'reminder_morning_enabled',
-        'INTEGER NOT NULL DEFAULT 1',
-      );
-      await _addColumnIfMissing(
-        db,
-        table,
-        'reminder_end_enabled',
-        'INTEGER NOT NULL DEFAULT 1',
-      );
+      await _addColumnIfMissing(db, table, 'reminder_uses_global_defaults', 'INTEGER NOT NULL DEFAULT 1');
+      await _addColumnIfMissing(db, table, 'reminder_preview_offset_seconds', 'INTEGER NOT NULL DEFAULT 86400');
+      await _addColumnIfMissing(db, table, 'reminder_prepare_offset_seconds', 'INTEGER NOT NULL DEFAULT 7200');
+      await _addColumnIfMissing(db, table, 'reminder_start_offset_seconds', 'INTEGER NOT NULL DEFAULT 1800');
+      await _addColumnIfMissing(db, table, 'reminder_morning_enabled', 'INTEGER NOT NULL DEFAULT 1');
+      await _addColumnIfMissing(db, table, 'reminder_end_enabled', 'INTEGER NOT NULL DEFAULT 1');
     }
 
     await _addColumnIfMissing(db, 'notifications', 'scheduled_for_utc', 'TEXT');
@@ -1224,57 +1140,17 @@ class DatabaseHelper {
     await _addColumnIfMissing(db, 'notifications', 'payload_json', 'TEXT');
     await _addColumnIfMissing(db, 'notifications', 'title_text', 'TEXT');
     await _addColumnIfMissing(db, 'notifications', 'body_text', 'TEXT');
-    await _addColumnIfMissing(
-      db,
-      'notifications',
-      'content_fingerprint',
-      'TEXT',
-    );
+    await _addColumnIfMissing(db, 'notifications', 'content_fingerprint', 'TEXT');
     await _addColumnIfMissing(db, 'notifications', 'content_locale', 'TEXT');
 
-    await _addColumnIfMissing(
-      db,
-      'job_alert_preferences',
-      'cooldown_seconds',
-      'INTEGER NOT NULL DEFAULT 3600',
-    );
-    await _addColumnIfMissing(
-      db,
-      'job_alert_preferences',
-      'sound_enabled',
-      'INTEGER NOT NULL DEFAULT 1',
-    );
-    await _addColumnIfMissing(
-      db,
-      'job_alert_preferences',
-      'vibration_enabled',
-      'INTEGER NOT NULL DEFAULT 1',
-    );
-    await _addColumnIfMissing(
-      db,
-      'job_alert_preferences',
-      'delivery_time_minutes',
-      'INTEGER',
-    );
+    await _addColumnIfMissing(db, 'job_alert_preferences', 'cooldown_seconds', 'INTEGER NOT NULL DEFAULT 3600');
+    await _addColumnIfMissing(db, 'job_alert_preferences', 'sound_enabled', 'INTEGER NOT NULL DEFAULT 1');
+    await _addColumnIfMissing(db, 'job_alert_preferences', 'vibration_enabled', 'INTEGER NOT NULL DEFAULT 1');
+    await _addColumnIfMissing(db, 'job_alert_preferences', 'delivery_time_minutes', 'INTEGER');
 
-    await _addColumnIfMissing(
-      db,
-      'motivation_settings',
-      'custom_message',
-      'TEXT',
-    );
-    await _addColumnIfMissing(
-      db,
-      'motivation_settings',
-      'quiet_start_minutes',
-      'INTEGER NOT NULL DEFAULT 1320',
-    );
-    await _addColumnIfMissing(
-      db,
-      'motivation_settings',
-      'quiet_end_minutes',
-      'INTEGER NOT NULL DEFAULT 420',
-    );
+    await _addColumnIfMissing(db, 'motivation_settings', 'custom_message', 'TEXT');
+    await _addColumnIfMissing(db, 'motivation_settings', 'quiet_start_minutes', 'INTEGER NOT NULL DEFAULT 1320');
+    await _addColumnIfMissing(db, 'motivation_settings', 'quiet_end_minutes', 'INTEGER NOT NULL DEFAULT 420');
 
     await db.execute('''
       CREATE UNIQUE INDEX IF NOT EXISTS idx_notifications_occurrence
@@ -1293,76 +1169,26 @@ class DatabaseHelper {
   Future<void> _migrateV5ToV6(Database db) async {
     await _addColumnIfMissing(db, 'customers', 'billing_currency_code', 'TEXT');
 
-    await _addColumnIfMissing(
-      db,
-      'pay_periods',
-      'currency_code',
-      "TEXT NOT NULL DEFAULT 'GBP'",
-    );
-    await _addColumnIfMissing(
-      db,
-      'pay_periods',
-      'status',
-      "TEXT NOT NULL DEFAULT 'open'",
-    );
-    await _addColumnIfMissing(
-      db,
-      'pay_periods',
-      'confidence_state',
-      "TEXT NOT NULL DEFAULT 'complete'",
-    );
-    await _addColumnIfMissing(
-      db,
-      'pay_periods',
-      'calculation_snapshot_json',
-      'TEXT',
-    );
+    await _addColumnIfMissing(db, 'pay_periods', 'currency_code', "TEXT NOT NULL DEFAULT 'GBP'");
+    await _addColumnIfMissing(db, 'pay_periods', 'status', "TEXT NOT NULL DEFAULT 'open'");
+    await _addColumnIfMissing(db, 'pay_periods', 'confidence_state', "TEXT NOT NULL DEFAULT 'complete'");
+    await _addColumnIfMissing(db, 'pay_periods', 'calculation_snapshot_json', 'TEXT');
     await _addColumnIfMissing(db, 'pay_periods', 'data_gap_json', 'TEXT');
     await _addColumnIfMissing(db, 'pay_periods', 'notes', 'TEXT');
-    await _addColumnIfMissing(
-      db,
-      'pay_periods',
-      'local_version',
-      'INTEGER NOT NULL DEFAULT 1',
-    );
-    await _addColumnIfMissing(
-      db,
-      'pay_periods',
-      'sync_status',
-      "TEXT NOT NULL DEFAULT 'localOnly'",
-    );
+    await _addColumnIfMissing(db, 'pay_periods', 'local_version', 'INTEGER NOT NULL DEFAULT 1');
+    await _addColumnIfMissing(db, 'pay_periods', 'sync_status', "TEXT NOT NULL DEFAULT 'localOnly'");
 
     await _addColumnIfMissing(db, 'payslips', 'pay_date_utc', 'TEXT');
     await _addColumnIfMissing(db, 'payslips', 'reference', 'TEXT');
     await _addColumnIfMissing(db, 'payslips', 'currency_code', 'TEXT');
-    await _addColumnIfMissing(
-      db,
-      'payslips',
-      'sync_status',
-      "TEXT NOT NULL DEFAULT 'localOnly'",
-    );
+    await _addColumnIfMissing(db, 'payslips', 'sync_status', "TEXT NOT NULL DEFAULT 'localOnly'");
     await _addColumnIfMissing(db, 'pay_adjustments', 'updated_at', 'TEXT');
 
     await _addColumnIfMissing(db, 'attachments', 'shared_copy_path', 'TEXT');
     await _addColumnIfMissing(db, 'attachments', 'shared_copy_sha256', 'TEXT');
-    await _addColumnIfMissing(
-      db,
-      'attachments',
-      'metadata_stripped',
-      'INTEGER NOT NULL DEFAULT 0',
-    );
-    await _addColumnIfMissing(
-      db,
-      'attachments',
-      'original_retained',
-      'INTEGER NOT NULL DEFAULT 1',
-    );
-    await _addColumnIfMissing(
-      db,
-      'evidence_items',
-      'selected_for_export',
-      'INTEGER NOT NULL DEFAULT 1',
-    );
+    await _addColumnIfMissing(db, 'attachments', 'metadata_stripped', 'INTEGER NOT NULL DEFAULT 0');
+    await _addColumnIfMissing(db, 'attachments', 'original_retained', 'INTEGER NOT NULL DEFAULT 1');
+    await _addColumnIfMissing(db, 'evidence_items', 'selected_for_export', 'INTEGER NOT NULL DEFAULT 1');
 
     await db.execute('''
       CREATE TABLE IF NOT EXISTS evidence_exports (
@@ -1461,18 +1287,8 @@ class DatabaseHelper {
   }
 
   Future<void> _migrateV7ToV8(Database db) async {
-    await _addColumnIfMissing(
-      db,
-      'attachments',
-      'encryption_version',
-      'INTEGER NOT NULL DEFAULT 0',
-    );
-    await _addColumnIfMissing(
-      db,
-      'backup_history',
-      'manifest_version',
-      'INTEGER NOT NULL DEFAULT 1',
-    );
+    await _addColumnIfMissing(db, 'attachments', 'encryption_version', 'INTEGER NOT NULL DEFAULT 0');
+    await _addColumnIfMissing(db, 'backup_history', 'manifest_version', 'INTEGER NOT NULL DEFAULT 1');
     await _addColumnIfMissing(db, 'backup_history', 'file_size_bytes', 'INTEGER');
     await _addColumnIfMissing(db, 'backup_history', 'restore_mode', 'TEXT');
   }
@@ -1508,12 +1324,7 @@ class DatabaseHelper {
     await db.execute('PRAGMA optimize');
   }
 
-  Future<void> _addColumnIfMissing(
-    Database db,
-    String table,
-    String column,
-    String declaration,
-  ) async {
+  Future<void> _addColumnIfMissing(Database db, String table, String column, String declaration) async {
     final columns = await db.rawQuery('PRAGMA table_info($table)');
     final exists = columns.any((row) => row['name'] == column);
     if (!exists) {
@@ -1524,26 +1335,110 @@ class DatabaseHelper {
   Future<void> _seedDefaultServices(Database db) async {
     final now = DateTime.now().toUtc().toIso8601String();
     final starterServices = <Map<String, Object>>[
-      {'name': 'Leak Repair', 'category': 'Plumbing', 'default_rate': 40.0},
-      {'name': 'Tap Repair', 'category': 'Plumbing', 'default_rate': 35.0},
-      {'name': 'Boiler Service', 'category': 'Plumbing', 'default_rate': 60.0},
-      {
-        'name': 'Socket Installation',
-        'category': 'Electrical',
-        'default_rate': 35.0,
-      },
-      {'name': 'Fuse Box', 'category': 'Electrical', 'default_rate': 55.0},
-      {'name': 'House Cleaning', 'category': 'Cleaning', 'default_rate': 20.0},
-      {
-        'name': 'Furniture Assembly',
-        'category': 'Handyman',
-        'default_rate': 25.0,
-      },
-      {
-        'name': 'Interior Painting',
-        'category': 'Painting',
-        'default_rate': 30.0,
-      },
+      // Plumbing
+      {'name': 'Leak Repair', 'category': 'Plumbing', 'default_rate': 40.0, 'rate_type': 'hourly'},
+      {'name': 'Tap Repair', 'category': 'Plumbing', 'default_rate': 35.0, 'rate_type': 'hourly'},
+      {'name': 'Pipe Installation', 'category': 'Plumbing', 'default_rate': 45.0, 'rate_type': 'hourly'},
+      {'name': 'Drain Cleaning', 'category': 'Plumbing', 'default_rate': 50.0, 'rate_type': 'fixed'},
+      {'name': 'Toilet Installation', 'category': 'Plumbing', 'default_rate': 80.0, 'rate_type': 'fixed'},
+      {'name': 'Boiler Service', 'category': 'Plumbing', 'default_rate': 60.0, 'rate_type': 'fixed'},
+      {'name': 'Full Day Plumber', 'category': 'Plumbing', 'default_rate': 250.0, 'rate_type': 'daily'},
+
+      // Electrical
+      {'name': 'Socket Installation', 'category': 'Electrical', 'default_rate': 35.0, 'rate_type': 'fixed'},
+      {'name': 'Light Installation', 'category': 'Electrical', 'default_rate': 30.0, 'rate_type': 'fixed'},
+      {'name': 'Ceiling Fan Installation', 'category': 'Electrical', 'default_rate': 45.0, 'rate_type': 'fixed'},
+      {'name': 'Fuse Box Repair', 'category': 'Electrical', 'default_rate': 55.0, 'rate_type': 'hourly'},
+      {'name': 'Electrical Troubleshooting', 'category': 'Electrical', 'default_rate': 45.0, 'rate_type': 'hourly'},
+      {'name': 'Full Day Electrician', 'category': 'Electrical', 'default_rate': 280.0, 'rate_type': 'daily'},
+
+      // Cleaning
+      {'name': 'House Cleaning', 'category': 'Cleaning', 'default_rate': 20.0, 'rate_type': 'hourly'},
+      {'name': 'Office Cleaning', 'category': 'Cleaning', 'default_rate': 25.0, 'rate_type': 'hourly'},
+      {'name': 'Kitchen Cleaning', 'category': 'Cleaning', 'default_rate': 25.0, 'rate_type': 'hourly'},
+      {'name': 'Bathroom Cleaning', 'category': 'Cleaning', 'default_rate': 25.0, 'rate_type': 'hourly'},
+      {'name': 'Window Cleaning', 'category': 'Cleaning', 'default_rate': 25.0, 'rate_type': 'hourly'},
+      {'name': 'Carpet Cleaning', 'category': 'Cleaning', 'default_rate': 60.0, 'rate_type': 'fixed'},
+      {'name': 'Sofa Cleaning', 'category': 'Cleaning', 'default_rate': 50.0, 'rate_type': 'fixed'},
+      {'name': 'Full Day Cleaner', 'category': 'Cleaning', 'default_rate': 140.0, 'rate_type': 'daily'},
+
+      // Handyman
+      {'name': 'Furniture Assembly', 'category': 'Handyman', 'default_rate': 25.0, 'rate_type': 'hourly'},
+      {'name': 'TV Wall Mounting', 'category': 'Handyman', 'default_rate': 50.0, 'rate_type': 'fixed'},
+      {'name': 'Curtain Installation', 'category': 'Handyman', 'default_rate': 25.0, 'rate_type': 'hourly'},
+      {'name': 'Shelf Installation', 'category': 'Handyman', 'default_rate': 30.0, 'rate_type': 'hourly'},
+      {'name': 'Door Repair', 'category': 'Handyman', 'default_rate': 35.0, 'rate_type': 'hourly'},
+      {'name': 'General Home Maintenance', 'category': 'Handyman', 'default_rate': 30.0, 'rate_type': 'hourly'},
+      {'name': 'Full Day Handyman', 'category': 'Handyman', 'default_rate': 200.0, 'rate_type': 'daily'},
+
+      // Painting
+      {'name': 'Interior Painting', 'category': 'Painting', 'default_rate': 30.0, 'rate_type': 'hourly'},
+      {'name': 'Exterior Painting', 'category': 'Painting', 'default_rate': 35.0, 'rate_type': 'hourly'},
+      {'name': 'Wallpaper Installation', 'category': 'Painting', 'default_rate': 30.0, 'rate_type': 'hourly'},
+      {'name': 'Wall Surface Preparation', 'category': 'Painting', 'default_rate': 25.0, 'rate_type': 'hourly'},
+      {'name': 'Full Day Painter', 'category': 'Painting', 'default_rate': 200.0, 'rate_type': 'daily'},
+
+      // Carpentry
+      {'name': 'Furniture Repair', 'category': 'Carpentry', 'default_rate': 35.0, 'rate_type': 'hourly'},
+      {'name': 'Cabinet Installation', 'category': 'Carpentry', 'default_rate': 40.0, 'rate_type': 'hourly'},
+      {'name': 'Wooden Door Installation', 'category': 'Carpentry', 'default_rate': 90.0, 'rate_type': 'fixed'},
+      {'name': 'Full Day Carpenter', 'category': 'Carpentry', 'default_rate': 240.0, 'rate_type': 'daily'},
+
+      // Gardening
+      {'name': 'Lawn Mowing', 'category': 'Gardening', 'default_rate': 25.0, 'rate_type': 'hourly'},
+      {'name': 'Garden Maintenance', 'category': 'Gardening', 'default_rate': 25.0, 'rate_type': 'hourly'},
+      {'name': 'Hedge Trimming', 'category': 'Gardening', 'default_rate': 30.0, 'rate_type': 'hourly'},
+      {'name': 'Planting and Potting', 'category': 'Gardening', 'default_rate': 20.0, 'rate_type': 'hourly'},
+      {'name': 'Full Day Gardener', 'category': 'Gardening', 'default_rate': 160.0, 'rate_type': 'daily'},
+
+      // Moving
+      {'name': 'Packing and Unpacking', 'category': 'Moving', 'default_rate': 20.0, 'rate_type': 'hourly'},
+      {'name': 'Loading and Unloading', 'category': 'Moving', 'default_rate': 25.0, 'rate_type': 'hourly'},
+      {'name': 'Furniture Moving', 'category': 'Moving', 'default_rate': 30.0, 'rate_type': 'hourly'},
+      {'name': 'Full Day Moving Helper', 'category': 'Moving', 'default_rate': 170.0, 'rate_type': 'daily'},
+
+      // Appliance Repair
+      {'name': 'Washing Machine Repair', 'category': 'Appliance Repair', 'default_rate': 45.0, 'rate_type': 'hourly'},
+      {'name': 'Refrigerator Repair', 'category': 'Appliance Repair', 'default_rate': 50.0, 'rate_type': 'hourly'},
+      {'name': 'Oven Repair', 'category': 'Appliance Repair', 'default_rate': 45.0, 'rate_type': 'hourly'},
+      {'name': 'Dishwasher Installation', 'category': 'Appliance Repair', 'default_rate': 70.0, 'rate_type': 'fixed'},
+
+      // Air Conditioning
+      {'name': 'AC Servicing', 'category': 'Air Conditioning', 'default_rate': 60.0, 'rate_type': 'fixed'},
+      {'name': 'AC Installation', 'category': 'Air Conditioning', 'default_rate': 120.0, 'rate_type': 'fixed'},
+      {'name': 'AC Troubleshooting', 'category': 'Air Conditioning', 'default_rate': 45.0, 'rate_type': 'hourly'},
+
+      // IT Support
+      {'name': 'Computer Troubleshooting', 'category': 'IT Support', 'default_rate': 30.0, 'rate_type': 'hourly'},
+      {'name': 'Software Installation', 'category': 'IT Support', 'default_rate': 25.0, 'rate_type': 'fixed'},
+      {'name': 'WiFi and Router Setup', 'category': 'IT Support', 'default_rate': 40.0, 'rate_type': 'fixed'},
+      {'name': 'Printer Setup', 'category': 'IT Support', 'default_rate': 30.0, 'rate_type': 'fixed'},
+      {'name': 'Full Day IT Support', 'category': 'IT Support', 'default_rate': 220.0, 'rate_type': 'daily'},
+
+      // Domestic Help
+      {'name': 'Cooking Assistance', 'category': 'Domestic Help', 'default_rate': 20.0, 'rate_type': 'hourly'},
+      {'name': 'Laundry and Ironing', 'category': 'Domestic Help', 'default_rate': 18.0, 'rate_type': 'hourly'},
+      {'name': 'Grocery Shopping Assistance', 'category': 'Domestic Help', 'default_rate': 18.0, 'rate_type': 'hourly'},
+      {'name': 'Full Day Domestic Helper', 'category': 'Domestic Help', 'default_rate': 120.0, 'rate_type': 'daily'},
+
+      // Vehicle Care
+      {'name': 'Car Washing', 'category': 'Vehicle Care', 'default_rate': 25.0, 'rate_type': 'fixed'},
+      {'name': 'Car Interior Cleaning', 'category': 'Vehicle Care', 'default_rate': 40.0, 'rate_type': 'fixed'},
+      {'name': 'Driver Service', 'category': 'Vehicle Care', 'default_rate': 20.0, 'rate_type': 'hourly'},
+      {'name': 'Full Day Driver', 'category': 'Vehicle Care', 'default_rate': 140.0, 'rate_type': 'daily'},
+
+      // Events
+      {'name': 'Event Setup Assistance', 'category': 'Events', 'default_rate': 20.0, 'rate_type': 'hourly'},
+      {'name': 'Event Serving Staff', 'category': 'Events', 'default_rate': 18.0, 'rate_type': 'hourly'},
+      {'name': 'Event Cleanup', 'category': 'Events', 'default_rate': 20.0, 'rate_type': 'hourly'},
+      {'name': 'Full Day Event Helper', 'category': 'Events', 'default_rate': 130.0, 'rate_type': 'daily'},
+
+      // Other
+      {'name': 'General Labour', 'category': 'Other', 'default_rate': 18.0, 'rate_type': 'hourly'},
+      {'name': 'Full Day General Labour', 'category': 'Other', 'default_rate': 120.0, 'rate_type': 'daily'},
+      {'name': 'Custom Hourly Service', 'category': 'Other', 'default_rate': 20.0, 'rate_type': 'hourly'},
+      {'name': 'Custom Daily Service', 'category': 'Other', 'default_rate': 140.0, 'rate_type': 'daily'},
+      {'name': 'Custom Fixed Price Service', 'category': 'Other', 'default_rate': 50.0, 'rate_type': 'fixed'},
     ];
     for (final service in starterServices) {
       final name = service['name']! as String;

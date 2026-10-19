@@ -33,7 +33,7 @@ class _LiveSecondBuilderState extends State<LiveSecondBuilder>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _tickerModeEnabled = TickerMode.of(context);
+    _tickerModeEnabled = TickerMode.valuesOf(context).enabled;
     _syncTimer();
   }
 

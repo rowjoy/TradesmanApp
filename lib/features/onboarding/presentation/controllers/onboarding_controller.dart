@@ -27,6 +27,17 @@ class OnboardingController extends StateNotifier<AsyncValue<LocalProfile?>> {
     state = await AsyncValue.guard(_repository.load);
   }
 
+  Future<void> reloadAfterRestore() async {
+    final previous = state;
+    try {
+      final restored = await _repository.load();
+      state = AsyncData(restored);
+    } catch (error, stackTrace) {
+      state = previous;
+      Error.throwWithStackTrace(error, stackTrace);
+    }
+  }
+
   Future<LocalProfile> complete(LocalProfileDraft draft) async {
     final saved = await _repository.completeSetup(draft);
     state = AsyncData(saved);

@@ -16,7 +16,6 @@ class ReportRepository {
     if (!filter.endUtc.isAfter(filter.startUtc)) {
       throw const FormatException('Report end must be after start.');
     }
-    final db = await _databaseHelper.database;
     final timeLines = await _timeLines(filter);
     final parties = await _parties(filter.scope);
 

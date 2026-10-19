@@ -50,11 +50,7 @@ class _NotificationSettingsScreenState
     final state = ref.watch(notificationControllerProvider);
     final controller = ref.read(notificationControllerProvider.notifier);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          context.l10n.m04NotificationsJobAlerts,
-        ),
-      ),
+      appBar: AppBar(title: Text(context.l10n.m04NotificationsJobAlerts)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -93,12 +89,8 @@ class _NotificationSettingsScreenState
           Card(
             child: SwitchListTile(
               secondary: const Icon(Icons.visibility_off_outlined),
-              title: Text(
-                context.l10n.m04PrivateLockScreenText,
-              ),
-              subtitle: Text(
-                context.l10n.m04HidesJobCustomerAndWorkplaceNames,
-              ),
+              title: Text(context.l10n.m04PrivateLockScreenText),
+              subtitle: Text(context.l10n.m04HidesJobCustomerAndWorkplaceNames),
               value: _privateText(state.preferences),
               onChanged: state.busy
                   ? null
@@ -120,9 +112,7 @@ class _NotificationSettingsScreenState
                 children: [
                   SwitchListTile(
                     contentPadding: EdgeInsets.zero,
-                    title: Text(
-                      context.l10n.m04CalmDailyMessage,
-                    ),
+                    title: Text(context.l10n.m04CalmDailyMessage),
                     subtitle: Text(
                       context.l10n.m04OffByDefaultAndSuppressedNearImportant,
                     ),
@@ -141,9 +131,7 @@ class _NotificationSettingsScreenState
                       leading: const Icon(Icons.schedule_outlined),
                       onChanged: (value) {
                         controller.saveMotivation(
-                          state.motivation.copyWith(
-                            deliveryTimeMinutes: value,
-                          ),
+                          state.motivation.copyWith(deliveryTimeMinutes: value),
                         );
                       },
                     ),
@@ -167,9 +155,7 @@ class _NotificationSettingsScreenState
           Card(
             child: ListTile(
               leading: const Icon(Icons.bedtime_outlined),
-              title: Text(
-                context.l10n.m04QuietHours22000700,
-              ),
+              title: Text(context.l10n.m04QuietHours22000700),
               subtitle: Text(
                 context.l10n.m04PreviewAndMotivationWaitTimeSensitiveWork,
               ),
@@ -180,9 +166,7 @@ class _NotificationSettingsScreenState
             child: ListTile(
               leading: const Icon(Icons.info_outline),
               title: Text(context.l10n.m04OfflineDelivery),
-              subtitle: Text(
-                context.l10n.m04NoInternetIsNeededOSBatteryRules,
-              ),
+              subtitle: Text(context.l10n.m04NoInternetIsNeededOSBatteryRules),
             ),
           ),
         ],
@@ -264,11 +248,7 @@ List<int> _timingChoices(AlertCategory category) => switch (category) {
   _ => const [],
 };
 
-String _timingLabel(
-  BuildContext context,
-  AlertCategory category,
-  int value,
-) {
+String _timingLabel(BuildContext context, AlertCategory category, int value) {
   if (category == AlertCategory.morningDigest) {
     return '${(value ~/ 60).toString().padLeft(2, '0')}:'
         '${(value % 60).toString().padLeft(2, '0')}';
@@ -281,10 +261,7 @@ String _timingLabel(
 }
 
 class _PermissionCard extends StatelessWidget {
-  const _PermissionCard({
-    required this.state,
-    required this.controller,
-  });
+  const _PermissionCard({required this.state, required this.controller});
   final NotificationState state;
   final NotificationController controller;
 
@@ -377,7 +354,9 @@ class _PermissionCard extends StatelessWidget {
                               if (sent) {
                                 AppFeedback.success(
                                   context,
-                                  Localizations.localeOf(context).languageCode ==
+                                  Localizations.localeOf(
+                                            context,
+                                          ).languageCode ==
                                           'bn'
                                       ? 'Test notification পাঠানো হয়েছে।'
                                       : 'Test notification sent.',
@@ -392,7 +371,9 @@ class _PermissionCard extends StatelessWidget {
                               if (context.mounted) {
                                 AppFeedback.error(
                                   context,
-                                  Localizations.localeOf(context).languageCode ==
+                                  Localizations.localeOf(
+                                            context,
+                                          ).languageCode ==
                                           'bn'
                                       ? 'Test notification পাঠানো যায়নি।'
                                       : 'Test notification failed.',
@@ -425,17 +406,16 @@ class _PermissionCard extends StatelessWidget {
   }
 }
 
-String _label(BuildContext context, AlertCategory category) => switch (category) {
-  AlertCategory.tomorrowPreview =>
-    context.l10n.m04PreviousDayPreview,
-  AlertCategory.morningDigest =>
-    context.l10n.m04700MorningDigest,
-  AlertCategory.prepare => context.l10n.m04PreparationAlert,
-  AlertCategory.startsSoon => context.l10n.m04StartsSoon,
-  AlertCategory.breakReminder => context.l10n.m04ActiveWorkBreak,
-  AlertCategory.scheduledEnd => context.l10n.m04ScheduledFinish,
-  AlertCategory.motivation => context.l10n.m04Motivation,
-};
+String _label(BuildContext context, AlertCategory category) =>
+    switch (category) {
+      AlertCategory.tomorrowPreview => context.l10n.m04PreviousDayPreview,
+      AlertCategory.morningDigest => context.l10n.m04700MorningDigest,
+      AlertCategory.prepare => context.l10n.m04PreparationAlert,
+      AlertCategory.startsSoon => context.l10n.m04StartsSoon,
+      AlertCategory.breakReminder => context.l10n.m04ActiveWorkBreak,
+      AlertCategory.scheduledEnd => context.l10n.m04ScheduledFinish,
+      AlertCategory.motivation => context.l10n.m04Motivation,
+    };
 
 IconData _icon(AlertCategory category) => switch (category) {
   AlertCategory.tomorrowPreview => Icons.event_outlined,

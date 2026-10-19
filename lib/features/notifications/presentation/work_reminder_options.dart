@@ -40,17 +40,13 @@ class WorkReminderOptions extends StatelessWidget {
       child: ExpansionTile(
         leading: const Icon(Icons.tune_outlined),
         title: Text(context.l10n.m04ReminderDetails),
-        subtitle: Text(
-          context.l10n.m04DefaultsAreReadyChangeOnlyIfNeeded,
-        ),
+        subtitle: Text(context.l10n.m04DefaultsAreReadyChangeOnlyIfNeeded),
         childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
         children: [
           SwitchListTile(
             contentPadding: EdgeInsets.zero,
             title: Text(context.l10n.m04UseAppDefaults),
-            subtitle: Text(
-              context.l10n.m04TimingChangesInSettingsWillApplyTo,
-            ),
+            subtitle: Text(context.l10n.m04TimingChangesInSettingsWillApplyTo),
             value: usesGlobalDefaults,
             onChanged: onUsesGlobalDefaultsChanged,
           ),
@@ -90,20 +86,14 @@ class WorkReminderOptions extends StatelessWidget {
             ),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
-              title: Text(
-                context.l10n.m04700MorningDigest,
-              ),
+              title: Text(context.l10n.m04700MorningDigest),
               value: morningEnabled,
               onChanged: onMorningChanged,
             ),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
-              title: Text(
-                context.l10n.m04EndAlertForActiveWork,
-              ),
-              subtitle: Text(
-                context.l10n.m04OnlyShownAfterClockIn,
-              ),
+              title: Text(context.l10n.m04EndAlertForActiveWork),
+              subtitle: Text(context.l10n.m04OnlyShownAfterClockIn),
               value: endEnabled,
               onChanged: onEndChanged,
             ),

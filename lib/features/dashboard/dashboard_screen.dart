@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import '../../core/router/app_router.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/formatters.dart';
-import '../../core/widgets/banner_ad_widget.dart';
 import '../../core/widgets/loading_skeleton.dart';
 import '../../core/widgets/live_second_builder.dart';
 import '../../l10n/l10n.dart';
@@ -80,7 +79,6 @@ class DashboardScreen extends ConsumerWidget {
                           value.first,
                 ),
               const SizedBox(height: 12),
-              const BannerAdWidget(placement: AdPlacement.dashboard),
               const _ActiveTimerCard(),
               const SizedBox(height: 16),
               AppShowcase(
@@ -228,10 +226,7 @@ class _ActiveTimerCard extends ConsumerWidget {
       alignment: Alignment.topCenter,
       child: entry == null
           ? const SizedBox(width: double.infinity)
-          : _LiveActiveTimerCard(
-              key: ValueKey(entry.id),
-              entry: entry,
-            ),
+          : _LiveActiveTimerCard(key: ValueKey(entry.id), entry: entry),
     );
   }
 }
@@ -244,20 +239,20 @@ class _LiveActiveTimerCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) => LiveSecondBuilder(
     builder: (context, now) => Padding(
-        padding: const EdgeInsets.only(top: 12),
-        child: Card(
-          color: Theme.of(context).colorScheme.primaryContainer,
-          child: ListTile(
-            onTap: () => context.push(_routeFor(entry.workItem)),
-            leading: const Icon(Icons.timer_outlined),
-            title: Text(context.l10n.activeTimer),
-            subtitle: Text(
-              '${entry.isOnBreak ? context.l10n.onBreak : context.l10n.timerRunning} · ${_timerText(entry.workedDurationAt(now))}',
-            ),
-            trailing: const Icon(Icons.chevron_right),
+      padding: const EdgeInsets.only(top: 12),
+      child: Card(
+        color: Theme.of(context).colorScheme.primaryContainer,
+        child: ListTile(
+          onTap: () => context.push(_routeFor(entry.workItem)),
+          leading: const Icon(Icons.timer_outlined),
+          title: Text(context.l10n.activeTimer),
+          subtitle: Text(
+            '${entry.isOnBreak ? context.l10n.onBreak : context.l10n.timerRunning} · ${_timerText(entry.workedDurationAt(now))}',
           ),
+          trailing: const Icon(Icons.chevron_right),
         ),
       ),
+    ),
   );
 
   String _routeFor(WorkItemReference work) => work.type == TrackedWorkType.job

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "250325483026",
+    "project_id": "workproof-ccd9d",
+    "storage_bucket": "workproof-ccd9d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:250325483026:android:979a4c585018912fc222cb",
+        "android_client_info": {
+          "package_name": "com.workproof.workhelper"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWgJo2o9EzE9pNrUAJ02SbfZH0n5lVVPE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

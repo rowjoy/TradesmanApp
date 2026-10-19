@@ -1,12 +1,34 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
+    id("com.google.gms.google-services")
+}
+
+val keystoreProperties = Properties()
+val keystorePropertiesFile = rootProject.file("key.properties")
+
+FileInputStream(keystorePropertiesFile).use {
+    keystoreProperties.load(it)
+}
+
+val releaseAdMobAppId = providers.gradleProperty("ADMOB_APP_ID")
+    .orElse(providers.environmentVariable("ADMOB_APP_ID"))
+    .orElse("ca-app-pub-2681549212751095~2564398166")
+    .get()
+val adMobAppIdPattern = Regex("""^ca-app-pub-\d+~\d+$""")
+
+require(adMobAppIdPattern.matches(releaseAdMobAppId)) {
+    "ADMOB_APP_ID must be an AdMob App ID shaped like " +
+        "ca-app-pub-<digits>~<digits>; banner ad-unit IDs containing '/' " +
+        "are not valid here."
 }
 
 android {
-    namespace = "com.manager.workproof"
+    namespace = "com.workproof.workhelper"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -21,26 +43,32 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.manager.workproof"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
-        // local_auth 3.x and modern Android Keystore encryption require 24+.
+        applicationId = "com.workproof.workhelper"
         minSdk = 24
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
-        val admobAppId = providers.gradleProperty("ADMOB_APP_ID")
-            .orElse(providers.environmentVariable("ADMOB_APP_ID"))
-            .orElse("ca-app-pub-3940256099942544~3347511713")
-        manifestPlaceholders["ADMOB_APP_ID"] = admobAppId.get()
+
+        manifestPlaceholders["ADMOB_APP_ID"] =
+            "ca-app-pub-3940256099942544~3347511713"
+    }
+
+    // Create the signing config before using it.
+    signingConfigs {
+        create("release") {
+            keyAlias = keystoreProperties.getProperty("keyAlias")
+            keyPassword = keystoreProperties.getProperty("keyPassword")
+            storePassword = keystoreProperties.getProperty("storePassword")
+            storeFile = file(
+                keystoreProperties.getProperty("storeFile")
+            )
+        }
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
+            manifestPlaceholders["ADMOB_APP_ID"] = releaseAdMobAppId
         }
     }
 }

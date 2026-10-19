@@ -141,7 +141,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get demoDataDescription => '通过示例客户和项目体验工作流程。';
 
   @override
-  String get privacySetupNote => '您的设置仅保存在此设备上。';
+  String get privacySetupNote => '您的设置仅保存在此设备上。您可以在“设置”中创建加密备份文件。';
 
   @override
   String get setupSaveFailed => '设置未保存。';
@@ -153,16 +153,16 @@ class AppLocalizationsZh extends AppLocalizations {
   String get navWork => '工作';
 
   @override
-  String get navMoney => '财务';
+  String get navMoney => '薪酬';
 
   @override
-  String get navProof => '凭证';
+  String get navProof => '记录';
 
   @override
-  String get navMore => '更多';
+  String get navMore => '设置';
 
   @override
-  String get moneyTitle => '财务';
+  String get moneyTitle => '薪酬与收入';
 
   @override
   String get moneyExpected => '预期收益';
@@ -177,19 +177,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get moneyEmpty => '完成工作记录后，收益计算将显示在这里。';
 
   @override
-  String get proofTitle => '凭证';
+  String get proofTitle => '工作记录';
 
   @override
-  String get proofSubtitle => '本地活动记录';
+  String get proofSubtitle => '保存在此设备上的活动';
 
   @override
   String get proofEmpty => '记录的操作活动将显示在这里。';
 
   @override
-  String get savedOnDevice => '已保存在此设备';
+  String get savedOnDevice => '存储在此设备上';
 
   @override
-  String get localOnlyStatus => '仅本地存储';
+  String get localOnlyStatus => '存储在此设备上';
 
   @override
   String get auditOnboardingCompleted => 'WorkProof 设置完成';
@@ -237,10 +237,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get tradesmanFlow => '客户项目';
 
   @override
-  String get peopleTitle => '人员与服务';
+  String get peopleTitle => '联系人与服务';
 
   @override
-  String get calendarTitle => '日历';
+  String get calendarTitle => '工作日历';
 
   @override
   String get newShift => '新建班次';
@@ -708,6 +708,20 @@ class AppLocalizationsZh extends AppLocalizations {
   String get helpAndGuidance => '帮助与指南';
 
   @override
+  String get sendFeedbackOnWhatsApp => '通过WhatsApp发送反馈';
+
+  @override
+  String whatsAppFeedbackSubtitle(String phoneNumber) {
+    return '打开可编辑的草稿，收件人为 $phoneNumber';
+  }
+
+  @override
+  String get whatsAppFeedbackMessage => 'WorkProof团队，你们好，我想分享反馈：';
+
+  @override
+  String get whatsAppFeedbackFailed => '无法打开WhatsApp，请重试。';
+
+  @override
   String get replayShowcase => '重播操作指南';
 
   @override
@@ -750,7 +764,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get showcaseProofTitle => '保持可信的凭证记录';
 
   @override
-  String get showcaseProofBody => '修正打卡必须填写原因。';
+  String get showcaseProofBody => '更正需要填写原因。最终的工作时间和薪酬计算会保存在“工作记录”中。';
 
   @override
   String get skipShowcase => '跳过指南';
@@ -780,7 +794,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get notificationsTitle => '通知';
 
   @override
-  String get offlineNotificationsTitle => '离线通知与工作提醒';
+  String get offlineNotificationsTitle => '工作提醒与通知';
 
   @override
   String get offlineNotificationsDescription => '时间、隐私、免打扰时段和日程修复';
@@ -792,16 +806,16 @@ class AppLocalizationsZh extends AppLocalizations {
   String get localDataDescription => '无需账户或网络。';
 
   @override
-  String get payProtectionGuide => '薪资保护指南';
+  String get payProtectionGuide => '薪酬核对指南';
 
   @override
-  String get payProtectionGuideDescription => '查看预期薪资、工资单、证据和导出';
+  String get payProtectionGuideDescription => '核对预期薪酬、工资单、辅助文件和导出内容。';
 
   @override
   String get regionLanguageTitle => '地区和语言';
 
   @override
-  String get localWorkspaceTitle => '您的本地工作区';
+  String get localWorkspaceTitle => '此设备上的数据';
 
   @override
   String get localWorkspaceDescription => '无需账户或网络即可更改语言和金额显示。';
@@ -810,10 +824,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get appLanguageLabel => '应用语言';
 
   @override
-  String get countryMarketLabel => '国家 / 市场';
+  String get countryMarketLabel => '国家或地区';
 
   @override
-  String get defaultCurrencyLabel => '工作区默认货币';
+  String get defaultCurrencyLabel => '默认货币';
 
   @override
   String get currencyHistoryNote => '更改默认货币不会换算旧记录。每位客户可以使用不同的结算货币。';
@@ -828,19 +842,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get preferencesSaveFailed => '无法保存偏好。';
 
   @override
-  String get m05PayProtection => 'Pay Protection';
+  String get m05PayProtection => '薪酬核对';
 
   @override
-  String get m05WorkerPay => 'Worker pay';
+  String get m05WorkerPay => '我的薪酬';
 
   @override
-  String get m05BusinessMoney => 'Business money';
+  String get m05BusinessMoney => '经营收入';
 
   @override
-  String get m05PayAtAGlance => 'Pay at a glance';
+  String get m05PayAtAGlance => '薪酬摘要';
 
   @override
-  String get m05StartAPayPeriod => 'Start a pay period';
+  String get m05StartAPayPeriod => '添加薪酬周期';
 
   @override
   String get m05PayPeriods => 'Pay periods';
@@ -891,7 +905,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get m05EditPayslip => 'Edit payslip';
 
   @override
-  String get m05AddEvidence => 'Add evidence';
+  String get m05AddEvidence => '添加文件';
 
   @override
   String get m05RecordedHours => 'Recorded hours';
@@ -1019,10 +1033,10 @@ class AppLocalizationsZh extends AppLocalizations {
       'Choose employer, schedule and currency inside this screen. No popup dropdown is used.';
 
   @override
-  String get m05CreatePayProtectionPeriod => 'Create pay protection period';
+  String get m05CreatePayProtectionPeriod => '添加薪酬周期';
 
   @override
-  String get m05ReviewEvidenceExport => 'Review, evidence, export';
+  String get m05ReviewEvidenceExport => '核对薪酬与文件';
 
   @override
   String get m05OpenAPeriodToAddAPayslip =>
@@ -1051,7 +1065,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get m05ExportCouldNotBeCreated => 'Export could not be created.';
 
   @override
-  String get m05EvidenceTimeline => 'Evidence timeline';
+  String get m05EvidenceTimeline => '文件与备注';
 
   @override
   String get m05ExportsUseSelectedEvidenceAndPrivacyShare =>
@@ -1389,11 +1403,11 @@ class AppLocalizationsZh extends AppLocalizations {
   String get recordDeleted => 'Record deleted.';
 
   @override
-  String get payEvidencePacksTitle => 'Pay evidence packs';
+  String get payEvidencePacksTitle => '薪酬记录与导出';
 
   @override
   String get payEvidencePacksDescription =>
-      'Open payslips, evidence and PDF + ZIP exports from Money';
+      '从“薪酬与收入”中打开工资单、辅助文件以及PDF + ZIP导出内容。';
 
   @override
   String get auditPreferencesUpdated => 'Workspace preferences updated';
@@ -1517,7 +1531,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get lockNow => 'Lock now';
 
   @override
-  String get evidenceEncryptionTitle => 'Encrypted evidence';
+  String get evidenceEncryptionTitle => '受保护的文件';
 
   @override
   String get evidenceEncryptionDescription =>
@@ -1779,7 +1793,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get reportAllParties => 'All employers and customers';
 
   @override
-  String get reportWorkerSummary => 'Worker pay summary';
+  String get reportWorkerSummary => '薪酬摘要';
 
   @override
   String get reportIncomeSummary => 'Business income summary';
@@ -1882,86 +1896,264 @@ class AppLocalizationsZh extends AppLocalizations {
       'Some completed entries have no saved rate. Review totals before sharing.';
 
   @override
-  String get marketingStudioTitle => 'Marketing Studio';
+  String get marketingStudioTitle => '制作推广素材';
 
   @override
   String get marketingStudioSubtitle =>
-      'Create a premium promotion image or PDF offline, then share it with Facebook, WhatsApp, email or another device app.';
+      '离线制作精美的推广图片或PDF，然后通过Facebook、WhatsApp、电子邮件或设备上的其他应用分享。';
 
   @override
-  String get marketingProfileTitle => 'Business or personal promotion';
+  String get marketingProfileTitle => '推广详情';
 
   @override
-  String get marketingNameLabel => 'Company or professional name';
+  String get marketingNameLabel => '公司或职业名称';
 
   @override
-  String get marketingHeadlineLabel => 'Headline or short message';
+  String get marketingHeadlineLabel => '标题或简短信息';
 
   @override
-  String get marketingOfferLabel => 'Offer or promotion (optional)';
+  String get marketingOfferLabel => '优惠或促销（可选）';
 
   @override
-  String get marketingServicesLabel => 'Services';
+  String get marketingServicesLabel => '服务';
 
   @override
-  String get marketingServicesHint => 'Enter one service per line';
+  String get marketingServicesHint => '每行输入一项服务';
 
   @override
-  String get marketingServicesTitle => 'Our services';
+  String get marketingServicesTitle => '我们的服务';
 
   @override
-  String get marketingWebsiteLabel => 'Website or social page';
+  String get marketingWebsiteLabel => '网站或社交主页';
 
   @override
-  String get marketingTemplateLabel => 'Premium design';
+  String get marketingTemplateLabel => '设计风格';
 
   @override
-  String get marketingTemplateProfessional => 'Professional';
+  String get marketingTemplateProfessional => '专业';
 
   @override
-  String get marketingTemplateBold => 'Bold';
+  String get marketingTemplateBold => '醒目';
 
   @override
-  String get marketingTemplateElegant => 'Elegant';
+  String get marketingTemplateElegant => '优雅';
 
   @override
-  String get marketingChooseLogo => 'Add logo or photo';
+  String get marketingChooseLogo => '添加公司标志';
 
   @override
-  String get marketingRemoveLogo => 'Remove logo';
+  String get marketingRemoveLogo => '移除标志';
 
   @override
-  String get marketingPreview => 'Live promotion preview';
+  String get marketingChooseCoverPhoto => '添加业务照片';
 
   @override
-  String get marketingSaveProfile => 'Save promotion profile';
+  String get marketingRemoveCoverPhoto => '移除业务照片';
 
   @override
-  String get marketingProfileSaved => 'Promotion profile saved on this device.';
+  String get marketingPreview => '实时预览推广素材';
 
   @override
-  String get marketingCreateImage => 'Image';
+  String get marketingSaveProfile => '保存推广详情';
+
+  @override
+  String get marketingProfileSaved => '推广详情已保存在此设备上。';
+
+  @override
+  String get marketingCreateImage => '图片';
 
   @override
   String get marketingCreatePdf => 'PDF';
 
   @override
-  String get marketingCreating => 'Creating…';
+  String get marketingCreating => '正在制作…';
 
   @override
-  String get marketingExportSaved =>
-      'Promotion saved. Choose an app to share it.';
+  String get marketingExportSaved => '推广素材已保存。请选择一个应用进行分享。';
 
   @override
-  String get marketingExportFailed => 'The promotion could not be created.';
+  String get marketingExportFailed => '无法制作推广素材。';
 
   @override
-  String get marketingLogoFailed =>
-      'Choose a PNG, JPG or WebP logo up to 12 MB.';
+  String get marketingLogoFailed => '请选择不超过12 MB的PNG、JPG或WebP标志。';
 
   @override
-  String get marketingRequiredInfo => 'Add the required promotion information.';
+  String get marketingCoverPhotoFailed => '请选择不超过12 MB的PNG、JPG或WebP业务照片。';
 
   @override
-  String get marketingContactRequired => 'Add a phone number or email address.';
+  String get marketingRequiredInfo => '请填写推广所需的信息。';
+
+  @override
+  String get marketingContactRequired => '请添加电话号码或电子邮件地址。';
+
+  @override
+  String get aboutWorkProof => '关于WorkProof';
+
+  @override
+  String get appInformationTitle => '应用信息';
+
+  @override
+  String get aboutAppDescription =>
+      '一款以离线使用为先的工作助手，可用于安排工作和班次、记录时间、核对薪酬并保存可靠记录。';
+
+  @override
+  String get rateWorkProof => '为 WorkProof 评分';
+
+  @override
+  String get storeListingFailed => '无法打开应用商店。请重试。';
+
+  @override
+  String get appFeaturesTitle => '您可以做什么';
+
+  @override
+  String versionLabel(String version) {
+    return '版本 $version';
+  }
+
+  @override
+  String get versionUnavailable => '无法获取版本信息';
+
+  @override
+  String get featureDetails => '功能详情';
+
+  @override
+  String get openFeature => '打开功能';
+
+  @override
+  String get featureWorkShortDescription => '创建、安排和管理客户工作或雇主班次。';
+
+  @override
+  String get featureWorkDescription => '集中整理每项工作或班次的时间安排、定价、提醒和当前状态。';
+
+  @override
+  String get featureTimeTrackingTitle => '时间记录';
+
+  @override
+  String get featureTimeTrackingShortDescription => '记录上下班和休息时间，并比较计划时间与实际时间。';
+
+  @override
+  String get featureTimeTrackingDescription =>
+      '使用一个可靠的计时器离线记录工作，包括带薪或无薪休息、带原因的更正以及保存的收入计算。';
+
+  @override
+  String get featureContactsShortDescription => '整理雇主、工作地点、客户和服务。';
+
+  @override
+  String get featureContactsDescription => '保存与工作相关的人员、地点和服务，以便更快创建新的工作和班次。';
+
+  @override
+  String get featureCalendarShortDescription => '按日期查看工作和班次，并规划接下来的安排。';
+
+  @override
+  String get featureCalendarDescription => '浏览月历和每日安排，然后打开或添加所需的工作。';
+
+  @override
+  String get featurePayShortDescription => '核对预期薪酬、实收薪酬、经营收入和未结金额。';
+
+  @override
+  String get featurePayDescription => '比较薪酬周期与工资单，或查看已保存工作的发票、收款、支出和收入。';
+
+  @override
+  String get featureRecordsShortDescription => '在设备上清晰保存重要的工作和薪酬活动历史。';
+
+  @override
+  String get featureRecordsDescription => '查看已保存的活动、辅助文件、更正和导出内容，帮助说明发生过什么。';
+
+  @override
+  String get featureReportsShortDescription => '根据保存的记录制作周报、月报或自定义报告。';
+
+  @override
+  String get featureReportsDescription => '查看工作、时间、薪酬和经营汇总，然后离线导出PDF或CSV报表。';
+
+  @override
+  String get featureRemindersShortDescription => '在设备上接收即将开始的工作、休息和计划结束时间提醒。';
+
+  @override
+  String get featureRemindersDescription => '无需互联网连接即可选择提醒时间、免打扰时段、隐私设置和每日摘要。';
+
+  @override
+  String get featureBackupShortDescription => '创建加密备份文件，并安全恢复您的工作区。';
+
+  @override
+  String get featureBackupDescription => '使用密码加密且会在恢复前验证的备份来保护本地记录和文件。';
+
+  @override
+  String get featureSecurityShortDescription => '使用PIN、生物识别和加密文件保护私人记录。';
+
+  @override
+  String get featureSecurityDescription =>
+      '离开设备时锁定WorkProof，并将新的辅助文件加密保存在此设备上。';
+
+  @override
+  String get featurePromotionsShortDescription => '制作精美的推广图片或PDF，并从设备上分享。';
+
+  @override
+  String get featurePromotionsDescription =>
+      '保存服务、联系方式、标志、优惠和设计风格，离线制作可重复使用的推广素材。';
+
+  @override
+  String get codeToolsTitle => '扫描和创建代码';
+
+  @override
+  String get codeToolsShortDescription => '扫描二维码和条形码，或创建并分享自己的代码。';
+
+  @override
+  String get codeToolsDescription => '使用相机读取支持的代码，或完全在设备上将文本生成二维码和条形码。';
+
+  @override
+  String get manageJobTitle => '管理工作';
+
+  @override
+  String get manageJobDescription => '状态 · 成本 · 收款 · 工作文件';
+
+  @override
+  String get jobStatusTitle => '工作状态';
+
+  @override
+  String get costsAndPaymentsTitle => '成本与收款';
+
+  @override
+  String get jobDocumentsTitle => '工作文件';
+
+  @override
+  String get updateAvailableTitle => '有新版本可用';
+
+  @override
+  String get updateAvailableMessage => 'WorkProof有新版本可用，其中包含改进、错误修复和新功能。';
+
+  @override
+  String get updateRequiredMessage => '为了安全地继续使用，您必须安装此重要更新。';
+
+  @override
+  String get updateNow => '立即更新';
+
+  @override
+  String get later => '稍后';
+
+  @override
+  String get checkingForUpdates => '正在检查更新…';
+
+  @override
+  String get installingUpdate => '正在准备更新…';
+
+  @override
+  String get updateDownloadReadyTitle => '更新已就绪';
+
+  @override
+  String get updateDownloadReadyMessage => '更新已下载。请重新启动WorkProof以完成安装。';
+
+  @override
+  String get restartToUpdate => '重新启动并更新';
+
+  @override
+  String get updateFailed => '无法完成更新。您可以继续使用WorkProof。';
+
+  @override
+  String get updateCheckFailed => '目前无法检查更新。您可以继续正常使用。';
+
+  @override
+  String get latestVersionInstalled => '您已经安装了最新版本。';
+
+  @override
+  String get checkForUpdates => '检查更新';
 }

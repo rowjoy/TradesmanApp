@@ -1,6 +1,5 @@
 import 'dart:ui' as ui;
 
-import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,11 +8,13 @@ import 'package:share_plus/share_plus.dart';
 import '../../core/money/money.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/widgets/app_feedback.dart';
+import '../../l10n/l10n.dart';
 import '../customers/customer_model.dart';
 import '../customers/customer_provider.dart';
 import '../marketing/data/marketing_repository.dart';
 import '../marketing/domain/marketing_profile.dart';
 import '../money/presentation/controllers/money_summary_controller.dart';
+import '../notifications/application/notification_controller.dart';
 import '../onboarding/presentation/controllers/onboarding_controller.dart';
 import '../reports/application/report_controller.dart';
 import '../reports/infrastructure/report_export_service.dart';
@@ -31,8 +32,7 @@ class JobWorkspaceScreen extends ConsumerStatefulWidget {
   final String jobId;
 
   @override
-  ConsumerState<JobWorkspaceScreen> createState() =>
-      _JobWorkspaceScreenState();
+  ConsumerState<JobWorkspaceScreen> createState() => _JobWorkspaceScreenState();
 }
 
 class _JobWorkspaceScreenState extends ConsumerState<JobWorkspaceScreen> {
@@ -124,10 +124,8 @@ class _JobWorkspaceScreenState extends ConsumerState<JobWorkspaceScreen> {
     return timed + fixed;
   }
 
-  int get _expensesMinor => _ledger.expenses.fold(
-    0,
-    (total, item) => total + item.amountMinor,
-  );
+  int get _expensesMinor =>
+      _ledger.expenses.fold(0, (total, item) => total + item.amountMinor);
   int get _subtotalMinor => _workSubtotalMinor + _expensesMinor;
   int get _vatBasisPoints =>
       (((double.tryParse(_vat.text.trim()) ?? 0) * 100).round())
@@ -135,13 +133,10 @@ class _JobWorkspaceScreenState extends ConsumerState<JobWorkspaceScreen> {
           .toInt();
   int get _taxMinor => (_subtotalMinor * _vatBasisPoints / 10000).round();
   int get _totalMinor => _subtotalMinor + _taxMinor;
-  int get _paidMinor => _ledger.payments.fold(
-    0,
-    (total, item) => total + item.amountMinor,
-  );
-  int get _outstandingMinor => (_totalMinor - _paidMinor)
-      .clamp(0, _totalMinor)
-      .toInt();
+  int get _paidMinor =>
+      _ledger.payments.fold(0, (total, item) => total + item.amountMinor);
+  int get _outstandingMinor =>
+      (_totalMinor - _paidMinor).clamp(0, _totalMinor).toInt();
 
   String money(int value) => AppFormatters.currencyMinor(
     value,
@@ -153,9 +148,7 @@ class _JobWorkspaceScreenState extends ConsumerState<JobWorkspaceScreen> {
   Widget build(BuildContext context) {
     final job = _job;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(t('Job workspace', 'জব ওয়ার্কস্পেস')),
-      ),
+      appBar: AppBar(title: Text(context.l10n.manageJobTitle)),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : job == null
@@ -200,9 +193,9 @@ class _JobWorkspaceScreenState extends ConsumerState<JobWorkspaceScreen> {
           ],
           const SizedBox(height: 14),
           DropdownButtonFormField<JobStatus>(
-            value: job.status,
+            initialValue: job.status,
             decoration: InputDecoration(
-              labelText: t('Job lifecycle', 'জব লাইফসাইকেল'),
+              labelText: context.l10n.jobStatusTitle,
               prefixIcon: const Icon(Icons.account_tree_outlined),
             ),
             items: [
@@ -230,7 +223,7 @@ class _JobWorkspaceScreenState extends ConsumerState<JobWorkspaceScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            t('Financial summary', 'আর্থিক সারাংশ'),
+            context.l10n.costsAndPaymentsTitle,
             style: Theme.of(
               context,
             ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
@@ -274,9 +267,7 @@ class _JobWorkspaceScreenState extends ConsumerState<JobWorkspaceScreen> {
         Expanded(
           child: Text(
             label,
-            style: strong
-                ? const TextStyle(fontWeight: FontWeight.w800)
-                : null,
+            style: strong ? const TextStyle(fontWeight: FontWeight.w800) : null,
           ),
         ),
         Text(
@@ -318,7 +309,9 @@ class _JobWorkspaceScreenState extends ConsumerState<JobWorkspaceScreen> {
                 contentPadding: EdgeInsets.zero,
                 leading: const Icon(Icons.receipt_long_outlined),
                 title: Text(item.description),
-                subtitle: Text(AppFormatters.date(item.occurredAtUtc.toLocal())),
+                subtitle: Text(
+                  AppFormatters.date(item.occurredAtUtc.toLocal()),
+                ),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -361,7 +354,9 @@ class _JobWorkspaceScreenState extends ConsumerState<JobWorkspaceScreen> {
           ),
           if (_ledger.payments.isEmpty) ...[
             const SizedBox(height: 8),
-            Text(t('No payment received yet.', 'এখনো কোনো পেমেন্ট পাওয়া যায়নি।')),
+            Text(
+              t('No payment received yet.', 'এখনো কোনো পেমেন্ট পাওয়া যায়নি।'),
+            ),
           ] else
             for (final item in _ledger.payments)
               ListTile(
@@ -466,7 +461,7 @@ class _JobWorkspaceScreenState extends ConsumerState<JobWorkspaceScreen> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            t('PDF documents', 'পিডিএফ ডকুমেন্ট'),
+            context.l10n.jobDocumentsTitle,
             style: Theme.of(
               context,
             ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
@@ -529,13 +524,21 @@ class _JobWorkspaceScreenState extends ConsumerState<JobWorkspaceScreen> {
     if (job == null || job.status == status) return;
     setState(() => _busy = true);
     try {
-      await ref.read(jobRepositoryProvider).updateStatus(job.id, status);
+      await _persistStatus(job.id, status);
       if (!mounted) return;
       setState(() => _job = job.copyWith(status: status));
       _invalidate();
-      AppFeedback.success(context, t('Job status updated.', 'জব স্ট্যাটাস আপডেট হয়েছে।'));
+      AppFeedback.success(
+        context,
+        t('Job status updated.', 'জব স্ট্যাটাস আপডেট হয়েছে।'),
+      );
     } catch (_) {
-      if (mounted) AppFeedback.error(context, t('Status was not saved.', 'স্ট্যাটাস সেভ হয়নি।'));
+      if (mounted) {
+        AppFeedback.error(
+          context,
+          t('Status was not saved.', 'স্ট্যাটাস সেভ হয়নি।'),
+        );
+      }
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -547,9 +550,13 @@ class _JobWorkspaceScreenState extends ConsumerState<JobWorkspaceScreen> {
       await ref
           .read(jobFinanceRepositoryProvider)
           .saveVatBasisPoints(widget.jobId, _vatBasisPoints);
-      if (mounted) AppFeedback.success(context, t('VAT saved.', 'ভ্যাট সেভ হয়েছে।'));
+      if (mounted) {
+        AppFeedback.success(context, t('VAT saved.', 'ভ্যাট সেভ হয়েছে।'));
+      }
     } catch (_) {
-      if (mounted) AppFeedback.error(context, t('VAT was not saved.', 'ভ্যাট সেভ হয়নি।'));
+      if (mounted) {
+        AppFeedback.error(context, t('VAT was not saved.', 'ভ্যাট সেভ হয়নি।'));
+      }
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -567,19 +574,29 @@ class _JobWorkspaceScreenState extends ConsumerState<JobWorkspaceScreen> {
       currencyCode: _currency,
     )?.minorUnits;
     if (amount == null || amount <= 0 || result.label.trim().isEmpty) {
-      AppFeedback.error(context, t('Enter a valid description and amount.', 'সঠিক বিবরণ ও পরিমাণ দিন।'));
+      AppFeedback.error(
+        context,
+        t('Enter a valid description and amount.', 'সঠিক বিবরণ ও পরিমাণ দিন।'),
+      );
       return;
     }
     setState(() => _busy = true);
     try {
-      await ref.read(jobFinanceRepositoryProvider).addExpense(
-        jobId: widget.jobId,
-        description: result.label,
-        amountMinor: amount,
-      );
+      await ref
+          .read(jobFinanceRepositoryProvider)
+          .addExpense(
+            jobId: widget.jobId,
+            description: result.label,
+            amountMinor: amount,
+          );
       await _reloadLedger();
     } catch (_) {
-      if (mounted) AppFeedback.error(context, t('Expense was not saved.', 'খরচ সেভ হয়নি।'));
+      if (mounted) {
+        AppFeedback.error(
+          context,
+          t('Expense was not saved.', 'খরচ সেভ হয়নি।'),
+        );
+      }
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -605,7 +622,10 @@ class _JobWorkspaceScreenState extends ConsumerState<JobWorkspaceScreen> {
       currencyCode: _currency,
     )?.minorUnits;
     if (amount == null || amount <= 0) {
-      AppFeedback.error(context, t('Enter a valid payment amount.', 'সঠিক পেমেন্ট পরিমাণ দিন।'));
+      AppFeedback.error(
+        context,
+        t('Enter a valid payment amount.', 'সঠিক পেমেন্ট পরিমাণ দিন।'),
+      );
       return;
     }
     setState(() => _busy = true);
@@ -614,22 +634,31 @@ class _JobWorkspaceScreenState extends ConsumerState<JobWorkspaceScreen> {
           .read(jobFinanceRepositoryProvider)
           .saveVatBasisPoints(job.id, _vatBasisPoints);
       final invoice = await _issueInvoice();
-      await ref.read(jobFinanceRepositoryProvider).addPayment(
-        invoiceId: invoice.id,
-        amountMinor: amount,
-        method: result.method,
-        reference: result.reference,
-      );
+      await ref
+          .read(jobFinanceRepositoryProvider)
+          .addPayment(
+            invoiceId: invoice.id,
+            amountMinor: amount,
+            method: result.method,
+            reference: result.reference,
+          );
       await _reloadLedger();
       final status = _paidMinor >= _totalMinor && _totalMinor > 0
           ? JobStatus.paid
           : JobStatus.partiallyPaid;
-      await ref.read(jobRepositoryProvider).updateStatus(job.id, status);
+      await _persistStatus(job.id, status);
       if (mounted) setState(() => _job = job.copyWith(status: status));
       _invalidate();
-      if (mounted) AppFeedback.success(context, t('Payment saved.', 'পেমেন্ট সেভ হয়েছে।'));
+      if (mounted) {
+        AppFeedback.success(context, t('Payment saved.', 'পেমেন্ট সেভ হয়েছে।'));
+      }
     } catch (_) {
-      if (mounted) AppFeedback.error(context, t('Payment was not saved.', 'পেমেন্ট সেভ হয়নি।'));
+      if (mounted) {
+        AppFeedback.error(
+          context,
+          t('Payment was not saved.', 'পেমেন্ট সেভ হয়নি।'),
+        );
+      }
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -657,10 +686,18 @@ class _JobWorkspaceScreenState extends ConsumerState<JobWorkspaceScreen> {
           _editingSignature = false;
           _signaturePoints.clear();
         });
-        AppFeedback.success(context, t('Signature saved.', 'স্বাক্ষর সেভ হয়েছে।'));
+        AppFeedback.success(
+          context,
+          t('Signature saved.', 'স্বাক্ষর সেভ হয়েছে।'),
+        );
       }
     } catch (_) {
-      if (mounted) AppFeedback.error(context, t('Signature was not saved.', 'স্বাক্ষর সেভ হয়নি।'));
+      if (mounted) {
+        AppFeedback.error(
+          context,
+          t('Signature was not saved.', 'স্বাক্ষর সেভ হয়নি।'),
+        );
+      }
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -670,9 +707,14 @@ class _JobWorkspaceScreenState extends ConsumerState<JobWorkspaceScreen> {
     final job = _job;
     final customer = _customer;
     if (job == null || customer == null) return;
-    if (type == JobFinancialDocumentType.receipt &&
-        _ledger.payments.isEmpty) {
-      AppFeedback.info(context, t('Add a payment before creating a receipt.', 'রসিদ তৈরির আগে পেমেন্ট যোগ করুন।'));
+    if (type == JobFinancialDocumentType.receipt && _ledger.payments.isEmpty) {
+      AppFeedback.info(
+        context,
+        t(
+          'Add a payment before creating a receipt.',
+          'রসিদ তৈরির আগে পেমেন্ট যোগ করুন।',
+        ),
+      );
       return;
     }
     setState(() => _busy = true);
@@ -775,10 +817,21 @@ class _JobWorkspaceScreenState extends ConsumerState<JobWorkspaceScreen> {
         ),
       );
       if (mounted) {
-        AppFeedback.success(context, t('PDF saved and ready to share.', 'পিডিএফ সেভ হয়ে শেয়ারের জন্য প্রস্তুত।'));
+        AppFeedback.success(
+          context,
+          t(
+            'PDF saved and ready to share.',
+            'পিডিএফ সেভ হয়ে শেয়ারের জন্য প্রস্তুত।',
+          ),
+        );
       }
     } catch (_) {
-      if (mounted) AppFeedback.error(context, t('PDF could not be created.', 'পিডিএফ তৈরি হয়নি।'));
+      if (mounted) {
+        AppFeedback.error(
+          context,
+          t('PDF could not be created.', 'পিডিএফ তৈরি হয়নি।'),
+        );
+      }
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -786,15 +839,17 @@ class _JobWorkspaceScreenState extends ConsumerState<JobWorkspaceScreen> {
 
   Future<JobInvoiceRecord> _issueInvoice() {
     final job = _job!;
-    return ref.read(jobFinanceRepositoryProvider).issueInvoice(
-      jobId: job.id,
-      customerId: job.customerId,
-      description: job.title,
-      subtotalMinor: _subtotalMinor,
-      taxMinor: _taxMinor,
-      totalMinor: _totalMinor,
-      snapshot: _snapshot(),
-    );
+    return ref
+        .read(jobFinanceRepositoryProvider)
+        .issueInvoice(
+          jobId: job.id,
+          customerId: job.customerId,
+          description: job.title,
+          subtotalMinor: _subtotalMinor,
+          taxMinor: _taxMinor,
+          totalMinor: _totalMinor,
+          snapshot: _snapshot(),
+        );
   }
 
   Map<String, Object?> _snapshot() => {
@@ -813,9 +868,14 @@ class _JobWorkspaceScreenState extends ConsumerState<JobWorkspaceScreen> {
     final job = _job;
     if (job == null || job.status == JobStatus.cancelled) return;
     if (_statusRank(target) < _statusRank(job.status)) return;
-    await ref.read(jobRepositoryProvider).updateStatus(job.id, target);
+    await _persistStatus(job.id, target);
     if (mounted) setState(() => _job = job.copyWith(status: target));
     _invalidate();
+  }
+
+  Future<void> _persistStatus(String jobId, JobStatus status) async {
+    await ref.read(jobRepositoryProvider).updateStatus(jobId, status);
+    await ref.read(notificationControllerProvider.notifier).reconcile();
   }
 
   Future<void> _reloadLedger() async {
@@ -983,10 +1043,8 @@ class _AmountDialogState extends State<_AmountDialog> {
           child: Text(widget.cancelLabel),
         ),
         FilledButton(
-          onPressed: () => Navigator.pop(
-            context,
-            _AmountResult(_label.text, _amount.text),
-          ),
+          onPressed: () =>
+              Navigator.pop(context, _AmountResult(_label.text, _amount.text)),
           child: Text(widget.addLabel),
         ),
       ],

@@ -75,7 +75,12 @@ class NotificationController extends StateNotifier<NotificationState> {
   final String Function() _languageCode;
   StreamSubscription<String>? _tapSubscription;
   Future<void>? _initializing;
+  Completer<void>? _reconcileCompletion;
   bool _reconcileAgain = false;
+  bool _schedulingSuspended = false;
+  bool _lastReconcileSucceeded = false;
+
+  bool get isInitialized => state.initialized;
 
   Future<void> initialize() => _initializing ??= _initialize();
 
@@ -102,7 +107,10 @@ class NotificationController extends StateNotifier<NotificationState> {
       if (launchPayload != null) await _handlePayload(launchPayload);
       await reconcile();
     } catch (_) {
-      state = state.copyWith(initialized: true, attentionCount: 1);
+      await _tapSubscription?.cancel();
+      _tapSubscription = null;
+      _initializing = null;
+      state = state.copyWith(initialized: false, attentionCount: 1);
     }
   }
 
@@ -142,6 +150,8 @@ class NotificationController extends StateNotifier<NotificationState> {
 
   Future<void> refreshPermissionAndRepair() async {
     await initialize();
+    if (!state.initialized) return;
+    await _gateway.refreshTimeZone();
     final allowed = await _gateway.permissionEnabled();
     if (allowed != null) {
       final permission = allowed
@@ -206,12 +216,59 @@ class NotificationController extends StateNotifier<NotificationState> {
     await reconcile();
   }
 
+  Future<void> suspendSchedulingForDataRestore() async {
+    await initialize();
+    if (!state.initialized) {
+      throw StateError('Notification scheduling is unavailable.');
+    }
+    _schedulingSuspended = true;
+    await _reconcileCompletion?.future;
+    try {
+      await _gateway.cancelAllPending();
+    } catch (error, stackTrace) {
+      _schedulingSuspended = false;
+      _reconcileAgain = false;
+      await reconcile();
+      Error.throwWithStackTrace(error, stackTrace);
+    }
+  }
+
+  Future<void> resumeSchedulingAfterDataRestore() async {
+    _schedulingSuspended = false;
+    _reconcileAgain = false;
+    await reconcile();
+  }
+
+  Future<bool> rebuildScheduleAfterDataRestore() async {
+    if (!state.initialized || _schedulingSuspended) return false;
+
+    while (true) {
+      final completion = _reconcileCompletion;
+      if (completion == null) break;
+      await completion.future;
+    }
+    await reconcile();
+    while (true) {
+      final completion = _reconcileCompletion;
+      if (completion == null) break;
+      await completion.future;
+    }
+    return _lastReconcileSucceeded;
+  }
+
   Future<void> reconcile() async {
+    if (_schedulingSuspended) {
+      _reconcileAgain = true;
+      return;
+    }
     if (state.busy) {
       _reconcileAgain = true;
       return;
     }
+    final completion = Completer<void>();
+    _reconcileCompletion = completion;
     state = state.copyWith(busy: true);
+    var succeeded = true;
     try {
       final work = await _repository.loadWorkSources();
       final preferences = state.preferences.isEmpty
@@ -242,18 +299,25 @@ class NotificationController extends StateNotifier<NotificationState> {
         pendingOsIds: pending,
         canSchedule: canSchedule,
       );
+      final failedCancellations = <int>{};
       for (final id in batch.cancelIds) {
         try {
           await _gateway.cancel(id);
+          await _repository.markCancelled(id);
         } catch (_) {
-          // Reconciliation remains repeatable; a later pass retries safely.
+          succeeded = false;
+          failedCancellations.add(id);
         }
       }
       for (final notification in batch.schedule) {
+        if (failedCancellations.contains(notification.osNotificationId)) {
+          continue;
+        }
         try {
           await _gateway.schedule(notification);
           await _repository.markScheduled(notification.id);
         } catch (_) {
+          succeeded = false;
           await _repository.markNeedsAttention(
             notification.id,
             'os_schedule_failed',
@@ -271,9 +335,15 @@ class NotificationController extends StateNotifier<NotificationState> {
         lastReconcileUtc: now,
       );
     } catch (_) {
+      succeeded = false;
       state = state.copyWith(attentionCount: state.attentionCount + 1);
     } finally {
+      _lastReconcileSucceeded = succeeded;
       state = state.copyWith(busy: false);
+      if (!completion.isCompleted) completion.complete();
+      if (identical(_reconcileCompletion, completion)) {
+        _reconcileCompletion = null;
+      }
       if (_reconcileAgain) {
         _reconcileAgain = false;
         unawaited(reconcile());

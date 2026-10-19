@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/theme/app_theme.dart';
 import '../../core/router/app_router.dart';
-import '../../core/widgets/banner_ad_widget.dart';
 import '../../l10n/l10n.dart';
 import 'customer_provider.dart';
 
@@ -36,17 +35,11 @@ class CustomersScreen extends ConsumerWidget {
                   ref.read(customerSearchQueryProvider.notifier).state = value,
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(16, 0, 16, 12),
-            child: BannerAdWidget(),
-          ),
           Expanded(
             child: customersAsync.when(
               data: (customers) {
                 if (customers.isEmpty) {
-                  return Center(
-                    child: Text(context.l10n.noCustomers),
-                  );
+                  return Center(child: Text(context.l10n.noCustomers));
                 }
                 return ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -93,9 +86,8 @@ class CustomersScreen extends ConsumerWidget {
                 );
               },
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (_, __) => Center(
-                child: Text(context.l10n.peopleLoadFailed),
-              ),
+              error: (_, __) =>
+                  Center(child: Text(context.l10n.peopleLoadFailed)),
             ),
           ),
         ],

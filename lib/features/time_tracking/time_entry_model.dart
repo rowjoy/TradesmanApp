@@ -3,6 +3,18 @@ import '../../core/money/work_earnings_calculator.dart';
 
 enum TrackedWorkType { job, shift }
 
+class CompletedClockOutStats {
+  const CompletedClockOutStats({
+    required this.count,
+    required this.firstClockOutUtc,
+    required this.latestClockOutUtc,
+  });
+
+  final int count;
+  final DateTime? firstClockOutUtc;
+  final DateTime? latestClockOutUtc;
+}
+
 TrackedWorkType trackedWorkTypeFromStorage(String value) =>
     TrackedWorkType.values.firstWhere(
       (type) => type.name == value,

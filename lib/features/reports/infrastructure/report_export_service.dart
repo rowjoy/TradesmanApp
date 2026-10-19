@@ -66,9 +66,7 @@ class ReportExportService {
     WorkOrderDocument workOrder,
   ) async {
     final root = await getApplicationDocumentsDirectory();
-    final directory = Directory(
-      p.join(root.path, 'workproof', 'work_orders'),
-    );
+    final directory = Directory(p.join(root.path, 'workproof', 'work_orders'));
     await directory.create(recursive: true);
     final now = _clock.nowUtc();
     final id = _idGenerator.next();
@@ -417,7 +415,7 @@ Future<Uint8List> _pdf(OfflineReport report) async {
           ),
         pw.SizedBox(height: 16),
         if (report.filter.scope != ReportScope.tradesman) ...[
-          _pdfHeading('Worker pay summary'),
+          _pdfHeading('Pay summary'),
           _pdfSummaryGrid([
             ['Recorded hours', hours(report.worker.recordedSeconds)],
             ['Billable hours', hours(report.worker.billableSeconds)],

@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/money/money.dart';
 import '../../../../core/time/schedule_window.dart';
+import '../../../../core/time/time_zone_options.dart';
 import '../../../../core/utils/formatters.dart';
 import '../../../../core/widgets/app_feedback.dart';
 import '../../../../core/widgets/inline_animated_picker.dart';
@@ -60,6 +61,7 @@ class _ShiftEditorScreenState extends ConsumerState<ShiftEditorScreen> {
   }
 
   Future<void> _load() async {
+    final deviceTimeZone = await deviceTimeZoneIdentifier();
     final repository = ref.read(workRepositoryProvider);
     final shift = widget.shiftId == null
         ? null
@@ -90,7 +92,9 @@ class _ShiftEditorScreenState extends ConsumerState<ShiftEditorScreen> {
       final draft = await repository.loadDraft('shift');
       if (draft != null) _restoreDraft(draft);
     }
-    if (mounted) setState(() => _loading = false);
+    if (!mounted) return;
+    _schedule.useDeviceTimeZone(deviceTimeZone);
+    setState(() => _loading = false);
   }
 
   void _restoreDraft(Map<String, Object?> draft) {
@@ -116,7 +120,7 @@ class _ShiftEditorScreenState extends ConsumerState<ShiftEditorScreen> {
         ScheduleWindow.fromLocal(
           startLocal: start,
           endLocal: end,
-          ianaTimeZone: draft['ianaTimeZone'] as String? ?? 'Europe/London',
+          ianaTimeZone: draft['ianaTimeZone'] as String? ?? 'Etc/UTC',
           startOffsetMinutes: draft['startOffsetMinutes'] as int? ?? 60,
           endOffsetMinutes: draft['endOffsetMinutes'] as int? ?? 60,
         ),
@@ -298,9 +302,8 @@ class _ShiftEditorScreenState extends ConsumerState<ShiftEditorScreen> {
                           : items
                                 .where((item) => item.employerId == _employerId)
                                 .toList();
-                      final selected = visible.any(
-                        (item) => item.id == _workplaceId,
-                      )
+                      final selected =
+                          visible.any((item) => item.id == _workplaceId)
                           ? _workplaceId!
                           : '';
                       return InlineAnimatedPicker<String>(
@@ -319,12 +322,6 @@ class _ShiftEditorScreenState extends ConsumerState<ShiftEditorScreen> {
                           setState(
                             () => _workplaceId = value.isEmpty ? null : value,
                           );
-                          final selectedItem = visible
-                              .where((item) => item.id == value)
-                              .firstOrNull;
-                          if (selectedItem != null) {
-                            _schedule.setZone(selectedItem.ianaTimeZone);
-                          }
                           _queueDraft();
                         },
                       );
@@ -333,7 +330,11 @@ class _ShiftEditorScreenState extends ConsumerState<ShiftEditorScreen> {
                     error: (_, __) => Text(context.l10n.peopleLoadFailed),
                   ),
                   const SizedBox(height: 14),
-                  ScheduleEditor(controller: _schedule, onChanged: _queueDraft),
+                  ScheduleEditor(
+                    controller: _schedule,
+                    onChanged: _queueDraft,
+                    deviceTimeZoneOnly: true,
+                  ),
                   const SizedBox(height: 14),
                   TextFormField(
                     controller: _rate,
@@ -434,8 +435,4 @@ class _ShiftEditorScreenState extends ConsumerState<ShiftEditorScreen> {
             ),
     );
   }
-}
-
-extension<T> on Iterable<T> {
-  T? get firstOrNull => isEmpty ? null : first;
 }

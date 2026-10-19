@@ -46,16 +46,13 @@ class AppLockState {
     biometricsAvailable: biometricsAvailable ?? this.biometricsAvailable,
     busy: busy ?? this.busy,
     failedAttempts: failedAttempts ?? this.failedAttempts,
-    cooldownUntil: clearCooldown
-        ? null
-        : cooldownUntil ?? this.cooldownUntil,
+    cooldownUntil: clearCooldown ? null : cooldownUntil ?? this.cooldownUntil,
     errorCode: clearError ? null : errorCode ?? this.errorCode,
   );
 }
 
 class AppLockController extends StateNotifier<AppLockState> {
-  AppLockController(this._repository, this._auth)
-    : super(const AppLockState());
+  AppLockController(this._repository, this._auth) : super(const AppLockState());
 
   final AppLockRepository _repository;
   final LocalAuthentication _auth;
@@ -166,7 +163,9 @@ class AppLockController extends StateNotifier<AppLockState> {
   Future<void> setBiometricsEnabled(bool enabled, String reason) async {
     if (enabled) {
       final authenticated = await authenticateWithBiometrics(reason);
-      if (!authenticated) throw const FormatException('Biometric check failed.');
+      if (!authenticated) {
+        throw const FormatException('Biometric check failed.');
+      }
     }
     await _repository.setBiometricsEnabled(enabled);
     state = state.copyWith(biometricsEnabled: enabled, clearError: true);

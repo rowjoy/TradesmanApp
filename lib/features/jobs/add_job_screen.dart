@@ -72,14 +72,7 @@ class _AddJobScreenState extends ConsumerState<AddJobScreen> {
   void initState() {
     super.initState();
     _schedule = ScheduleEditorController();
-    for (final controller in [
-      _title,
-      _description,
-      _address,
-      _rate,
-      _fixedPrice,
-      _notes,
-    ]) {
+    for (final controller in [_title, _description, _address, _rate, _fixedPrice, _notes]) {
       controller.addListener(_queueDraft);
     }
     _load();
@@ -91,23 +84,12 @@ class _AddJobScreenState extends ConsumerState<AddJobScreen> {
       _existing = await ref.read(jobRepositoryProvider).getById(widget.jobId!);
       final job = _existing;
       if (job != null) {
-        final currency =
-            ref.read(currentProfileProvider)?.currencyCode ?? 'GBP';
+        final currency = ref.read(currentProfileProvider)?.currencyCode ?? 'GBP';
         _title.text = job.title;
         _description.text = job.description ?? '';
         _address.text = job.address ?? '';
-        _rate.text = job.hourlyRateMinor == null
-            ? ''
-            : AppFormatters.minorInput(
-                job.hourlyRateMinor!,
-                currencyCode: currency,
-              );
-        _fixedPrice.text = job.fixedPriceMinor == null
-            ? ''
-            : AppFormatters.minorInput(
-                job.fixedPriceMinor!,
-                currencyCode: currency,
-              );
+        _rate.text = job.hourlyRateMinor == null ? '' : AppFormatters.minorInput(job.hourlyRateMinor!, currencyCode: currency);
+        _fixedPrice.text = job.fixedPriceMinor == null ? '' : AppFormatters.minorInput(job.fixedPriceMinor!, currencyCode: currency);
         _notes.text = job.notes ?? '';
         _customerId = job.customerId;
         _serviceId = job.serviceId;
@@ -142,13 +124,7 @@ class _AddJobScreenState extends ConsumerState<AddJobScreen> {
       if (await repository.isScreenGuideCompleted('job_editor')) return;
       if (!mounted) return;
       final started = AppShowcaseCoordinator.instance.start(
-        keys: [
-          _customerGuideKey,
-          _detailsGuideKey,
-          _scheduleGuideKey,
-          _pricingGuideKey,
-          _saveGuideKey,
-        ],
+        keys: [_customerGuideKey, _detailsGuideKey, _scheduleGuideKey, _pricingGuideKey, _saveGuideKey],
         onComplete: () => repository.completeScreenGuide('job_editor'),
       );
       if (!started) {
@@ -166,13 +142,10 @@ class _AddJobScreenState extends ConsumerState<AddJobScreen> {
     _notes.text = draft['notes'] as String? ?? '';
     _customerId = draft['customerId'] as String?;
     _serviceId = draft['serviceId'] as String?;
-    _pricingType = pricingTypeFromString(
-      draft['pricingType'] as String? ?? 'hourly',
-    );
+    _pricingType = pricingTypeFromString(draft['pricingType'] as String? ?? 'hourly');
     _status = jobStatusFromString(draft['status'] as String? ?? 'scheduled');
     _reminders = draft['reminders'] as bool? ?? true;
-    _useGlobalReminderDefaults =
-        draft['useGlobalReminderDefaults'] as bool? ?? true;
+    _useGlobalReminderDefaults = draft['useGlobalReminderDefaults'] as bool? ?? true;
     _previewSeconds = draft['previewSeconds'] as int? ?? 86400;
     _prepareSeconds = draft['prepareSeconds'] as int? ?? 7200;
     _startSeconds = draft['startSeconds'] as int? ?? 1800;
@@ -185,7 +158,7 @@ class _AddJobScreenState extends ConsumerState<AddJobScreen> {
         ScheduleWindow.fromLocal(
           startLocal: start,
           endLocal: end,
-          ianaTimeZone: draft['ianaTimeZone'] as String? ?? 'Europe/London',
+          ianaTimeZone: draft['ianaTimeZone'] as String? ?? 'Etc/UTC',
           startOffsetMinutes: draft['startOffsetMinutes'] as int? ?? 60,
           endOffsetMinutes: draft['endOffsetMinutes'] as int? ?? 60,
         ),
@@ -245,22 +218,12 @@ class _AddJobScreenState extends ConsumerState<AddJobScreen> {
     _draftTimer?.cancel();
     try {
       final currency = ref.read(currentProfileProvider)?.currencyCode ?? 'GBP';
-      final hourlyMinor =
-          _pricingType == PricingType.fixed || _rate.text.trim().isEmpty
+      final hourlyMinor = _pricingType == PricingType.fixed || _rate.text.trim().isEmpty
           ? null
-          : Money.tryParse(
-              _rate.text.trim(),
-              currencyCode: currency,
-            )?.minorUnits;
-      final fixedMinor =
-          (_pricingType != PricingType.fixed &&
-                  _pricingType != PricingType.mixed) ||
-              _fixedPrice.text.trim().isEmpty
+          : Money.tryParse(_rate.text.trim(), currencyCode: currency)?.minorUnits;
+      final fixedMinor = (_pricingType != PricingType.fixed && _pricingType != PricingType.mixed) || _fixedPrice.text.trim().isEmpty
           ? null
-          : Money.tryParse(
-              _fixedPrice.text.trim(),
-              currencyCode: currency,
-            )?.minorUnits;
+          : Money.tryParse(_fixedPrice.text.trim(), currencyCode: currency)?.minorUnits;
       final repository = ref.read(jobRepositoryProvider);
       if (_existing == null) {
         await repository.create(
@@ -312,9 +275,7 @@ class _AddJobScreenState extends ConsumerState<AddJobScreen> {
       invalidateWorkData(ref, flow: WorkFlow.tradesman);
       ref.invalidate(moneySummaryProvider);
       ref.invalidate(auditEventsProvider);
-      final showPermissionPrompt = await ref
-          .read(notificationControllerProvider.notifier)
-          .workSaved(remindersEnabled: _reminders, hasSchedule: true);
+      final showPermissionPrompt = await ref.read(notificationControllerProvider.notifier).workSaved(remindersEnabled: _reminders, hasSchedule: true);
       if (mounted) {
         if (showPermissionPrompt) {
           await showNotificationPrePermissionDialog(context, ref);
@@ -323,10 +284,11 @@ class _AddJobScreenState extends ConsumerState<AddJobScreen> {
         AppFeedback.success(context, context.l10n.savedOnDevice);
         context.pop();
       }
-    } catch (_) {
-      if (mounted) {
-        AppFeedback.error(context, context.l10n.saveFailed);
-      }
+    } catch (x) {
+      print('Failed to save job: $x');
+      // if (mounted) {
+      //   AppFeedback.error(context, context.l10n.saveFailed);
+      // }
     } finally {
       if (mounted) setState(() => _saving = false);
     }
@@ -336,14 +298,7 @@ class _AddJobScreenState extends ConsumerState<AddJobScreen> {
   void dispose() {
     _draftTimer?.cancel();
     _schedule.dispose();
-    for (final controller in [
-      _title,
-      _description,
-      _address,
-      _rate,
-      _fixedPrice,
-      _notes,
-    ]) {
+    for (final controller in [_title, _description, _address, _rate, _fixedPrice, _notes]) {
       controller.dispose();
     }
     super.dispose();
@@ -355,9 +310,7 @@ class _AddJobScreenState extends ConsumerState<AddJobScreen> {
     final services = ref.watch(servicesProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          widget.jobId == null ? context.l10n.newJob : context.l10n.editJob,
-        ),
+        title: Text(widget.jobId == null ? context.l10n.newJob : context.l10n.editJob),
         actions: [
           IconButton(
             tooltip: context.l10n.saveDraft,
@@ -381,8 +334,7 @@ class _AddJobScreenState extends ConsumerState<AddJobScreen> {
                   AppShowcase(
                     showcaseKey: _customerGuideKey,
                     title: context.l10n.customers,
-                    description:
-                        '${context.l10n.newCustomer} · ${context.l10n.customerName}',
+                    description: '${context.l10n.newCustomer} · ${context.l10n.customerName}',
                     isFirst: true,
                     child: customers.when(
                       data: (items) => _CustomerField(
@@ -420,17 +372,10 @@ class _AddJobScreenState extends ConsumerState<AddJobScreen> {
                       leading: const Icon(Icons.design_services_outlined),
                       onChanged: (value) {
                         setState(() => _serviceId = value.isEmpty ? null : value);
-                        final selected = items
-                            .where((item) => item.id == value)
-                            .firstOrNull;
+                        final selected = items.where((item) => item.id == value).firstOrNull;
                         if (selected?.defaultRateMinor != null) {
-                          final currency =
-                              ref.read(currentProfileProvider)?.currencyCode ??
-                              'GBP';
-                          _rate.text = AppFormatters.minorInput(
-                            selected!.defaultRateMinor!,
-                            currencyCode: currency,
-                          );
+                          final currency = ref.read(currentProfileProvider)?.currencyCode ?? 'GBP';
+                          _rate.text = AppFormatters.minorInput(selected!.defaultRateMinor!, currencyCode: currency);
                         }
                         _queueDraft();
                       },
@@ -440,9 +385,7 @@ class _AddJobScreenState extends ConsumerState<AddJobScreen> {
                   ),
                   const SizedBox(height: 14),
                   InlineAnimatedPicker<JobStatus>(
-                    label: Localizations.localeOf(context).languageCode == 'bn'
-                        ? 'জব স্ট্যাটাস'
-                        : 'Job status',
+                    label: context.l10n.jobStatusTitle,
                     value: _status,
                     options: JobStatus.values,
                     optionLabel: (value) => _jobStatusLabel(context, value),
@@ -456,33 +399,23 @@ class _AddJobScreenState extends ConsumerState<AddJobScreen> {
                   AppShowcase(
                     showcaseKey: _detailsGuideKey,
                     title: context.l10n.jobTitleLabel,
-                    description:
-                        '${context.l10n.descriptionLabel} · ${context.l10n.addressLabel}',
+                    description: '${context.l10n.descriptionLabel} · ${context.l10n.addressLabel}',
                     child: TextFormField(
                       controller: _title,
-                      decoration: InputDecoration(
-                        labelText: '${context.l10n.jobTitleLabel} *',
-                      ),
-                      validator: (value) =>
-                          value == null || value.trim().isEmpty
-                          ? context.l10n.requiredField
-                          : null,
+                      decoration: InputDecoration(labelText: '${context.l10n.jobTitleLabel} *'),
+                      validator: (value) => value == null || value.trim().isEmpty ? context.l10n.requiredField : null,
                     ),
                   ),
                   const SizedBox(height: 14),
                   TextFormField(
                     controller: _description,
-                    decoration: InputDecoration(
-                      labelText: context.l10n.descriptionLabel,
-                    ),
+                    decoration: InputDecoration(labelText: context.l10n.descriptionLabel),
                     maxLines: 3,
                   ),
                   const SizedBox(height: 14),
                   TextFormField(
                     controller: _address,
-                    decoration: InputDecoration(
-                      labelText: context.l10n.addressLabel,
-                    ),
+                    decoration: InputDecoration(labelText: context.l10n.addressLabel),
                     maxLines: 2,
                   ),
                   const SizedBox(height: 14),
@@ -492,11 +425,7 @@ class _AddJobScreenState extends ConsumerState<AddJobScreen> {
                     description:
                         '${context.l10n.startLabel} · ${context.l10n.endLabel} · '
                         '${context.l10n.savedOnDevice}',
-                    child: ScheduleEditor(
-                      controller: _schedule,
-                      onChanged: _queueDraft,
-                      deviceTimeZoneOnly: true,
-                    ),
+                    child: ScheduleEditor(controller: _schedule, onChanged: _queueDraft, deviceTimeZoneOnly: true),
                   ),
                   const SizedBox(height: 18),
                   AppShowcase(
@@ -527,26 +456,17 @@ class _AddJobScreenState extends ConsumerState<AddJobScreen> {
                     TextFormField(
                       controller: _rate,
                       decoration: InputDecoration(
-                        labelText: _pricingType == PricingType.daily
-                            ? context.l10n.dailyRateOptional
-                            : context.l10n.hourlyRateOptional,
+                        labelText: _pricingType == PricingType.daily ? context.l10n.dailyRateOptional : context.l10n.hourlyRateOptional,
                       ),
-                      keyboardType: const TextInputType.numberWithOptions(
-                        decimal: true,
-                      ),
+                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     ),
                   ],
-                  if (_pricingType == PricingType.fixed ||
-                      _pricingType == PricingType.mixed) ...[
+                  if (_pricingType == PricingType.fixed || _pricingType == PricingType.mixed) ...[
                     const SizedBox(height: 14),
                     TextFormField(
                       controller: _fixedPrice,
-                      decoration: InputDecoration(
-                        labelText: context.l10n.fixedPriceOptional,
-                      ),
-                      keyboardType: const TextInputType.numberWithOptions(
-                        decimal: true,
-                      ),
+                      decoration: InputDecoration(labelText: context.l10n.fixedPriceOptional),
+                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     ),
                   ],
                   SwitchListTile(
@@ -596,26 +516,18 @@ class _AddJobScreenState extends ConsumerState<AddJobScreen> {
                   ],
                   TextFormField(
                     controller: _notes,
-                    decoration: InputDecoration(
-                      labelText: context.l10n.notesLabel,
-                    ),
+                    decoration: InputDecoration(labelText: context.l10n.notesLabel),
                     maxLines: 4,
                   ),
                   const SizedBox(height: 24),
                   AppShowcase(
                     showcaseKey: _saveGuideKey,
                     title: context.l10n.saveJob,
-                    description:
-                        '${context.l10n.savedOnDevice} · ${context.l10n.offlineNotificationsTitle}',
+                    description: '${context.l10n.savedOnDevice} · ${context.l10n.offlineNotificationsTitle}',
                     isLast: true,
                     child: FilledButton(
                       onPressed: _saving ? null : _save,
-                      child: _saving
-                          ? const SizedBox.square(
-                              dimension: 20,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          : Text(context.l10n.saveJob),
+                      child: _saving ? const SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2)) : Text(context.l10n.saveJob),
                     ),
                   ),
                 ],
@@ -643,11 +555,7 @@ String _jobStatusLabel(BuildContext context, JobStatus status) {
 }
 
 class _CustomerField extends StatelessWidget {
-  const _CustomerField({
-    required this.customers,
-    required this.selectedId,
-    required this.onChanged,
-  });
+  const _CustomerField({required this.customers, required this.selectedId, required this.onChanged});
   final List<Customer> customers;
   final String? selectedId;
   final ValueChanged<String?> onChanged;

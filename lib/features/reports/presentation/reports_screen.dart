@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/widgets/app_banner_frame.dart';
 import '../../../core/widgets/app_feedback.dart';
-import '../../../core/widgets/banner_ad_widget.dart';
 import '../../../core/widgets/loading_skeleton.dart';
 import '../../../l10n/l10n.dart';
+import '../../ads/application/ad_content_eligibility.dart';
 import '../../onboarding/domain/entities/local_profile.dart';
 import '../../onboarding/presentation/controllers/onboarding_controller.dart';
 import '../application/report_controller.dart';
@@ -30,65 +31,68 @@ class ReportsScreen extends ConsumerWidget {
       },
     );
 
-    return Scaffold(
-      appBar: AppBar(title: Text(context.l10n.reportsTitle)),
-      body: Column(
-        children: [
-          const BannerAdWidget(placement: AdPlacement.reports),
-          SizedBox(
-            height: 2,
-            child: state.refreshing
-                ? const LinearProgressIndicator()
-                : const SizedBox.shrink(),
-          ),
-          Expanded(
-            child: RefreshIndicator(
-              onRefresh: controller.refresh,
-              child: state.report.when(
-                loading: () => const AppListSkeleton(),
-                error: (_, __) => ListView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.all(24),
-                  children: [
-                    const SizedBox(height: 80),
-                    const Icon(Icons.error_outline, size: 44),
-                    const SizedBox(height: 12),
-                    Text(
-                      context.l10n.reportLoadFailed,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 12),
-                    FilledButton(
-                      onPressed: controller.refresh,
-                      child: Text(context.l10n.retry),
-                    ),
-                  ],
-                ),
-                data: (report) => _ReportBody(
-                  report: report,
-                  profileMode: profileMode,
-                  exporting: state.exporting,
-                  onPreset: controller.setPreset,
-                  onScope: controller.setScope,
-                  onParty: controller.setParty,
-                  onCustomRange: controller.setCustomRange,
-                  onExport: (format, origin) async {
-                    final success = await controller.exportAndShare(
-                      format,
-                      origin: origin,
-                    );
-                    if (success && context.mounted) {
-                      AppFeedback.success(
-                        context,
-                        context.l10n.reportExportCreated,
+    return AppBannerFrame(
+      placement: AdPlacement.reports,
+      enabled: hasPublisherContent(state.report) && !state.exporting,
+      child: Scaffold(
+        appBar: AppBar(title: Text(context.l10n.reportsTitle)),
+        body: Column(
+          children: [
+            SizedBox(
+              height: 2,
+              child: state.refreshing
+                  ? const LinearProgressIndicator()
+                  : const SizedBox.shrink(),
+            ),
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: controller.refresh,
+                child: state.report.when(
+                  loading: () => const AppListSkeleton(),
+                  error: (_, __) => ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.all(24),
+                    children: [
+                      const SizedBox(height: 80),
+                      const Icon(Icons.error_outline, size: 44),
+                      const SizedBox(height: 12),
+                      Text(
+                        context.l10n.reportLoadFailed,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 12),
+                      FilledButton(
+                        onPressed: controller.refresh,
+                        child: Text(context.l10n.retry),
+                      ),
+                    ],
+                  ),
+                  data: (report) => _ReportBody(
+                    report: report,
+                    profileMode: profileMode,
+                    exporting: state.exporting,
+                    onPreset: controller.setPreset,
+                    onScope: controller.setScope,
+                    onParty: controller.setParty,
+                    onCustomRange: controller.setCustomRange,
+                    onExport: (format, origin) async {
+                      final success = await controller.exportAndShare(
+                        format,
+                        origin: origin,
                       );
-                    }
-                  },
+                      if (success && context.mounted) {
+                        AppFeedback.success(
+                          context,
+                          context.l10n.reportExportCreated,
+                        );
+                      }
+                    },
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -205,7 +209,7 @@ class _ReportBody extends StatelessWidget {
         if (report.parties.isNotEmpty) ...[
           const SizedBox(height: 12),
           DropdownButtonFormField<String>(
-            value: _selectedPartyKey(report.filter),
+            initialValue: _selectedPartyKey(report.filter),
             isExpanded: true,
             decoration: InputDecoration(
               labelText: report.filter.scope == ReportScope.worker

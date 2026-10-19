@@ -13,9 +13,7 @@ abstract final class DayBucketIndex {
       if (!interval.end.isAfter(interval.start)) continue;
       var day = _day(interval.start);
       if (day.isBefore(start)) day = start;
-      final last = _day(
-        interval.end.subtract(const Duration(microseconds: 1)),
-      );
+      final last = _day(interval.end.subtract(const Duration(microseconds: 1)));
       while (!day.isAfter(last) && day.isBefore(end)) {
         final key = dateKey(day);
         counts[key] = (counts[key] ?? 0) + 1;

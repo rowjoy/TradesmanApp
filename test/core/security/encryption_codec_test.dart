@@ -26,40 +26,45 @@ void main() {
     late Directory temporary;
 
     setUp(() async {
-      temporary = await Directory.systemTemp.createTemp('workproof-crypto-test');
+      temporary = await Directory.systemTemp.createTemp(
+        'workproof-crypto-test',
+      );
     });
 
     tearDown(() async {
       if (await temporary.exists()) await temporary.delete(recursive: true);
     });
 
-    test('round-trips a streamed file and rejects the wrong password', () async {
-      final source = File('${temporary.path}/source.bin');
-      final encrypted = File('${temporary.path}/backup.workproof');
-      final restored = File('${temporary.path}/restored.bin');
-      final clear = List<int>.generate(180000, (index) => index % 239);
-      await source.writeAsBytes(clear);
+    test(
+      'round-trips a streamed file and rejects the wrong password',
+      () async {
+        final source = File('${temporary.path}/source.bin');
+        final encrypted = File('${temporary.path}/backup.workproof');
+        final restored = File('${temporary.path}/restored.bin');
+        final clear = List<int>.generate(180000, (index) => index % 239);
+        await source.writeAsBytes(clear);
 
-      await BackupCrypto.encryptFile(
-        inputPath: source.path,
-        outputPath: encrypted.path,
-        password: 'correct horse battery staple',
-      );
-      await BackupCrypto.decryptFile(
-        inputPath: encrypted.path,
-        outputPath: restored.path,
-        password: 'correct horse battery staple',
-      );
-      expect(await restored.readAsBytes(), clear);
-
-      await expectLater(
-        BackupCrypto.decryptFile(
+        await BackupCrypto.encryptFile(
+          inputPath: source.path,
+          outputPath: encrypted.path,
+          password: 'correct horse battery staple',
+        );
+        await BackupCrypto.decryptFile(
           inputPath: encrypted.path,
-          outputPath: '${temporary.path}/wrong.bin',
-          password: 'incorrect password',
-        ),
-        throwsFormatException,
-      );
-    });
+          outputPath: restored.path,
+          password: 'correct horse battery staple',
+        );
+        expect(await restored.readAsBytes(), clear);
+
+        await expectLater(
+          BackupCrypto.decryptFile(
+            inputPath: encrypted.path,
+            outputPath: '${temporary.path}/wrong.bin',
+            password: 'incorrect password',
+          ),
+          throwsFormatException,
+        );
+      },
+    );
   });
 }

@@ -78,7 +78,8 @@ class MarketingExportService {
     final directory = Directory(p.join(root.path, 'workproof', 'marketing'));
     await directory.create(recursive: true);
     final local = _clock.nowUtc().toLocal();
-    final stamp = '${local.year.toString().padLeft(4, '0')}'
+    final stamp =
+        '${local.year.toString().padLeft(4, '0')}'
         '${local.month.toString().padLeft(2, '0')}'
         '${local.day.toString().padLeft(2, '0')}-'
         '${local.hour.toString().padLeft(2, '0')}'
