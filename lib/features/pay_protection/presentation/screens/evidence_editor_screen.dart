@@ -60,9 +60,7 @@ class _EvidenceEditorScreenState extends ConsumerState<EvidenceEditorScreen> {
       if (mounted) _message(context.l10n.evidenceFileTooLarge);
     } catch (_) {
       if (mounted) {
-        _message(
-          context.l10n.m05FileCouldNotBePrepared,
-        );
+        _message(context.l10n.m05FileCouldNotBePrepared);
       }
     } finally {
       if (mounted) setState(() => _picking = false);
@@ -104,9 +102,7 @@ class _EvidenceEditorScreenState extends ConsumerState<EvidenceEditorScreen> {
       if (mounted) context.pop(true);
     } catch (_) {
       if (mounted) {
-        _message(
-          context.l10n.m05EvidenceCouldNotBeSaved,
-        );
+        _message(context.l10n.m05EvidenceCouldNotBeSaved);
       }
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -117,9 +113,7 @@ class _EvidenceEditorScreenState extends ConsumerState<EvidenceEditorScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: Text(context.l10n.m05AddEvidence),
-    ),
+    appBar: AppBar(title: Text(context.l10n.m05AddEvidence)),
     body: ListView(
       padding: const EdgeInsets.fromLTRB(16, 4, 16, 28),
       children: [
@@ -211,7 +205,9 @@ class _EvidenceEditorScreenState extends ConsumerState<EvidenceEditorScreen> {
                     const SizedBox(height: 5),
                     Text(
                       _file!.metadataStripped
-                          ? context.l10n.m05CompressedShareCopyCreatedImageMetadataStripped
+                          ? context
+                                .l10n
+                                .m05CompressedShareCopyCreatedImageMetadataStripped
                           : context.l10n.m05AShareCopyIsCreatedDocumentMetadata,
                       style: Theme.of(context).textTheme.bodySmall,
                     ),

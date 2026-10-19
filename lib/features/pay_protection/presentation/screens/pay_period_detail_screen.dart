@@ -72,10 +72,7 @@ class _PayPeriodDetailScreenState extends ConsumerState<PayPeriodDetailScreen> {
       }
     } catch (_) {
       if (mounted) {
-        AppFeedback.error(
-          context,
-          context.l10n.m05ExportCouldNotBeCreated,
-        );
+        AppFeedback.error(context, context.l10n.m05ExportCouldNotBeCreated);
       }
     } finally {
       if (mounted) setState(() => _exporting = false);
@@ -94,11 +91,7 @@ class _PayPeriodDetailScreenState extends ConsumerState<PayPeriodDetailScreen> {
               ref.invalidate(payPeriodDetailProvider(widget.payPeriodId)),
         ),
         data: (value) => value == null
-            ? Center(
-                child: Text(
-                  context.l10n.m05PayPeriodNotFound,
-                ),
-              )
+            ? Center(child: Text(context.l10n.m05PayPeriodNotFound))
             : RefreshIndicator(
                 onRefresh: () async {
                   ref.invalidate(payPeriodDetailProvider(widget.payPeriodId));
@@ -179,7 +172,9 @@ class _PayPeriodDetailScreenState extends ConsumerState<PayPeriodDetailScreen> {
                           const SizedBox(width: 11),
                           Expanded(
                             child: Text(
-                              context.l10n.m05ExportsUseSelectedEvidenceAndPrivacyShare,
+                              context
+                                  .l10n
+                                  .m05ExportsUseSelectedEvidenceAndPrivacyShare,
                             ),
                           ),
                         ],
@@ -194,9 +189,7 @@ class _PayPeriodDetailScreenState extends ConsumerState<PayPeriodDetailScreen> {
                               child: CircularProgressIndicator(strokeWidth: 2),
                             )
                           : const Icon(Icons.folder_zip_outlined),
-                      label: Text(
-                        context.l10n.m05CreatePDFZIPEvidencePack,
-                      ),
+                      label: Text(context.l10n.m05CreatePDFZIPEvidencePack),
                     ),
                     const SizedBox(height: 8),
                     Text(
@@ -242,8 +235,7 @@ class _ComparisonHero extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  period.employerName ??
-                      context.l10n.m05AllEmployers,
+                  period.employerName ?? context.l10n.m05AllEmployers,
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w800,
@@ -551,10 +543,7 @@ class _AdjustmentComposerState extends ConsumerState<_AdjustmentComposer> {
       allowNegative: true,
     );
     if (_label.text.trim().isEmpty || money == null || money.minorUnits == 0) {
-      AppFeedback.error(
-        context,
-        context.l10n.m05EnterALabelAndValidAmount,
-      );
+      AppFeedback.error(context, context.l10n.m05EnterALabelAndValidAmount);
       return;
     }
     setState(() => _saving = true);
@@ -630,7 +619,8 @@ class _AdjustmentComposerState extends ConsumerState<_AdjustmentComposer> {
                           ],
                           optionLabel: (value) => switch (value) {
                             'allowance' => context.l10n.m05Allowance,
-                            'overtimeCorrection' => context.l10n.m05OvertimeCorrection,
+                            'overtimeCorrection' =>
+                              context.l10n.m05OvertimeCorrection,
                             _ => context.l10n.m05ManualCorrection,
                           },
                           onChanged: (value) => setState(() => _type = value),
@@ -659,9 +649,7 @@ class _AdjustmentComposerState extends ConsumerState<_AdjustmentComposer> {
                         const SizedBox(height: 12),
                         FilledButton(
                           onPressed: _saving ? null : _save,
-                          child: Text(
-                            context.l10n.m05SaveAdjustment,
-                          ),
+                          child: Text(context.l10n.m05SaveAdjustment),
                         ),
                       ],
                     ),
@@ -713,9 +701,7 @@ class _EvidenceEmpty extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-          Text(
-            context.l10n.m05NoEvidenceAttachedYet,
-          ),
+          Text(context.l10n.m05NoEvidenceAttachedYet),
           const SizedBox(height: 8),
           TextButton.icon(
             onPressed: onAdd,
@@ -761,13 +747,8 @@ class _ErrorBody extends StatelessWidget {
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          context.l10n.m05CouldNotLoadPayPeriod,
-        ),
-        TextButton(
-          onPressed: onRetry,
-          child: Text(context.l10n.m05Retry),
-        ),
+        Text(context.l10n.m05CouldNotLoadPayPeriod),
+        TextButton(onPressed: onRetry, child: Text(context.l10n.m05Retry)),
       ],
     ),
   );

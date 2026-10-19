@@ -156,6 +156,33 @@ class TimeTrackingRepository {
         .toList(growable: false);
   }
 
+  Future<CompletedClockOutStats> completedClockOutStats() async {
+    final db = await DatabaseHelper.instance.database;
+    final rows = await db.rawQuery(
+      '''SELECT COUNT(*) AS completed_count,
+                MIN(clock_out) AS first_clock_out,
+                MAX(clock_out) AS latest_clock_out
+         FROM time_entries
+         WHERE workspace_id = ?
+           AND deleted_at IS NULL
+           AND status = 'completed'
+           AND clock_out IS NOT NULL''',
+      [_workspaceId],
+    );
+    final row = rows.single;
+    final firstValue = row['first_clock_out'] as String?;
+    final latestValue = row['latest_clock_out'] as String?;
+    return CompletedClockOutStats(
+      count: (row['completed_count'] as num?)?.toInt() ?? 0,
+      firstClockOutUtc: firstValue == null
+          ? null
+          : DateTime.tryParse(firstValue)?.toUtc(),
+      latestClockOutUtc: latestValue == null
+          ? null
+          : DateTime.tryParse(latestValue)?.toUtc(),
+    );
+  }
+
   Future<TimeEntry> clockIn(ClockInRequest request) async {
     final db = await DatabaseHelper.instance.database;
     final now = _clock.nowUtc();

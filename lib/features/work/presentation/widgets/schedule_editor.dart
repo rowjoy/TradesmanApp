@@ -16,7 +16,7 @@ class ScheduleEditorController extends ChangeNotifier {
     endLocal =
         initial?.endLocal ??
         DateTime(tomorrow.year, tomorrow.month, tomorrow.day, 17);
-    ianaTimeZone = initial?.ianaTimeZone ?? 'Europe/London';
+    ianaTimeZone = initial?.ianaTimeZone ?? 'Etc/UTC';
     startOffsetMinutes =
         initial?.startOffsetMinutes ??
         suggestedOffsetMinutes(ianaTimeZone, startLocal);
@@ -106,7 +106,7 @@ class ScheduleEditor extends StatefulWidget {
     super.key,
     required this.controller,
     this.onChanged,
-    this.deviceTimeZoneOnly = false,
+    this.deviceTimeZoneOnly = true,
   });
   final ScheduleEditorController controller;
   final VoidCallback? onChanged;

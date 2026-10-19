@@ -5,9 +5,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/router/app_router.dart';
+import '../../../../core/widgets/app_banner_frame.dart';
 import '../../../../core/widgets/app_feedback.dart';
 import '../../../../core/widgets/loading_skeleton.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../ads/application/ad_content_eligibility.dart';
 import '../../../customers/customer_model.dart';
 import '../../../customers/customer_provider.dart';
 import '../../../proof/presentation/controllers/audit_controller.dart';
@@ -72,50 +74,68 @@ class _PeopleDirectoryScreenState extends ConsumerState<PeopleDirectoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(context.l10n.peopleTitle)),
-      floatingActionButton: FloatingActionButton.extended(
-        heroTag: 'fab_people_directory',
-        onPressed: () => context.push(_newRoute(_kind)),
-        icon: const Icon(Icons.add),
-        label: Text(_newLabel(context, _kind)),
+    final hasContent = switch (_kind) {
+      _DirectoryKind.employers => hasPublisherContent(
+        ref.watch(directoryEmployersProvider),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
-            child: SizedBox(
-              width: double.infinity,
-              child: SegmentedButton<_DirectoryKind>(
-                segments: [
-                  for (final kind in _available)
-                    ButtonSegment(
-                      value: kind,
-                      label: Text(_label(context, kind)),
-                    ),
-                ],
-                selected: {_kind},
-                onSelectionChanged: (value) {
-                  _searchDebounce?.cancel();
-                  setState(() => _kind = value.first);
-                  _applySearch(_searchController.text);
-                },
+      _DirectoryKind.workplaces => hasPublisherContent(
+        ref.watch(directoryWorkplacesProvider),
+      ),
+      _DirectoryKind.customers => hasPublisherContent(
+        ref.watch(customersListProvider),
+      ),
+      _DirectoryKind.services => hasPublisherContent(
+        ref.watch(directoryServicesProvider),
+      ),
+    };
+    return AppBannerFrame(
+      placement: AdPlacement.people,
+      enabled: hasContent,
+      child: Scaffold(
+        appBar: AppBar(title: Text(context.l10n.peopleTitle)),
+        floatingActionButton: FloatingActionButton.extended(
+          heroTag: 'fab_people_directory',
+          onPressed: () => context.push(_newRoute(_kind)),
+          icon: const Icon(Icons.add),
+          label: Text(_newLabel(context, _kind)),
+        ),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+              child: SizedBox(
+                width: double.infinity,
+                child: SegmentedButton<_DirectoryKind>(
+                  segments: [
+                    for (final kind in _available)
+                      ButtonSegment(
+                        value: kind,
+                        label: Text(_label(context, kind)),
+                      ),
+                  ],
+                  selected: {_kind},
+                  onSelectionChanged: (value) {
+                    _searchDebounce?.cancel();
+                    setState(() => _kind = value.first);
+                    _applySearch(_searchController.text);
+                  },
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: context.l10n.searchPeople,
-                prefixIcon: const Icon(Icons.search),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+              child: TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: context.l10n.searchPeople,
+                  prefixIcon: const Icon(Icons.search),
+                ),
+                onChanged: _queueSearch,
               ),
-              onChanged: _queueSearch,
             ),
-          ),
-          Expanded(child: _directoryBody()),
-        ],
+            Expanded(child: _directoryBody()),
+          ],
+        ),
       ),
     );
   }

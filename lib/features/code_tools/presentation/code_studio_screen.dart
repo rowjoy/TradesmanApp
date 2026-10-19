@@ -2,13 +2,14 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:barcode_widget/barcode_widget.dart' as code_widget;
-import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+
+import '../../../l10n/l10n.dart';
 
 class CodeStudioScreen extends StatelessWidget {
   const CodeStudioScreen({super.key});
@@ -20,7 +21,7 @@ class CodeStudioScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(bn ? 'QR ও বারকোড স্টুডিও' : 'QR & Barcode Studio'),
+          title: Text(context.l10n.codeToolsTitle),
           bottom: TabBar(
             tabs: [
               Tab(
@@ -34,9 +35,7 @@ class CodeStudioScreen extends StatelessWidget {
             ],
           ),
         ),
-        body: const TabBarView(
-          children: [_ScannerPanel(), _GeneratorPanel()],
-        ),
+        body: const TabBarView(children: [_ScannerPanel(), _GeneratorPanel()]),
       ),
     );
   }

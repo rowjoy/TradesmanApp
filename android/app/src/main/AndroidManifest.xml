@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:label="WorkProof"
         android:name="${applicationName}"
@@ -11,8 +12,8 @@
         android:allowBackup="false"
         android:fullBackupContent="false">
 
-        <!-- Debug falls back to Google's sample App ID. Release CI should pass
-             -PADMOB_APP_ID=... or expose ADMOB_APP_ID in its environment. -->
+        <!-- Gradle supplies Google's sample App ID for debug/profile and the
+             WorkProof App ID (or a validated override) for release. -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="${ADMOB_APP_ID}" />

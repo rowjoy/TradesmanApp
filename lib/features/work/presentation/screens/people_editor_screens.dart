@@ -186,29 +186,30 @@ class _WorkplaceEditorScreenState extends ConsumerState<WorkplaceEditorScreen> {
   final _address = TextEditingController();
   final _notes = TextEditingController();
   String? _employerId;
-  String _zone = 'Europe/London';
-  bool _loading = false;
+  String _zone = 'Etc/UTC';
+  bool _loading = true;
   bool _saving = false;
 
   @override
   void initState() {
     super.initState();
-    if (widget.workplaceId != null) _load();
+    _load();
   }
 
   Future<void> _load() async {
-    setState(() => _loading = true);
-    final item = await ref
-        .read(workRepositoryProvider)
-        .workplace(widget.workplaceId!);
-    if (item != null && mounted) {
+    final deviceTimeZone = await deviceTimeZoneIdentifier();
+    final item = widget.workplaceId == null
+        ? null
+        : await ref.read(workRepositoryProvider).workplace(widget.workplaceId!);
+    if (!mounted) return;
+    if (item != null) {
       _name.text = item.name;
       _address.text = item.address ?? '';
       _notes.text = item.notes ?? '';
       _employerId = item.employerId;
-      _zone = item.ianaTimeZone;
     }
-    if (mounted) setState(() => _loading = false);
+    _zone = deviceTimeZone;
+    setState(() => _loading = false);
   }
 
   Future<void> _save() async {
@@ -291,20 +292,11 @@ class _WorkplaceEditorScreenState extends ConsumerState<WorkplaceEditorScreen> {
                   ),
                   _requiredField(_name, context.l10n.workplaceName),
                   _field(_address, context.l10n.addressLabel, lines: 2),
-                  InlineAnimatedPicker<String>(
-                    label: context.l10n.timeZoneLabel,
-                    value: _zone,
-                    options: supportedTimeZones
-                        .map((zone) => zone.ianaName)
-                        .toList(),
-                    optionLabel: (value) {
-                      for (final zone in supportedTimeZones) {
-                        if (zone.ianaName == value) return zone.label;
-                      }
-                      return value;
-                    },
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
                     leading: const Icon(Icons.public_outlined),
-                    onChanged: (value) => setState(() => _zone = value),
+                    title: Text(context.l10n.timeZoneLabel),
+                    subtitle: Text(_zone),
                   ),
                   _field(_notes, context.l10n.notesLabel, lines: 4),
                   _saveButton(context, _saving, _save),
@@ -445,9 +437,7 @@ class _CustomerEditorScreenState extends ConsumerState<CustomerEditorScreen> {
                   options: CurrencyCatalog.currencies
                       .map((item) => item.code)
                       .toList(growable: false),
-                  optionLabel: (code) => CurrencyCatalog.currency(
-                    code,
-                  ).label(
+                  optionLabel: (code) => CurrencyCatalog.currency(code).label(
                     languageCode: Localizations.localeOf(context).languageCode,
                   ),
                   leading: const Icon(Icons.currency_exchange_rounded),

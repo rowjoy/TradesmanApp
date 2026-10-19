@@ -78,9 +78,7 @@ class _PayPeriodEditorScreenState extends ConsumerState<PayPeriodEditorScreen> {
 
   Future<void> _save() async {
     if (_endInclusive.isBefore(_start)) {
-      _message(
-        context.l10n.m05EndDateMustBeAfterStart,
-      );
+      _message(context.l10n.m05EndDateMustBeAfterStart);
       return;
     }
     setState(() => _saving = true);
@@ -111,9 +109,7 @@ class _PayPeriodEditorScreenState extends ConsumerState<PayPeriodEditorScreen> {
       }
     } catch (_) {
       if (mounted) {
-        _message(
-          context.l10n.m05CouldNotCreatePayPeriod,
-        );
+        _message(context.l10n.m05CouldNotCreatePayPeriod);
       }
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -136,9 +132,7 @@ class _PayPeriodEditorScreenState extends ConsumerState<PayPeriodEditorScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.l10n.m05NewPayPeriod),
-      ),
+      appBar: AppBar(title: Text(context.l10n.m05NewPayPeriod)),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 4, 16, 28),
         children: [
@@ -192,9 +186,9 @@ class _PayPeriodEditorScreenState extends ConsumerState<PayPeriodEditorScreen> {
             options: CurrencyCatalog.currencies
                 .map((item) => item.code)
                 .toList(growable: false),
-            optionLabel: (value) => CurrencyCatalog.currency(value).label(
-              languageCode: Localizations.localeOf(context).languageCode,
-            ),
+            optionLabel: (value) => CurrencyCatalog.currency(
+              value,
+            ).label(languageCode: Localizations.localeOf(context).languageCode),
             leading: const Icon(Icons.currency_exchange_rounded),
             onChanged: (value) => setState(() => _currencyCode = value),
           ),
@@ -238,9 +232,7 @@ class _PayPeriodEditorScreenState extends ConsumerState<PayPeriodEditorScreen> {
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
                 : const Icon(Icons.shield_outlined),
-            label: Text(
-              context.l10n.m05CalculateAndSave,
-            ),
+            label: Text(context.l10n.m05CalculateAndSave),
           ),
         ],
       ),

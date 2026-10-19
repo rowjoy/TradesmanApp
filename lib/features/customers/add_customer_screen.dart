@@ -76,8 +76,7 @@ class _AddCustomerScreenState extends ConsumerState<AddCustomerScreen> {
               decoration: InputDecoration(
                 labelText: '${context.l10n.customerName} *',
               ),
-              validator: (v) =>
-                  (v == null || v.trim().isEmpty)
+              validator: (v) => (v == null || v.trim().isEmpty)
                   ? context.l10n.requiredField
                   : null,
               textCapitalization: TextCapitalization.words,
@@ -97,9 +96,7 @@ class _AddCustomerScreenState extends ConsumerState<AddCustomerScreen> {
             const SizedBox(height: 14),
             TextFormField(
               controller: _addressCtrl,
-              decoration: InputDecoration(
-                labelText: context.l10n.addressLabel,
-              ),
+              decoration: InputDecoration(labelText: context.l10n.addressLabel),
               maxLines: 2,
             ),
             const SizedBox(height: 14),

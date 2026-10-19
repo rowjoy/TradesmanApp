@@ -47,6 +47,7 @@ class SqliteLocalProfileRepository implements LocalProfileRepository {
   @override
   Future<LocalProfile> completeSetup(LocalProfileDraft draft) async {
     try {
+      final deviceTimeZone = await deviceTimeZoneIdentifier();
       final db = await _databaseHelper.database;
       final now = _clock.nowUtc();
       await db.transaction((txn) async {
@@ -138,7 +139,7 @@ class SqliteLocalProfileRepository implements LocalProfileRepository {
         }, where: 'workspace_id IS NULL');
 
         if (draft.loadDemoData && !demoWasLoaded) {
-          await _insertDemoData(txn, draft, now);
+          await _insertDemoData(txn, draft, now, deviceTimeZone);
         }
 
         await txn.insert('audit_logs', {
@@ -237,21 +238,18 @@ class SqliteLocalProfileRepository implements LocalProfileRepository {
     Transaction txn,
     LocalProfileDraft draft,
     DateTime now,
+    String deviceTimeZone,
   ) async {
     final localNow = now.toLocal();
-    final tomorrow = DateTime(
-      localNow.year,
-      localNow.month,
-      localNow.day + 1,
-    );
+    final tomorrow = DateTime(localNow.year, localNow.month, localNow.day + 1);
     final startLocal = DateTime(tomorrow.year, tomorrow.month, tomorrow.day, 9);
     final endLocal = startLocal.add(const Duration(hours: 8));
     final schedule = ScheduleWindow.fromLocal(
       startLocal: startLocal,
       endLocal: endLocal,
-      ianaTimeZone: 'Europe/London',
-      startOffsetMinutes: suggestedOffsetMinutes('Europe/London', startLocal),
-      endOffsetMinutes: suggestedOffsetMinutes('Europe/London', endLocal),
+      ianaTimeZone: deviceTimeZone,
+      startOffsetMinutes: deviceOffsetMinutes(startLocal),
+      endOffsetMinutes: deviceOffsetMinutes(endLocal),
     );
     if (draft.workMode == WorkMode.worker || draft.workMode == WorkMode.both) {
       await txn.insert('employers', {
@@ -271,6 +269,7 @@ class SqliteLocalProfileRepository implements LocalProfileRepository {
         'name': 'Sample Workplace',
         'address': 'London',
         'notes': 'Editable demo record',
+        'iana_time_zone': deviceTimeZone,
         'created_at': now.toIso8601String(),
         'updated_at': now.toIso8601String(),
         'sync_status': 'localOnly',

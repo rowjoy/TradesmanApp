@@ -141,7 +141,8 @@ class AppLocalizationsJa extends AppLocalizations {
   String get demoDataDescription => 'サンプルデータで使い方を確認できます。';
 
   @override
-  String get privacySetupNote => '設定はこの端末のみに保存されます。';
+  String get privacySetupNote =>
+      '設定はこの端末のみに保存されます。暗号化したバックアップファイルは［設定］から作成できます。';
 
   @override
   String get setupSaveFailed => '設定は保存されませんでした。';
@@ -153,16 +154,16 @@ class AppLocalizationsJa extends AppLocalizations {
   String get navWork => '仕事';
 
   @override
-  String get navMoney => '収支';
+  String get navMoney => '報酬';
 
   @override
-  String get navProof => '証明';
+  String get navProof => '記録';
 
   @override
-  String get navMore => 'その他';
+  String get navMore => '設定';
 
   @override
-  String get moneyTitle => '収支';
+  String get moneyTitle => '報酬と収入';
 
   @override
   String get moneyExpected => '予想収益';
@@ -177,19 +178,19 @@ class AppLocalizationsJa extends AppLocalizations {
   String get moneyEmpty => '完了した作業の収益がここに表示されます。';
 
   @override
-  String get proofTitle => '証明';
+  String get proofTitle => '仕事の記録';
 
   @override
-  String get proofSubtitle => 'アクティビティ履歴';
+  String get proofSubtitle => 'この端末に保存された操作履歴';
 
   @override
   String get proofEmpty => 'このバージョンで記録されたアクティビティが表示されます。';
 
   @override
-  String get savedOnDevice => '端末に保存済み';
+  String get savedOnDevice => 'この端末に保存';
 
   @override
-  String get localOnlyStatus => 'ローカルのみ';
+  String get localOnlyStatus => 'この端末に保存';
 
   @override
   String get auditOnboardingCompleted => 'WorkProof の設定が完了しました';
@@ -240,7 +241,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get peopleTitle => '連絡先・サービス';
 
   @override
-  String get calendarTitle => 'カレンダー';
+  String get calendarTitle => '仕事カレンダー';
 
   @override
   String get newShift => '新しいシフト';
@@ -708,6 +709,20 @@ class AppLocalizationsJa extends AppLocalizations {
   String get helpAndGuidance => 'ヘルプとガイド';
 
   @override
+  String get sendFeedbackOnWhatsApp => 'WhatsAppでフィードバックを送信';
+
+  @override
+  String whatsAppFeedbackSubtitle(String phoneNumber) {
+    return '$phoneNumber 宛ての編集可能な下書きを開きます';
+  }
+
+  @override
+  String get whatsAppFeedbackMessage => 'WorkProofチームの皆さん、フィードバックをお伝えします：';
+
+  @override
+  String get whatsAppFeedbackFailed => 'WhatsAppを開けませんでした。もう一度お試しください。';
+
+  @override
   String get replayShowcase => '使い方ガイドを再再生';
 
   @override
@@ -750,7 +765,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get showcaseProofTitle => '信頼性の高い記録を保持';
 
   @override
-  String get showcaseProofBody => '修正には理由の入力が必要です。';
+  String get showcaseProofBody => '修正には理由が必要です。最終的な作業時間と報酬の計算は仕事の記録に保存されます。';
 
   @override
   String get skipShowcase => 'スキップ';
@@ -780,7 +795,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get notificationsTitle => '通知';
 
   @override
-  String get offlineNotificationsTitle => 'オフライン通知と仕事アラート';
+  String get offlineNotificationsTitle => '仕事のリマインダーと通知';
 
   @override
   String get offlineNotificationsDescription => '時刻、プライバシー、通知休止時間、予定の修復';
@@ -792,16 +807,16 @@ class AppLocalizationsJa extends AppLocalizations {
   String get localDataDescription => 'アカウントもインターネットも必要ありません。';
 
   @override
-  String get payProtectionGuide => '給与保護ガイド';
+  String get payProtectionGuide => '報酬確認ガイド';
 
   @override
-  String get payProtectionGuideDescription => '見込み給与、給与明細、証拠、エクスポートを確認';
+  String get payProtectionGuideDescription => '見込み報酬、給与明細、補足書類、エクスポートを確認します。';
 
   @override
   String get regionLanguageTitle => '地域と言語';
 
   @override
-  String get localWorkspaceTitle => 'ローカルワークスペース';
+  String get localWorkspaceTitle => 'この端末のデータ';
 
   @override
   String get localWorkspaceDescription => 'アカウントやインターネットなしで言語と金額表示を変更できます。';
@@ -810,10 +825,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get appLanguageLabel => 'アプリの言語';
 
   @override
-  String get countryMarketLabel => '国 / 市場';
+  String get countryMarketLabel => '国または地域';
 
   @override
-  String get defaultCurrencyLabel => 'ワークスペースの既定通貨';
+  String get defaultCurrencyLabel => '既定の通貨';
 
   @override
   String get currencyHistoryNote => '既定通貨を変更しても過去の記録は換算されません。顧客ごとに請求通貨を設定できます。';
@@ -828,19 +843,19 @@ class AppLocalizationsJa extends AppLocalizations {
   String get preferencesSaveFailed => '設定を保存できませんでした。';
 
   @override
-  String get m05PayProtection => 'Pay Protection';
+  String get m05PayProtection => '報酬の確認';
 
   @override
-  String get m05WorkerPay => 'Worker pay';
+  String get m05WorkerPay => '自分の給与';
 
   @override
-  String get m05BusinessMoney => 'Business money';
+  String get m05BusinessMoney => '事業収入';
 
   @override
-  String get m05PayAtAGlance => 'Pay at a glance';
+  String get m05PayAtAGlance => '報酬の概要';
 
   @override
-  String get m05StartAPayPeriod => 'Start a pay period';
+  String get m05StartAPayPeriod => '給与期間を追加';
 
   @override
   String get m05PayPeriods => 'Pay periods';
@@ -891,7 +906,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get m05EditPayslip => 'Edit payslip';
 
   @override
-  String get m05AddEvidence => 'Add evidence';
+  String get m05AddEvidence => '書類を追加';
 
   @override
   String get m05RecordedHours => 'Recorded hours';
@@ -1019,10 +1034,10 @@ class AppLocalizationsJa extends AppLocalizations {
       'Choose employer, schedule and currency inside this screen. No popup dropdown is used.';
 
   @override
-  String get m05CreatePayProtectionPeriod => 'Create pay protection period';
+  String get m05CreatePayProtectionPeriod => '給与期間を追加';
 
   @override
-  String get m05ReviewEvidenceExport => 'Review, evidence, export';
+  String get m05ReviewEvidenceExport => '報酬と書類を確認';
 
   @override
   String get m05OpenAPeriodToAddAPayslip =>
@@ -1051,7 +1066,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get m05ExportCouldNotBeCreated => 'Export could not be created.';
 
   @override
-  String get m05EvidenceTimeline => 'Evidence timeline';
+  String get m05EvidenceTimeline => '書類とメモ';
 
   @override
   String get m05ExportsUseSelectedEvidenceAndPrivacyShare =>
@@ -1389,11 +1404,11 @@ class AppLocalizationsJa extends AppLocalizations {
   String get recordDeleted => 'Record deleted.';
 
   @override
-  String get payEvidencePacksTitle => 'Pay evidence packs';
+  String get payEvidencePacksTitle => '給与記録とエクスポート';
 
   @override
   String get payEvidencePacksDescription =>
-      'Open payslips, evidence and PDF + ZIP exports from Money';
+      '「報酬と収入」から給与明細、補足書類、PDF + ZIPエクスポートを開きます。';
 
   @override
   String get auditPreferencesUpdated => 'Workspace preferences updated';
@@ -1517,7 +1532,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get lockNow => 'Lock now';
 
   @override
-  String get evidenceEncryptionTitle => 'Encrypted evidence';
+  String get evidenceEncryptionTitle => '保護された書類';
 
   @override
   String get evidenceEncryptionDescription =>
@@ -1779,7 +1794,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get reportAllParties => 'All employers and customers';
 
   @override
-  String get reportWorkerSummary => 'Worker pay summary';
+  String get reportWorkerSummary => '報酬の概要';
 
   @override
   String get reportIncomeSummary => 'Business income summary';
@@ -1882,86 +1897,280 @@ class AppLocalizationsJa extends AppLocalizations {
       'Some completed entries have no saved rate. Review totals before sharing.';
 
   @override
-  String get marketingStudioTitle => 'Marketing Studio';
+  String get marketingStudioTitle => '宣伝素材を作成';
 
   @override
   String get marketingStudioSubtitle =>
-      'Create a premium promotion image or PDF offline, then share it with Facebook, WhatsApp, email or another device app.';
+      '洗練された宣伝画像やPDFをオフラインで作成し、Facebook、WhatsApp、メール、または端末上の別のアプリで共有できます。';
 
   @override
-  String get marketingProfileTitle => 'Business or personal promotion';
+  String get marketingProfileTitle => '宣伝内容';
 
   @override
-  String get marketingNameLabel => 'Company or professional name';
+  String get marketingNameLabel => '会社名または屋号・氏名';
 
   @override
-  String get marketingHeadlineLabel => 'Headline or short message';
+  String get marketingHeadlineLabel => '見出しまたは短いメッセージ';
 
   @override
-  String get marketingOfferLabel => 'Offer or promotion (optional)';
+  String get marketingOfferLabel => '特典またはキャンペーン（任意）';
 
   @override
-  String get marketingServicesLabel => 'Services';
+  String get marketingServicesLabel => 'サービス';
 
   @override
-  String get marketingServicesHint => 'Enter one service per line';
+  String get marketingServicesHint => '1行に1つのサービスを入力';
 
   @override
-  String get marketingServicesTitle => 'Our services';
+  String get marketingServicesTitle => '提供サービス';
 
   @override
-  String get marketingWebsiteLabel => 'Website or social page';
+  String get marketingWebsiteLabel => 'ウェブサイトまたはSNSページ';
 
   @override
-  String get marketingTemplateLabel => 'Premium design';
+  String get marketingTemplateLabel => 'デザインスタイル';
 
   @override
-  String get marketingTemplateProfessional => 'Professional';
+  String get marketingTemplateProfessional => 'プロフェッショナル';
 
   @override
-  String get marketingTemplateBold => 'Bold';
+  String get marketingTemplateBold => '力強い';
 
   @override
-  String get marketingTemplateElegant => 'Elegant';
+  String get marketingTemplateElegant => '上品';
 
   @override
-  String get marketingChooseLogo => 'Add logo or photo';
+  String get marketingChooseLogo => '会社ロゴを追加';
 
   @override
-  String get marketingRemoveLogo => 'Remove logo';
+  String get marketingRemoveLogo => 'ロゴを削除';
 
   @override
-  String get marketingPreview => 'Live promotion preview';
+  String get marketingChooseCoverPhoto => 'ビジネス写真を追加';
 
   @override
-  String get marketingSaveProfile => 'Save promotion profile';
+  String get marketingRemoveCoverPhoto => 'ビジネス写真を削除';
 
   @override
-  String get marketingProfileSaved => 'Promotion profile saved on this device.';
+  String get marketingPreview => '宣伝素材のライブプレビュー';
 
   @override
-  String get marketingCreateImage => 'Image';
+  String get marketingSaveProfile => '宣伝内容を保存';
+
+  @override
+  String get marketingProfileSaved => '宣伝内容をこの端末に保存しました。';
+
+  @override
+  String get marketingCreateImage => '画像';
 
   @override
   String get marketingCreatePdf => 'PDF';
 
   @override
-  String get marketingCreating => 'Creating…';
+  String get marketingCreating => '作成中…';
 
   @override
-  String get marketingExportSaved =>
-      'Promotion saved. Choose an app to share it.';
+  String get marketingExportSaved => '宣伝素材を保存しました。共有するアプリを選択してください。';
 
   @override
-  String get marketingExportFailed => 'The promotion could not be created.';
+  String get marketingExportFailed => '宣伝素材を作成できませんでした。';
 
   @override
-  String get marketingLogoFailed =>
-      'Choose a PNG, JPG or WebP logo up to 12 MB.';
+  String get marketingLogoFailed => '12 MB以下のPNG、JPG、またはWebP形式のロゴを選択してください。';
 
   @override
-  String get marketingRequiredInfo => 'Add the required promotion information.';
+  String get marketingCoverPhotoFailed =>
+      '12 MB以下のPNG、JPG、またはWebP形式のビジネス写真を選択してください。';
 
   @override
-  String get marketingContactRequired => 'Add a phone number or email address.';
+  String get marketingRequiredInfo => '宣伝に必要な情報を入力してください。';
+
+  @override
+  String get marketingContactRequired => '電話番号またはメールアドレスを入力してください。';
+
+  @override
+  String get aboutWorkProof => 'WorkProofについて';
+
+  @override
+  String get appInformationTitle => 'アプリ情報';
+
+  @override
+  String get aboutAppDescription =>
+      '仕事やシフトの計画、時間の記録、報酬の確認、信頼できる記録の保管をオフライン中心で支える仕事管理アプリです。';
+
+  @override
+  String get rateWorkProof => 'WorkProofを評価';
+
+  @override
+  String get storeListingFailed => 'アプリストアを開けませんでした。もう一度お試しください。';
+
+  @override
+  String get appFeaturesTitle => 'できること';
+
+  @override
+  String versionLabel(String version) {
+    return 'バージョン $version';
+  }
+
+  @override
+  String get versionUnavailable => 'バージョン情報を取得できません';
+
+  @override
+  String get featureDetails => '機能の詳細';
+
+  @override
+  String get openFeature => '機能を開く';
+
+  @override
+  String get featureWorkShortDescription => '顧客の仕事や雇用先のシフトを作成し、予定と進捗を管理します。';
+
+  @override
+  String get featureWorkDescription => '各仕事やシフトの予定、料金、リマインダー、現在の状況をまとめて管理できます。';
+
+  @override
+  String get featureTimeTrackingTitle => '時間記録';
+
+  @override
+  String get featureTimeTrackingShortDescription =>
+      '出退勤と休憩を記録し、予定時間と実働時間を比較します。';
+
+  @override
+  String get featureTimeTrackingDescription =>
+      '信頼できる1つのタイマーでオフライン記録を行い、有給・無給休憩、理由付きの修正、保存済みの報酬計算を管理します。';
+
+  @override
+  String get featureContactsShortDescription => '雇用主、職場、顧客、サービスを整理して管理します。';
+
+  @override
+  String get featureContactsDescription =>
+      '仕事に関係する人、場所、サービスを保存し、新しい仕事やシフトをすばやく作成できます。';
+
+  @override
+  String get featureCalendarShortDescription => '日付ごとに仕事とシフトを確認し、今後の予定を立てます。';
+
+  @override
+  String get featureCalendarDescription =>
+      '月間カレンダーと1日の予定を確認し、必要な仕事を開いたり追加したりできます。';
+
+  @override
+  String get featurePayShortDescription => '見込み報酬、受取額、事業収入、未回収額を確認します。';
+
+  @override
+  String get featurePayDescription =>
+      '給与期間と給与明細を比較したり、保存した仕事の請求書、入金、経費、収入を確認したりできます。';
+
+  @override
+  String get featureRecordsShortDescription => '重要な仕事と報酬の履歴をこの端末にわかりやすく残します。';
+
+  @override
+  String get featureRecordsDescription =>
+      '何が起きたかを確認できるよう、保存済みの操作、補足書類、修正、エクスポートを見直せます。';
+
+  @override
+  String get featureReportsShortDescription =>
+      '保存済みの記録から週次、月次、または期間指定のレポートを作成します。';
+
+  @override
+  String get featureReportsDescription =>
+      '仕事、時間、報酬、事業の合計を確認し、PDFまたはCSVの明細をオフラインで書き出します。';
+
+  @override
+  String get featureRemindersShortDescription =>
+      '今後の仕事、休憩、予定終了時刻を端末上の通知で知らせます。';
+
+  @override
+  String get featureRemindersDescription =>
+      'インターネット接続なしで、通知のタイミング、通知しない時間帯、プライバシー、毎日の概要を設定できます。';
+
+  @override
+  String get featureBackupShortDescription =>
+      '暗号化したバックアップファイルを作成し、作業データを安全に復元します。';
+
+  @override
+  String get featureBackupDescription =>
+      'ローカルの記録と書類をパスワードで暗号化したバックアップに保護し、復元前に内容を検証します。';
+
+  @override
+  String get featureSecurityShortDescription => 'PIN、生体認証、暗号化された書類で個人記録を守ります。';
+
+  @override
+  String get featureSecurityDescription =>
+      '席を離れるときにWorkProofをロックし、新しい補足ファイルをこの端末上で暗号化して保管します。';
+
+  @override
+  String get featurePromotionsShortDescription =>
+      '洗練された宣伝画像やPDFを作成し、端末から共有します。';
+
+  @override
+  String get featurePromotionsDescription =>
+      'サービス、連絡先、ロゴ、特典、デザインを保存し、繰り返し使える宣伝素材をオフラインで作成します。';
+
+  @override
+  String get codeToolsTitle => 'コードを読み取り・作成';
+
+  @override
+  String get codeToolsShortDescription => 'QRコードやバーコードを読み取るか、自分のコードを作成して共有します。';
+
+  @override
+  String get codeToolsDescription =>
+      'カメラで対応コードを読み取るほか、端末上だけでテキストからQRコードやバーコードを生成できます。';
+
+  @override
+  String get manageJobTitle => '仕事を管理';
+
+  @override
+  String get manageJobDescription => '状況 · 費用 · 入金 · 仕事の書類';
+
+  @override
+  String get jobStatusTitle => '仕事の状況';
+
+  @override
+  String get costsAndPaymentsTitle => '費用と入金';
+
+  @override
+  String get jobDocumentsTitle => '仕事の書類';
+
+  @override
+  String get updateAvailableTitle => '新しいバージョンがあります';
+
+  @override
+  String get updateAvailableMessage =>
+      '改善、不具合修正、新機能を含むWorkProofの新しいバージョンが利用できます。';
+
+  @override
+  String get updateRequiredMessage => '安全に利用を続けるには、この重要なアップデートが必要です。';
+
+  @override
+  String get updateNow => '今すぐ更新';
+
+  @override
+  String get later => '後で';
+
+  @override
+  String get checkingForUpdates => 'アップデートを確認中…';
+
+  @override
+  String get installingUpdate => 'アップデートを準備中…';
+
+  @override
+  String get updateDownloadReadyTitle => 'アップデートの準備ができました';
+
+  @override
+  String get updateDownloadReadyMessage =>
+      'アップデートをダウンロードしました。インストールを完了するにはWorkProofを再起動してください。';
+
+  @override
+  String get restartToUpdate => '再起動して更新';
+
+  @override
+  String get updateFailed => 'アップデートを完了できませんでした。WorkProofは引き続き利用できます。';
+
+  @override
+  String get updateCheckFailed => '現在アップデートを確認できません。通常どおり利用を続けられます。';
+
+  @override
+  String get latestVersionInstalled => 'すでに最新バージョンです。';
+
+  @override
+  String get checkForUpdates => 'アップデートを確認';
 }

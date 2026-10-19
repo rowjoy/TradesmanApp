@@ -100,18 +100,19 @@ class NotificationPolicy {
             .add(source);
       }
 
-      if (source.status == 'inProgress' &&
-          (source.usesGlobalDefaults || source.endEnabled)) {
-        _addRelative(
-          candidates,
-          source,
-          AlertCategory.scheduledEnd,
-          source.endUtc,
-          preferences,
-          now,
-          end,
-          languageCode,
-        );
+      if (source.status == 'inProgress') {
+        if (source.usesGlobalDefaults || source.endEnabled) {
+          _addRelative(
+            candidates,
+            source,
+            AlertCategory.scheduledEnd,
+            source.endUtc,
+            preferences,
+            now,
+            end,
+            languageCode,
+          );
+        }
         final clockIn = source.actualClockInUtc;
         if (clockIn != null) {
           final breakAt = clockIn.add(

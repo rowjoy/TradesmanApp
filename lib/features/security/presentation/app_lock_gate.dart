@@ -77,7 +77,10 @@ class _AppLockGateState extends ConsumerState<AppLockGate>
       children: [
         ExcludeSemantics(
           excluding: blocked,
-          child: IgnorePointer(ignoring: blocked, child: widget.child),
+          child: IgnorePointer(
+            ignoring: blocked,
+            child: TickerMode(enabled: !blocked, child: widget.child),
+          ),
         ),
         if (privacyShield)
           const _PrivacyShield()
@@ -106,20 +109,20 @@ class _LockedScreen extends ConsumerStatefulWidget {
 }
 
 class _LockedScreenState extends ConsumerState<_LockedScreen> {
-  final _pin = TextEditingController();
+  final _pinApp = TextEditingController();
 
   @override
   void dispose() {
-    _pin.dispose();
+    _pinApp.dispose();
     super.dispose();
   }
 
   Future<void> _unlock() async {
     final unlocked = await ref
         .read(appLockControllerProvider.notifier)
-        .verifyPin(_pin.text);
+        .verifyPin(_pinApp.text);
     if (!unlocked && mounted) {
-      _pin.clear();
+      _pinApp.clear();
       FocusScope.of(context).requestFocus();
     }
   }
@@ -151,9 +154,8 @@ class _LockedScreenState extends ConsumerState<_LockedScreen> {
                     Text(
                       context.l10n.unlockWorkProof,
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(fontWeight: FontWeight.w800),
                     ),
                     const SizedBox(height: 8),
                     Text(
@@ -162,9 +164,9 @@ class _LockedScreenState extends ConsumerState<_LockedScreen> {
                     ),
                     const SizedBox(height: 24),
                     TextField(
-                      controller: _pin,
+                      controller: _pinApp,
                       autofocus: true,
-                      obscureText: true,
+                      obscureText: false,
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.done,
                       maxLength: 8,

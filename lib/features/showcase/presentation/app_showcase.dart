@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -39,8 +40,16 @@ class AppShowcaseCoordinator {
   FutureOr<void> Function()? _onComplete;
   bool _completing = false;
   bool _registered = false;
-  bool _active = false;
+  final ValueNotifier<bool> _activity = ValueNotifier<bool>(false);
   int _startToken = 0;
+
+  bool get isActive => _activity.value;
+  ValueListenable<bool> get activity => _activity;
+
+  void _setActive(bool value) {
+    if (_activity.value == value) return;
+    _activity.value = value;
+  }
 
   void register() {
     if (_registered) return;
@@ -59,8 +68,8 @@ class AppShowcaseCoordinator {
     required List<GlobalKey> keys,
     required FutureOr<void> Function() onComplete,
   }) {
-    if (!_registered || keys.isEmpty || _active) return false;
-    _active = true;
+    if (!_registered || keys.isEmpty || isActive) return false;
+    _setActive(true);
     _onComplete = onComplete;
     final token = ++_startToken;
     _startWhenReady(keys, token: token, attempt: 0);
@@ -73,11 +82,11 @@ class AppShowcaseCoordinator {
     required int attempt,
   }) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!_active || token != _startToken) return;
+      if (!isActive || token != _startToken) return;
       final ready = keys.where(_targetIsReady).toList(growable: false);
       if (ready.length == keys.length || attempt >= 12) {
         if (ready.isEmpty) {
-          _active = false;
+          _setActive(false);
           _onComplete = null;
           return;
         }
@@ -85,7 +94,7 @@ class AppShowcaseCoordinator {
         return;
       }
       Future<void>.delayed(const Duration(milliseconds: 50), () {
-        if (!_active || token != _startToken) return;
+        if (!isActive || token != _startToken) return;
         _startWhenReady(keys, token: token, attempt: attempt + 1);
       });
     });
@@ -106,7 +115,7 @@ class AppShowcaseCoordinator {
     if (_completing) return;
     final callback = _onComplete;
     _onComplete = null;
-    _active = false;
+    _setActive(false);
     _startToken++;
     if (callback == null) return;
     _completing = true;

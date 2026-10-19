@@ -7,10 +7,7 @@ void main() {
       rangeStart: DateTime(2026, 8, 10),
       dayCount: 7,
       intervals: [
-        (
-          start: DateTime(2026, 8, 11, 22),
-          end: DateTime(2026, 8, 12, 2),
-        ),
+        (start: DateTime(2026, 8, 11, 22), end: DateTime(2026, 8, 12, 2)),
       ],
     );
 
@@ -23,14 +20,8 @@ void main() {
       rangeStart: DateTime(2026, 8, 10),
       dayCount: 7,
       intervals: [
-        (
-          start: DateTime(2026, 8, 13, 9),
-          end: DateTime(2026, 8, 14),
-        ),
-        (
-          start: DateTime(2026, 8, 15, 9),
-          end: DateTime(2026, 8, 15, 9),
-        ),
+        (start: DateTime(2026, 8, 13, 9), end: DateTime(2026, 8, 14)),
+        (start: DateTime(2026, 8, 15, 9), end: DateTime(2026, 8, 15, 9)),
       ],
     );
 

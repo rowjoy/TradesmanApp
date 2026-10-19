@@ -442,9 +442,10 @@ class WorkRepository {
       ],
       orderBy: 'start_at_utc ASC',
     );
-    return rows.map((row) {
-      final schedule = ScheduleWindow.fromMap(row);
-      return CalendarWorkItem(
+    return rows
+        .map((row) {
+          final schedule = ScheduleWindow.fromMap(row);
+          return CalendarWorkItem(
             id: row['id']! as String,
             flow: flow,
             title: row['title']! as String,
@@ -455,7 +456,8 @@ class WorkRepository {
             ianaTimeZone: row['iana_time_zone'] as String? ?? 'Etc/UTC',
             status: row['status'] as String? ?? 'scheduled',
           );
-    }).toList(growable: false);
+        })
+        .toList(growable: false);
   }
 
   Future<void> _auditAndOutbox(

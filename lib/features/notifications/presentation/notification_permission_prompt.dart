@@ -17,17 +17,13 @@ Future<void> showNotificationPrePermissionDialog(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            context.l10n.m04WorkProofCanScheduleJobAndShiftAlerts,
-          ),
+          Text(context.l10n.m04WorkProofCanScheduleJobAndShiftAlerts),
           const SizedBox(height: 14),
           Card(
             child: ListTile(
               leading: const Icon(Icons.lock_outline),
               title: Text(context.l10n.m04WorkStartsSoon),
-              subtitle: Text(
-                context.l10n.m04WorkAndCustomerNamesStayPrivateOn,
-              ),
+              subtitle: Text(context.l10n.m04WorkAndCustomerNamesStayPrivateOn),
             ),
           ),
         ],

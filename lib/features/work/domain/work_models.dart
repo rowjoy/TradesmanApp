@@ -62,7 +62,7 @@ class Workplace {
     name: map['name']! as String,
     address: map['address'] as String?,
     notes: map['notes'] as String?,
-    ianaTimeZone: map['iana_time_zone'] as String? ?? 'Europe/London',
+    ianaTimeZone: map['iana_time_zone'] as String? ?? 'Etc/UTC',
   );
 
   final String id;

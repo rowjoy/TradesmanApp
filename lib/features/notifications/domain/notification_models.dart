@@ -10,16 +10,9 @@ enum AlertCategory {
   motivation,
 }
 
-enum NotificationPermissionState {
-  unknown,
-  deferred,
-  granted,
-  denied,
-}
+enum NotificationPermissionState { unknown, deferred, granted, denied }
 
-NotificationPermissionState notificationPermissionFromStorage(
-  String? value,
-) {
+NotificationPermissionState notificationPermissionFromStorage(String? value) {
   if (value == null) {
     return NotificationPermissionState.unknown;
   }
@@ -134,35 +127,18 @@ class AlertPreference {
 
     return AlertPreference(
       category: category,
-      enabled: _toBool(
-        map['enabled'],
-        defaultValue: true,
-      ),
+      enabled: _toBool(map['enabled'], defaultValue: true),
       offsetSeconds: _toInt(map['offset_seconds']),
-      deliveryTimeMinutes: _toInt(
-        map['delivery_time_minutes'],
-      ),
-      quietStartMinutes:
-          _toInt(map['quiet_start_minutes']) ??
-          22 * 60,
-      quietEndMinutes:
-          _toInt(map['quiet_end_minutes']) ??
-          7 * 60,
+      deliveryTimeMinutes: _toInt(map['delivery_time_minutes']),
+      quietStartMinutes: _toInt(map['quiet_start_minutes']) ?? 22 * 60,
+      quietEndMinutes: _toInt(map['quiet_end_minutes']) ?? 7 * 60,
       privateLockScreenText: _toBool(
         map['private_lock_screen_text'],
         defaultValue: true,
       ),
-      cooldownSeconds:
-          _toInt(map['cooldown_seconds']) ??
-          3600,
-      soundEnabled: _toBool(
-        map['sound_enabled'],
-        defaultValue: true,
-      ),
-      vibrationEnabled: _toBool(
-        map['vibration_enabled'],
-        defaultValue: true,
-      ),
+      cooldownSeconds: _toInt(map['cooldown_seconds']) ?? 3600,
+      soundEnabled: _toBool(map['sound_enabled'], defaultValue: true),
+      vibrationEnabled: _toBool(map['vibration_enabled'], defaultValue: true),
     );
   }
 
@@ -203,19 +179,13 @@ class AlertPreference {
       deliveryTimeMinutes: clearDeliveryTimeMinutes
           ? null
           : deliveryTimeMinutes ?? this.deliveryTimeMinutes,
-      quietStartMinutes:
-          quietStartMinutes ?? this.quietStartMinutes,
-      quietEndMinutes:
-          quietEndMinutes ?? this.quietEndMinutes,
+      quietStartMinutes: quietStartMinutes ?? this.quietStartMinutes,
+      quietEndMinutes: quietEndMinutes ?? this.quietEndMinutes,
       privateLockScreenText:
-          privateLockScreenText ??
-          this.privateLockScreenText,
-      cooldownSeconds:
-          cooldownSeconds ?? this.cooldownSeconds,
-      soundEnabled:
-          soundEnabled ?? this.soundEnabled,
-      vibrationEnabled:
-          vibrationEnabled ?? this.vibrationEnabled,
+          privateLockScreenText ?? this.privateLockScreenText,
+      cooldownSeconds: cooldownSeconds ?? this.cooldownSeconds,
+      soundEnabled: soundEnabled ?? this.soundEnabled,
+      vibrationEnabled: vibrationEnabled ?? this.vibrationEnabled,
     );
   }
 }
@@ -279,37 +249,20 @@ class MotivationSettings {
     this.quietEndMinutes = 7 * 60,
   });
 
-  factory MotivationSettings.fromMap(
-    Map<String, Object?> map,
-  ) {
+  factory MotivationSettings.fromMap(Map<String, Object?> map) {
     return MotivationSettings(
-      enabled: _toBool(
-        map['enabled'],
-        defaultValue: false,
-      ),
-      deliveryTimeMinutes:
-          _toInt(map['delivery_time_minutes']) ??
-          7 * 60,
-      tone:
-          _toStringValue(map['tone']) ??
-          'calm',
-      allowedDaysMask:
-          _toInt(map['allowed_days_mask']) ??
-          127,
-      pausedUntilUtc:
-          _toUtcDateTime(map['paused_until_utc']),
+      enabled: _toBool(map['enabled'], defaultValue: false),
+      deliveryTimeMinutes: _toInt(map['delivery_time_minutes']) ?? 7 * 60,
+      tone: _toStringValue(map['tone']) ?? 'calm',
+      allowedDaysMask: _toInt(map['allowed_days_mask']) ?? 127,
+      pausedUntilUtc: _toUtcDateTime(map['paused_until_utc']),
       privateLockScreenText: _toBool(
         map['private_lock_screen_text'],
         defaultValue: true,
       ),
-      customMessage:
-          _toStringValue(map['custom_message']),
-      quietStartMinutes:
-          _toInt(map['quiet_start_minutes']) ??
-          22 * 60,
-      quietEndMinutes:
-          _toInt(map['quiet_end_minutes']) ??
-          7 * 60,
+      customMessage: _toStringValue(map['custom_message']),
+      quietStartMinutes: _toInt(map['quiet_start_minutes']) ?? 22 * 60,
+      quietEndMinutes: _toInt(map['quiet_end_minutes']) ?? 7 * 60,
     );
   }
 
@@ -342,27 +295,19 @@ class MotivationSettings {
   }) {
     return MotivationSettings(
       enabled: enabled ?? this.enabled,
-      deliveryTimeMinutes:
-          deliveryTimeMinutes ??
-          this.deliveryTimeMinutes,
+      deliveryTimeMinutes: deliveryTimeMinutes ?? this.deliveryTimeMinutes,
       tone: tone ?? this.tone,
-      allowedDaysMask:
-          allowedDaysMask ?? this.allowedDaysMask,
+      allowedDaysMask: allowedDaysMask ?? this.allowedDaysMask,
       pausedUntilUtc: clearPausedUntilUtc
           ? null
           : pausedUntilUtc ?? this.pausedUntilUtc,
       privateLockScreenText:
-          privateLockScreenText ??
-          this.privateLockScreenText,
+          privateLockScreenText ?? this.privateLockScreenText,
       customMessage: clearCustomMessage
           ? null
           : customMessage ?? this.customMessage,
-      quietStartMinutes:
-          quietStartMinutes ??
-          this.quietStartMinutes,
-      quietEndMinutes:
-          quietEndMinutes ??
-          this.quietEndMinutes,
+      quietStartMinutes: quietStartMinutes ?? this.quietStartMinutes,
+      quietEndMinutes: quietEndMinutes ?? this.quietEndMinutes,
     );
   }
 }
@@ -431,10 +376,7 @@ class StoredNotification {
 }
 
 class ReconcileBatch {
-  const ReconcileBatch({
-    required this.cancelIds,
-    required this.schedule,
-  });
+  const ReconcileBatch({required this.cancelIds, required this.schedule});
 
   final List<int> cancelIds;
   final List<StoredNotification> schedule;
@@ -513,16 +455,9 @@ class NotificationPayload {
 ///
 /// The same occurrenceId always generates the same ID.
 /// `probe` can be incremented when a hash collision occurs.
-int deterministicNotificationId(
-  String occurrenceId, {
-  int probe = 0,
-}) {
+int deterministicNotificationId(String occurrenceId, {int probe = 0}) {
   if (probe < 0) {
-    throw ArgumentError.value(
-      probe,
-      'probe',
-      'Probe cannot be negative.',
-    );
+    throw ArgumentError.value(probe, 'probe', 'Probe cannot be negative.');
   }
 
   var hash = 0x811c9dc5;

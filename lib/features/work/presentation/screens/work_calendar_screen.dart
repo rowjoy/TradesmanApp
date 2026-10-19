@@ -7,7 +7,9 @@ import '../../../../core/router/app_router.dart';
 import '../../../../core/performance/day_bucket_index.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/formatters.dart';
+import '../../../../core/widgets/app_banner_frame.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../ads/application/ad_content_eligibility.dart';
 import '../../../onboarding/domain/entities/local_profile.dart';
 import '../../../onboarding/presentation/controllers/onboarding_controller.dart';
 import '../../domain/work_models.dart';
@@ -43,97 +45,101 @@ class _WorkCalendarScreenState extends ConsumerState<WorkCalendarScreen> {
     final items = ref.watch(
       calendarItemsProvider(CalendarQuery(month: _month, flow: _flow)),
     );
-    return Scaffold(
-      appBar: AppBar(title: Text(context.l10n.calendarTitle)),
-      floatingActionButton: FloatingActionButton.extended(
-        heroTag: 'fab_calendar',
-        onPressed: () => context.push(
-          _flow == WorkFlow.worker ? AppRoutes.newShift : AppRoutes.newJob,
+    return AppBannerFrame(
+      placement: AdPlacement.calendar,
+      enabled: hasPublisherContent(items),
+      child: Scaffold(
+        appBar: AppBar(title: Text(context.l10n.calendarTitle)),
+        floatingActionButton: FloatingActionButton.extended(
+          heroTag: 'fab_calendar',
+          onPressed: () => context.push(
+            _flow == WorkFlow.worker ? AppRoutes.newShift : AppRoutes.newJob,
+          ),
+          icon: const Icon(Icons.add),
+          label: Text(
+            _flow == WorkFlow.worker
+                ? context.l10n.newShift
+                : context.l10n.newJob,
+          ),
         ),
-        icon: const Icon(Icons.add),
-        label: Text(
-          _flow == WorkFlow.worker
-              ? context.l10n.newShift
-              : context.l10n.newJob,
-        ),
-      ),
-      body: Column(
-        children: [
-          if (profileMode == WorkMode.both)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-              child: SizedBox(
-                width: double.infinity,
-                child: SegmentedButton<WorkFlow>(
-                  segments: [
-                    ButtonSegment(
-                      value: WorkFlow.worker,
-                      label: Text(context.l10n.workerFlow),
-                    ),
-                    ButtonSegment(
-                      value: WorkFlow.tradesman,
-                      label: Text(context.l10n.tradesmanFlow),
-                    ),
-                  ],
-                  selected: {_flow},
-                  onSelectionChanged: (value) =>
-                      setState(() => _flow = value.first),
-                ),
-              ),
-            ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 12, 12, 4),
-            child: Row(
-              children: [
-                IconButton(
-                  onPressed: () => _moveMonth(-1),
-                  icon: const Icon(Icons.chevron_left),
-                ),
-                Expanded(
-                  child: Text(
-                    DateFormat.yMMMM(
-                      Localizations.localeOf(context).languageCode,
-                    ).format(_month),
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
+        body: Column(
+          children: [
+            if (profileMode == WorkMode.both)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: SegmentedButton<WorkFlow>(
+                    segments: [
+                      ButtonSegment(
+                        value: WorkFlow.worker,
+                        label: Text(context.l10n.workerFlow),
+                      ),
+                      ButtonSegment(
+                        value: WorkFlow.tradesman,
+                        label: Text(context.l10n.tradesmanFlow),
+                      ),
+                    ],
+                    selected: {_flow},
+                    onSelectionChanged: (value) =>
+                        setState(() => _flow = value.first),
                   ),
                 ),
-                IconButton(
-                  onPressed: () => _moveMonth(1),
-                  icon: const Icon(Icons.chevron_right),
-                ),
-              ],
-            ),
-          ),
-          items.when(
-            data: (values) => _MonthGrid(
-              month: _month,
-              selectedDate: _selectedDate,
-              items: values,
-              onSelected: (date) => setState(() => _selectedDate = date),
-            ),
-            loading: () => const _CalendarLoadingGrid(),
-            error: (_, __) => Padding(
-              padding: const EdgeInsets.all(16),
-              child: Text(context.l10n.calendarLoadFailed),
-            ),
-          ),
-          const Divider(height: 1),
-          Expanded(
-            child: items.when(
-              data: (values) => _Agenda(
-                selectedDate: _selectedDate,
-                items: values
-                    .where((item) => item.touchesLocalDate(_selectedDate))
-                    .toList(),
               ),
-              loading: () => const SizedBox.shrink(),
-              error: (_, __) => const SizedBox.shrink(),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 12, 12, 4),
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: () => _moveMonth(-1),
+                    icon: const Icon(Icons.chevron_left),
+                  ),
+                  Expanded(
+                    child: Text(
+                      DateFormat.yMMMM(
+                        Localizations.localeOf(context).languageCode,
+                      ).format(_month),
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => _moveMonth(1),
+                    icon: const Icon(Icons.chevron_right),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+            items.when(
+              data: (values) => _MonthGrid(
+                month: _month,
+                selectedDate: _selectedDate,
+                items: values,
+                onSelected: (date) => setState(() => _selectedDate = date),
+              ),
+              loading: () => const _CalendarLoadingGrid(),
+              error: (_, __) => Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(context.l10n.calendarLoadFailed),
+              ),
+            ),
+            const Divider(height: 1),
+            Expanded(
+              child: items.when(
+                data: (values) => _Agenda(
+                  selectedDate: _selectedDate,
+                  items: values
+                      .where((item) => item.touchesLocalDate(_selectedDate))
+                      .toList(),
+                ),
+                loading: () => const SizedBox.shrink(),
+                error: (_, __) => const SizedBox.shrink(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

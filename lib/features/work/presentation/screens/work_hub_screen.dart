@@ -8,7 +8,6 @@ import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/formatters.dart';
 import '../../../../core/widgets/app_feedback.dart';
-import '../../../../core/widgets/banner_ad_widget.dart';
 import '../../../../core/widgets/loading_skeleton.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../jobs/job_model.dart';
@@ -95,7 +94,6 @@ class _WorkHubScreenState extends ConsumerState<WorkHubScreen> {
       ),
       body: Column(
         children: [
-          const BannerAdWidget(placement: AdPlacement.work),
           if (mode == WorkMode.both)
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
@@ -147,9 +145,7 @@ class _WorkHubScreenState extends ConsumerState<WorkHubScreen> {
               children: [
                 _FilterChip(
                   label: context.l10n.filterAll,
-                  selected: isWorker
-                      ? shiftFilter == null
-                      : jobFilter == null,
+                  selected: isWorker ? shiftFilter == null : jobFilter == null,
                   onSelected: () {
                     if (isWorker) {
                       ref.read(shiftStatusFilterProvider.notifier).state = null;
@@ -285,11 +281,13 @@ class _ShiftCard extends ConsumerWidget {
             tooltip: context.l10n.deleteLabel,
             onPressed: () async {
               if (!await _confirmDelete(context)) return;
-              await ref.read(workRepositoryProvider).softDelete(
-                table: 'shifts',
-                entityType: 'shift',
-                id: shift.id,
-              );
+              await ref
+                  .read(workRepositoryProvider)
+                  .softDelete(
+                    table: 'shifts',
+                    entityType: 'shift',
+                    id: shift.id,
+                  );
               invalidateWorkData(ref, flow: WorkFlow.worker);
               ref.invalidate(auditEventsProvider);
               unawaited(
@@ -352,9 +350,7 @@ class _JobCard extends ConsumerWidget {
                 invalidateWorkData(ref, flow: WorkFlow.tradesman);
                 ref.invalidate(auditEventsProvider);
                 unawaited(
-                  ref
-                      .read(notificationControllerProvider.notifier)
-                      .reconcile(),
+                  ref.read(notificationControllerProvider.notifier).reconcile(),
                 );
                 if (context.mounted) {
                   AppFeedback.success(context, context.l10n.recordDeleted);

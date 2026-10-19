@@ -101,9 +101,6 @@ Future<List<int>> _derivePinWorker(
     iterations: iterations,
     bits: 256,
   );
-  final key = await algorithm.deriveKeyFromPassword(
-    password: pin,
-    nonce: salt,
-  );
+  final key = await algorithm.deriveKeyFromPassword(password: pin, nonce: salt);
   return key.extractBytes();
 }

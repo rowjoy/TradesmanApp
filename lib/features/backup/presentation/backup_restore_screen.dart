@@ -264,19 +264,30 @@ class _BackupRestoreScreenState extends ConsumerState<BackupRestoreScreen> {
     }
     final confirmed = await _confirmRestore(context, mode);
     if (!confirmed) return;
-    final ok = await ref.read(backupControllerProvider.notifier).restore(mode);
+    final currentNotifications = ref.read(
+      notificationControllerProvider.notifier,
+    );
+    final ok = await restoreWithNotificationRebuild(
+      currentNotifications: currentNotifications,
+      restore: () => ref.read(backupControllerProvider.notifier).restore(mode),
+      recreateNotifications: () async {
+        await ref
+            .read(onboardingControllerProvider.notifier)
+            .reloadAfterRestore();
+        ref.invalidate(notificationControllerProvider);
+        return ref.read(notificationControllerProvider.notifier);
+      },
+    );
     if (!mounted) return;
     if (!ok) {
       _showControllerError();
       return;
     }
-    ref.invalidate(onboardingControllerProvider);
     ref.invalidate(customerRepositoryProvider);
     ref.invalidate(jobRepositoryProvider);
     ref.invalidate(workRepositoryProvider);
     ref.invalidate(payProtectionRepositoryProvider);
     ref.invalidate(timeTrackingRepositoryProvider);
-    ref.invalidate(notificationControllerProvider);
     AppFeedback.success(context, context.l10n.restoreCompletedSuccess);
     context.go(AppRoutes.startup);
   }
@@ -298,6 +309,43 @@ class _BackupRestoreScreenState extends ConsumerState<BackupRestoreScreen> {
   String _formatDate(BuildContext context, DateTime value) => DateFormat.yMMMd(
     Localizations.localeOf(context).toLanguageTag(),
   ).add_jm().format(value.toLocal());
+}
+
+Future<bool> restoreWithNotificationRebuild({
+  required NotificationController currentNotifications,
+  required Future<bool> Function() restore,
+  required Future<NotificationController> Function() recreateNotifications,
+}) async {
+  try {
+    await currentNotifications.suspendSchedulingForDataRestore();
+  } catch (_) {
+    return false;
+  }
+
+  late final bool restored;
+  try {
+    restored = await restore();
+  } catch (error, stackTrace) {
+    await currentNotifications.resumeSchedulingAfterDataRestore();
+    Error.throwWithStackTrace(error, stackTrace);
+  }
+  if (!restored) {
+    await currentNotifications.resumeSchedulingAfterDataRestore();
+    return false;
+  }
+
+  try {
+    final restoredNotifications = await recreateNotifications();
+    await restoredNotifications.initialize();
+    if (!restoredNotifications.isInitialized) {
+      await restoredNotifications.initialize();
+    }
+    if (!restoredNotifications.isInitialized) return false;
+    return restoredNotifications.rebuildScheduleAfterDataRestore();
+  } catch (_) {
+    await currentNotifications.resumeSchedulingAfterDataRestore();
+    return false;
+  }
 }
 
 class _SafetyCard extends StatelessWidget {
@@ -398,9 +446,9 @@ class _SectionTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Text(
     text,
-    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-      fontWeight: FontWeight.w800,
-    ),
+    style: Theme.of(
+      context,
+    ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
   );
 }
 
@@ -409,9 +457,9 @@ Future<String?> _passwordDialog(
   required String title,
   bool confirm = false,
 }) => showDialog<String>(
-    context: context,
-    builder: (_) => _PasswordDialog(title: title, confirm: confirm),
-  );
+  context: context,
+  builder: (_) => _PasswordDialog(title: title, confirm: confirm),
+);
 
 class _PasswordDialog extends StatefulWidget {
   const _PasswordDialog({required this.title, required this.confirm});
@@ -489,10 +537,7 @@ class _PasswordDialogState extends State<_PasswordDialog> {
         onPressed: () => Navigator.pop(context),
         child: Text(context.l10n.cancelLabel),
       ),
-      FilledButton(
-        onPressed: _submit,
-        child: Text(context.l10n.continueLabel),
-      ),
+      FilledButton(onPressed: _submit, child: Text(context.l10n.continueLabel)),
     ],
   );
 }

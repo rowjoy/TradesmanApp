@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:cross_file/cross_file.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -12,6 +11,9 @@ import '../../onboarding/presentation/controllers/onboarding_controller.dart';
 import '../data/report_repository.dart';
 import '../domain/report_models.dart';
 import '../infrastructure/report_export_service.dart';
+
+typedef ReportShareCallback =
+    Future<void> Function(PreparedReportExport export, {Rect? origin});
 
 class ReportState {
   const ReportState({
@@ -52,15 +54,18 @@ class ReportController extends StateNotifier<ReportState> {
   ReportController({
     required ReportRepository repository,
     required ReportExportService exportService,
+    required ReportShareCallback share,
     required ReportFilter initialFilter,
   }) : _repository = repository,
        _exportService = exportService,
+       _share = share,
        super(ReportState(filter: initialFilter, report: const AsyncLoading())) {
     refresh();
   }
 
   final ReportRepository _repository;
   final ReportExportService _exportService;
+  final ReportShareCallback _share;
 
   Future<void> refresh() async {
     final filter = state.filter;
@@ -132,22 +137,17 @@ class ReportController extends StateNotifier<ReportState> {
     state = state.copyWith(exporting: true, clearError: true);
     try {
       final export = await _exportService.create(report, format);
-      state = state.copyWith(exporting: false, lastExport: export);
-      await SharePlus.instance.share(
-        ShareParams(
-          files: [XFile(export.path)],
-          subject: 'WorkProof offline report',
-          text: 'SHA-256: ${export.sha256}',
-          sharePositionOrigin: origin,
-        ),
-      );
+      if (!mounted) return false;
+      state = state.copyWith(lastExport: export);
+      await _share(export, origin: origin);
       return true;
     } catch (_) {
-      state = state.copyWith(
-        exporting: false,
-        errorCode: 'report_export_failed',
-      );
+      if (mounted) {
+        state = state.copyWith(errorCode: 'report_export_failed');
+      }
       return false;
+    } finally {
+      if (mounted) state = state.copyWith(exporting: false);
     }
   }
 }
@@ -164,6 +164,19 @@ final reportExportServiceProvider = Provider(
   ),
 );
 
+final reportShareCallbackProvider = Provider<ReportShareCallback>((ref) {
+  return (export, {origin}) async {
+    await SharePlus.instance.share(
+      ShareParams(
+        files: [XFile(export.path)],
+        subject: 'WorkProof offline report',
+        text: 'SHA-256: ${export.sha256}',
+        sharePositionOrigin: origin,
+      ),
+    );
+  };
+});
+
 final reportControllerProvider =
     StateNotifierProvider.autoDispose<ReportController, ReportState>((ref) {
       final profile = ref.watch(currentProfileProvider);
@@ -171,6 +184,7 @@ final reportControllerProvider =
       return ReportController(
         repository: ref.watch(reportRepositoryProvider),
         exportService: ref.watch(reportExportServiceProvider),
+        share: ref.watch(reportShareCallbackProvider),
         initialFilter: ReportFilter(
           startUtc: range.$1,
           endUtc: range.$2,

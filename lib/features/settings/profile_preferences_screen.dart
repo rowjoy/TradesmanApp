@@ -63,9 +63,7 @@ class _ProfilePreferencesScreenState
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: Text(context.l10n.regionLanguageTitle),
-    ),
+    appBar: AppBar(title: Text(context.l10n.regionLanguageTitle)),
     body: ListView(
       padding: const EdgeInsets.fromLTRB(16, 4, 16, 28),
       children: [
@@ -139,9 +137,9 @@ class _ProfilePreferencesScreenState
           options: CurrencyCatalog.markets
               .map((item) => item.code)
               .toList(growable: false),
-          optionLabel: (value) => CurrencyCatalog.market(value).label(
-            languageCode: Localizations.localeOf(context).languageCode,
-          ),
+          optionLabel: (value) => CurrencyCatalog.market(
+            value,
+          ).label(languageCode: Localizations.localeOf(context).languageCode),
           optionLeading: (value) => Text(CurrencyCatalog.market(value).flag),
           leading: const Icon(Icons.travel_explore_rounded),
           onChanged: (value) => setState(() {
@@ -156,9 +154,9 @@ class _ProfilePreferencesScreenState
           options: CurrencyCatalog.currencies
               .map((item) => item.code)
               .toList(growable: false),
-          optionLabel: (value) => CurrencyCatalog.currency(value).label(
-            languageCode: Localizations.localeOf(context).languageCode,
-          ),
+          optionLabel: (value) => CurrencyCatalog.currency(
+            value,
+          ).label(languageCode: Localizations.localeOf(context).languageCode),
           optionLeading: (value) => Text(
             CurrencyCatalog.currency(value).symbol,
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
@@ -180,11 +178,7 @@ class _ProfilePreferencesScreenState
             children: [
               const Icon(Icons.info_outline_rounded),
               const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  context.l10n.currencyHistoryNote,
-                ),
-              ),
+              Expanded(child: Text(context.l10n.currencyHistoryNote)),
             ],
           ),
         ),

@@ -10,7 +10,17 @@ abstract final class EncryptedFileCodec {
   static const _magic = <int>[0x57, 0x50, 0x45, 0x31]; // WPE1
   static const _nonceLength = 12;
   static const _macLength = 16;
-  static const _aad = <int>[0x57, 0x6F, 0x72, 0x6B, 0x50, 0x72, 0x6F, 0x6F, 0x66];
+  static const _aad = <int>[
+    0x57,
+    0x6F,
+    0x72,
+    0x6B,
+    0x50,
+    0x72,
+    0x6F,
+    0x6F,
+    0x66,
+  ];
 
   static bool isEncrypted(List<int> bytes) =>
       bytes.length >= _magic.length + _nonceLength + _macLength &&

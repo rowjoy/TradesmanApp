@@ -123,10 +123,7 @@ abstract final class BackupCrypto {
   static Uint8List _u64(int value) =>
       (ByteData(8)..setUint64(0, value, Endian.big)).buffer.asUint8List();
 
-  static Future<Uint8List> _readExact(
-    RandomAccessFile file,
-    int length,
-  ) async {
+  static Future<Uint8List> _readExact(RandomAccessFile file, int length) async {
     final output = BytesBuilder(copy: false);
     while (output.length < length) {
       final bytes = await file.read(length - output.length);

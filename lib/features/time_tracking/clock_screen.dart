@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:cross_file/cross_file.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../core/money/money.dart';
@@ -18,6 +17,7 @@ import '../../core/widgets/live_second_builder.dart';
 import '../../l10n/l10n.dart';
 import '../jobs/job_model.dart';
 import '../jobs/job_provider.dart';
+import '../app_review/application/app_review_providers.dart';
 import '../customers/customer_provider.dart';
 import '../money/presentation/controllers/money_summary_controller.dart';
 import '../notifications/application/notification_controller.dart';
@@ -25,6 +25,7 @@ import '../onboarding/presentation/controllers/onboarding_controller.dart';
 import '../proof/presentation/controllers/audit_controller.dart';
 import '../reports/application/report_controller.dart';
 import '../reports/infrastructure/report_export_service.dart';
+import '../security/application/app_lock_controller.dart';
 import '../showcase/data/showcase_repository.dart';
 import '../showcase/presentation/app_showcase.dart';
 import '../work/data/work_repository.dart';
@@ -118,12 +119,9 @@ class _ClockScreenState extends ConsumerState<ClockScreen> {
         actions: [
           if (widget.workItem.type == TrackedWorkType.job)
             IconButton(
-              tooltip: Localizations.localeOf(context).languageCode == 'bn'
-                  ? 'জব ওয়ার্কস্পেস'
-                  : 'Job workspace',
-              onPressed: () => context.push(
-                AppRoutes.jobWorkspace(widget.workItem.id),
-              ),
+              tooltip: context.l10n.manageJobTitle,
+              onPressed: () =>
+                  context.push(AppRoutes.jobWorkspace(widget.workItem.id)),
               icon: const Icon(Icons.business_center_outlined),
             ),
           if (widget.workItem.type == TrackedWorkType.job)
@@ -476,8 +474,29 @@ class _ClockScreenState extends ConsumerState<ClockScreen> {
         ) ??
         false;
     if (!confirmed) return;
-    await _run(
+    final succeeded = await _run(
       () => ref.read(timeTrackingRepositoryProvider).clockOut(entry.id),
+    );
+    if (!succeeded || !mounted) return;
+
+    final route = ModalRoute.of(context);
+    unawaited(
+      ref
+          .read(appReviewServiceProvider)
+          .maybeRequestReview(
+            canPresent: () {
+              if (!mounted || route?.isCurrent != true) return false;
+              final lifecycleState = WidgetsBinding.instance.lifecycleState;
+              if (lifecycleState != null &&
+                  lifecycleState != AppLifecycleState.resumed) {
+                return false;
+              }
+              final appLock = ref.read(appLockControllerProvider);
+              return !appLock.initializing &&
+                  !appLock.locked &&
+                  !AppShowcaseCoordinator.instance.isActive;
+            },
+          ),
     );
   }
 
@@ -494,16 +513,18 @@ class _ClockScreenState extends ConsumerState<ClockScreen> {
     );
   }
 
-  Future<void> _run(Future<void> Function() action) async {
-    if (_busy) return;
+  Future<bool> _run(Future<void> Function() action) async {
+    if (_busy) return false;
     setState(() => _busy = true);
     try {
       await action();
       _refresh();
+      return true;
     } catch (_) {
       if (mounted) {
         AppFeedback.error(context, context.l10n.timerActionFailed);
       }
+      return false;
     } finally {
       if (mounted) setState(() => _busy = false);
     }
